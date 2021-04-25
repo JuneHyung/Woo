@@ -1,6 +1,8 @@
 <img src="images/logo.png" align="left" alt="logo" style="width: 150px; " />
 
-![Generic badge](https://img.shields.io/badge/Vue.js-2.6.1-orange.svg) ![Generic badge](https://img.shields.io/badge/Axios-0.21.1-blue.svg)![Generic badge](https://img.shields.io/badge/Spring Boot-2.4.5-green.svg)![Generic badge](https://img.shields.io/badge/Mysql-8.0.17-yellowgreen.svg) ![Generic badge](https://img.shields.io/badge/Nginx-lightgrey.svg)
+
+
+![Generic badge](https://img.shields.io/badge/Vue.js-2.6.1-orange.svg) ![Generic badge](https://img.shields.io/badge/Axios-0.21.1-blue.svg)![Generic badge](https://img.shields.io/badge/SpringBoot-2.4.5-green.svg)![Generic badge](https://img.shields.io/badge/Mysql-8.0.17-yellowgreen.svg) ![Generic badge](https://img.shields.io/badge/Nginx-lightgrey.svg)
 
 # 우냉부?
 
@@ -18,25 +20,13 @@
 
 자취생 또는 주부들의 고민인 냉장고 관리를 목적으로 하였습니다.
 
-- 유통기한 관리 : 유통기한을 효율적으로 관리하여 버려지는 음식물 쓰레기를 줄여
+- 유통기한 관리 : 유통기한을 효율적으로 관리하여 버려지는 음식물 쓰레기를 줄여 환경 파괴를 막고자 기획해보았습니다.
 
-  ```
-                          환경 파괴를 막고자 기획해보았습니다.
-  ```
+- 냉장고 내부 위치 저장 : 냉장고에 있는 재료들의 위치를 저장하여, 냉장고를 열고 찾는데 소요 되는 시간을 줄여, 에너지 낭비를 막고자 기획해보았습니다.
 
-- 냉장고 내부 위치 저장 : 냉장고에 있는 재료들의 위치를 저장하여, 냉장고를 열고 찾는데
+- 레시피 추천 및 공유 : 단순히 유통기한을 관리 해주는 것만으로는 부족하다고 생각하여, 레시피를 추천하고 사용자들간에 공유할 수 있도록하여 요리 초보들도 냉장고 관리를 잘할 수 있는 컨텐츠를 기획해보았습니다.
 
-  ```
-                          소요 되는 시간을 줄여, 에너지 낭비를 막고자 기획해보았습니다.
-  ```
-
-- 레시피 추천 및 공유 : 단순히 유통기한을 관리 해주는 것만으로는 부족하다고 생각하여,
-
-  ```
-                          레시피를 추천하고 사용자들간에 공유할 수 있도록하여 요리 초보들도 
   
-                          냉장고 관리를 잘할 수 있는 컨텐츠를 기획해보았습니다.
-  ```
 
 ⇒ 위와 같은 서비스를 통해 효율적 냉장고 관리 및 레시피 추천 및 공유 서비스를 기획했습니다.
 
