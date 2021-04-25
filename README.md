@@ -1,4 +1,4 @@
-<img src="images/logo.png" align="left" alt="logo" style="width: 150px; height:150px; " />
+<img src="images/logo.png" alt="logo" style="width: 150px; height:150px; " />
 
 
 
