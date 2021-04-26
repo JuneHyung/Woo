@@ -70,6 +70,8 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
+	
+	// unb 회원가입
 	@Operation(summary = "회원 가입", description = "회원 가입 결과를 반환한다.")
 	@PostMapping("/join")
 	public ResponseEntity<Map<String, Object>> join(
