@@ -40,7 +40,7 @@ export default {
             this.$router.push({ name: 'Start' });
         },
         goShareRecipt() {
-            this.$router.push({ name: 'ShareRecipe' });
+            this.$router.push({ name: 'RecipeList' });
         },
         goSubscribe() {
             this.$router.push({ name: 'Subscribe' });
