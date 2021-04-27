@@ -1,4 +1,4 @@
-package com.fridge.Dto;
+package com.fridge.model;
 
 import java.time.LocalDateTime;
 

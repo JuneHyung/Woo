@@ -1,4 +1,4 @@
-package com.fridge.Dto;
+package com.fridge.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,49 +6,34 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-@Table(name = "fridge")
+@Table(name = "subscribe")
 @Entity
-public class Fridge {
+public class Subscribe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
-	String name;
-	int type;
 	@ManyToOne
 	private User user;
-	public Fridge() {}
 	
-	public Fridge(int id, String name, int type, User user) {
+	int subscribe_id;
+
+	public Subscribe(int id, User user, int subscribe_id) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.type = type;
 		this.user = user;
+		this.subscribe_id = subscribe_id;
 	}
-	
+
+	public Subscribe() {
+		super();
+	}
+
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
 	}
 
 	public User getUser() {
@@ -59,10 +44,17 @@ public class Fridge {
 		this.user = user;
 	}
 
+	public int getSubscribe_id() {
+		return subscribe_id;
+	}
+
+	public void setSubscribe_id(int subscribe_id) {
+		this.subscribe_id = subscribe_id;
+	}
+
 	@Override
 	public String toString() {
-		return "Fridge [id=" + id + ", name=" + name + ", type=" + type + ", user=" + user + "]";
+		return "Subscribe [id=" + id + ", user=" + user + ", subscribe_id=" + subscribe_id + "]";
 	}
-	
 	
 }

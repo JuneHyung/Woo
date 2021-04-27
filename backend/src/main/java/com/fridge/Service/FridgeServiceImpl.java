@@ -3,8 +3,8 @@ package com.fridge.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fridge.Dao.FridgeRepository;
-import com.fridge.Dto.Fridge;
+import com.fridge.model.Fridge;
+import com.fridge.model.repository.FridgeRepository;
 
 @Service
 public class FridgeServiceImpl implements FridgeService{
