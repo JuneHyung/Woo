@@ -1,29 +1,26 @@
 package com.fridge.model.service;
 
-import java.util.Map;
-
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fridge.model.UserDto;
-import com.fridge.model.mapper.UserMapper;
+import com.fridge.model.User;
+import com.fridge.model.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
-	private SqlSession sqlSession;
-
+	private UserRepository userrepo;
 	@Override
-	public UserDto login(UserDto userDto) throws Exception {
-		if(userDto.getEmail() == null || userDto.getPwd() == null)
+	public User login(User user) throws Exception {
+		if(user.getEmail() == null || user.getPwd() == null)
 			return null;
-		return sqlSession.getMapper(UserMapper.class).login(userDto);
+		
+		return userrepo.findByEmailAndPwd(user.getEmail(), user.getPwd());
 	}
 
 	@Override
-	public void join(Map<String, Object> param) throws Exception {
-		sqlSession.getMapper(UserMapper.class).join(param);
+	public void join(User user) throws Exception {
+		userrepo.save(user);
 	}
 	
 }
