@@ -8,15 +8,14 @@
                 <div
                     class="col-5"
                     style="height: 250px; background-color: #eee"
-                    @click="goRefAdd()"
+                    @click="goRefManage()"
                 ></div>
             </div>
-            <div>
-                <p style="border-top: 1px solid black; border-bottom: 1px solid black">
-                    클릭시 냉장고 관리가 가능합니다
-                </p>
-                <div style="margin-top: 20px"></div>
-            </div>
+            <v-row style="border-top: 1px solid black; border-bottom: 1px solid black">
+                <p>클릭시 냉장고 관리가 가능합니다</p>
+                <v-spacer></v-spacer>
+                <span @click="goRefAdd()" class="addBtn">냉장고 추가</span>
+            </v-row>
         </div>
         <div style="margin-top: 10px">
             <div>
@@ -41,6 +40,9 @@ export default {
         return {};
     },
     methods: {
+        goRefManage() {
+            this.$router.push({ name: 'RefManage' });
+        },
         goRefAdd() {
             this.$router.push({ name: 'RefAdd' });
         },
