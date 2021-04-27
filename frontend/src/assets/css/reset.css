@@ -20,7 +20,21 @@ p {
     margin: 0 !important;
     padding: 0 !important;
 }
-
+.addBtn {
+    width: 60px;
+    height: 60px;
+    color: red;
+    text-align: center;
+    margin: 0 10px;
+    cursor: pointer;
+}
+.minusBtn {
+    width: 60px;
+    height: 60px;
+    color: blue;
+    text-align: center;
+    cursor: pointer;
+}
 .row {
     margin: 0 !important;
 }
