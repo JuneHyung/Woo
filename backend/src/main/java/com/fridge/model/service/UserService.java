@@ -2,10 +2,10 @@ package com.fridge.model.service;
 
 import java.util.Map;
 
-import com.fridge.model.UserDto;
+import com.fridge.model.User;
 
 public interface UserService  {
-	public UserDto login(UserDto userDto) throws Exception;
+	public User login(User user) throws Exception;
 	
-	public void join(Map<String, Object> param) throws Exception;
+	public void join(User user) throws Exception;
 }

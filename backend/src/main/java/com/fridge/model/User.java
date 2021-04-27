@@ -6,16 +6,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Table(name = "user")
 @Entity
+@Schema(name = "회원정보", description = "우냉부 사용자들의 정보를 담을 수 있는 Model")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Schema(title = "user pk")
 	int id;
+	@Schema(title = "이메일")
 	String email;
+	@Schema(title = "비밀번호")
 	String pwd;
+	@Schema(title = "닉네임")
 	String nick;
-	public User() {}
 	public int getId() {
 		return id;
 	}
