@@ -12,6 +12,7 @@ import ShareRecipe from "../views/ShareRecipe.vue";
 import Subscribe from "../views/Subscribe.vue";
 
 import RefAdd from "../views/Refrigerator/RefAdd.vue";
+import RefManage from "../views/Refrigerator/RefManage.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -49,6 +50,11 @@ const routes = [
     path: "/refadd",
     name: "RefAdd",
     components: { default: RefAdd, header: MainHeader },
+  },
+  {
+    path: "/refmanage",
+    name: "RefManage",
+    components: { default: RefManage, header: MainHeader },
   },
 ];
 
