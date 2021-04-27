@@ -13,6 +13,10 @@ import Subscribe from "../views/Subscribe.vue";
 
 import RefAdd from "../views/Refrigerator/RefAdd.vue";
 import RefManage from "../views/Refrigerator/RefManage.vue";
+
+import RecipeList from "../views/Recipe/RecipeList.vue";
+import RecipeDetail from "../views/Recipe/RecipeDetail.vue";
+import RecipeCreate from "../views/Recipe/RecipeCreate.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -55,6 +59,21 @@ const routes = [
     path: "/refmanage",
     name: "RefManage",
     components: { default: RefManage, header: MainHeader },
+  },
+  {
+    path: "/recipeList",
+    name: "RecipeList",
+    components: { default: RecipeList, header: MainHeader },
+  },
+  {
+    path: "/recipeDetail",
+    name: "RecipeDetail",
+    components: { default: RecipeDetail, header: MainHeader },
+  },
+  {
+    path: "/recipeCreate",
+    name: "RecipeCreate",
+    components: { default: RecipeCreate, header: MainHeader },
   },
 ];
 
