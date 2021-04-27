@@ -1,4 +1,4 @@
-package com.fridge.Controller;
+package com.fridge.controller;
 
 import java.util.HashMap;
 import java.util.Map;
