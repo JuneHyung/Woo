@@ -1,13 +1,16 @@
 package com.fridge.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.fridge.model.User;
 import com.fridge.model.repository.UserRepository;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 	@Autowired
 	private UserRepository userrepo;
 	@Override
@@ -21,6 +24,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void join(User user) throws Exception {
 		userrepo.save(user);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return userrepo.findByEmail(username)
+				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 	}
 	
 }
