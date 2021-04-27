@@ -52,7 +52,7 @@ public class UserController {
 			throw new IllegalArgumentException("ID, 비밀번호를 다시 확인해주세요.");
 		}
 
-		return jwtTokenProvider.createToken(loginMember.getUsername());
+		return jwtTokenProvider.createToken(Integer.toString(loginMember.getId()));
 	}
 	
 	
