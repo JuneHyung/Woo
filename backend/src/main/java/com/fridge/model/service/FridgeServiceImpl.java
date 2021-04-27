@@ -1,5 +1,7 @@
 package com.fridge.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,7 @@ public class FridgeServiceImpl implements FridgeService{
 	private FridgeRepository fridgeRepository;
 
 	@Override
-	public void fridgeinfoinsert(Fridge fridge) {
-		// TODO Auto-generated method stub
+	public void create(Fridge fridge) throws Exception {
 		fridgeRepository.save(fridge);
 	}
-	
-	
 }

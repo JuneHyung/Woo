@@ -1,5 +1,5 @@
 <template>
-    <v-app style="width: 360px; margin: 0 auto">
+    <v-app style="width: 360px; margin: 0 auto; border: 1px solid black">
         <router-view name="header"></router-view>
         <router-view></router-view>
     </v-app>
