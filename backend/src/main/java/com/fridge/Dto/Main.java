@@ -12,41 +12,40 @@ import javax.persistence.Table;
 public class Main {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	private int id;
 	@ManyToOne
-	int recipe_id;
+	private Recipe recipe;
+	
 	@ManyToOne
 	private Ingredientsdetail ingredientsdetail;
-	public Main(int id, int recipe_id, Ingredientsdetail ingredientsdetail) {
-		super();
-		this.id = id;
-		this.recipe_id = recipe_id;
-		this.ingredientsdetail = ingredientsdetail;
-	}
-	public Main() {
-		super();
-	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getRecipe_id() {
-		return recipe_id;
+
+	public Recipe getRecipe() {
+		return recipe;
 	}
-	public void setRecipe_id(int recipe_id) {
-		this.recipe_id = recipe_id;
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
 	}
+
 	public Ingredientsdetail getIngredientsdetail() {
 		return ingredientsdetail;
 	}
+
 	public void setIngredientsdetail(Ingredientsdetail ingredientsdetail) {
 		this.ingredientsdetail = ingredientsdetail;
 	}
+
 	@Override
 	public String toString() {
-		return "Main [id=" + id + ", recipe_id=" + recipe_id + ", ingredientsdetail=" + ingredientsdetail + "]";
+		return "Main [id=" + id + ", recipe=" + recipe + ", ingredientsdetail=" + ingredientsdetail + "]";
 	}
 	
 }

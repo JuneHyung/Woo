@@ -9,13 +9,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "회원정보", description = "우냉부 사용자들의 정보를 담을 수 있는 Model")
 public class UserDto {
-	@Schema(name = "user pk")
+	@Schema(title = "user pk")
 	private int id;
-	@Schema(name = "이메일")
+	@Schema(title = "이메일")
 	private String email;
-	@Schema(name = "비밀번호")
+	@Schema(title = "비밀번호")
 	private String pwd;
-	@Schema(name = "닉네임")
+	@Schema(title = "닉네임")
 	private String nick;
 	public int getId() {
 		return id;
