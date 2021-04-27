@@ -4,13 +4,18 @@
             <div>
                 <p class="mainText">내 냉장고 목록</p>
             </div>
-            <div style="width: 330px; height: 230px"></div>
+            <div class="myRef">
+                <div
+                    class="col-5"
+                    style="height: 250px; background-color: #eee"
+                    @click="goRefAdd()"
+                ></div>
+            </div>
             <div>
-                <hr />
-                <p>클릭시 냉장고 관리가 가능합니다</p>
-                <div style="margin-top: 20px">
-                    <hr />
-                </div>
+                <p style="border-top: 1px solid black; border-bottom: 1px solid black">
+                    클릭시 냉장고 관리가 가능합니다
+                </p>
+                <div style="margin-top: 20px"></div>
             </div>
         </div>
         <div style="margin-top: 10px">
@@ -32,10 +37,21 @@
 <script>
 export default {
     name: 'Main',
+    dat() {
+        return {};
+    },
+    methods: {
+        goRefAdd() {
+            this.$router.push({ name: 'RefAdd' });
+        },
+    },
 };
 </script>
 
 <style scoped>
+.myRef {
+    margin-bottom: 20px;
+}
 .mainText {
     font-size: 24px;
 }
