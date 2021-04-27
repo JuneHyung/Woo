@@ -7,25 +7,23 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Table(name = "fridge")
 @Entity
+@Schema(name = "냉장고 정보", description = "냉장고 정보를 담기 위한 객체")
 public class Fridge {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Schema(title = "fridge pk")
 	int id;
+	@Schema(title = "fridge name")
 	String name;
+	@Schema(title = "fridge type")
 	int type;
 	@ManyToOne
+	@Schema(title = "fridge fk")
 	private User user;
-	public Fridge() {}
-	
-	public Fridge(int id, String name, int type, User user) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.type = type;
-		this.user = user;
-	}
 	
 	public int getId() {
 		return id;
