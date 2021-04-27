@@ -11,6 +11,7 @@ import Login from "../views/member/Login.vue";
 import ShareRecipe from "../views/ShareRecipe.vue";
 import Subscribe from "../views/Subscribe.vue";
 
+import RefAdd from "../views/Refrigerator/RefAdd.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -43,6 +44,11 @@ const routes = [
     path: "/subscribe",
     name: "Subscribe",
     components: { default: Subscribe, header: MainHeader },
+  },
+  {
+    path: "/refadd",
+    name: "RefAdd",
+    components: { default: RefAdd, header: MainHeader },
   },
 ];
 
