@@ -10,6 +10,8 @@ import Login from "../views/member/Login.vue";
 
 import ShareRecipe from "../views/ShareRecipe.vue";
 import Subscribe from "../views/Subscribe.vue";
+import FoodDetail from "../views/FoodDetail.vue";
+
 
 import RefAdd from "../views/Refrigerator/RefAdd.vue";
 import RefManage from "../views/Refrigerator/RefManage.vue";
@@ -74,6 +76,11 @@ const routes = [
     path: "/recipeCreate",
     name: "RecipeCreate",
     components: { default: RecipeCreate, header: MainHeader },
+  },
+  {
+    path: "/FoodDetail",
+    name: "FoodDetail",
+    components: { default: FoodDetail, header: MainHeader },
   },
 ];
 
