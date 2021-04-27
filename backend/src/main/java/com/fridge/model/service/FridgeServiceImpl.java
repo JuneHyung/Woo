@@ -17,4 +17,10 @@ public class FridgeServiceImpl implements FridgeService{
 	public void create(Fridge fridge) throws Exception {
 		fridgeRepository.save(fridge);
 	}
+
+	@Override
+	public Fridge[] fridgeList(int id) throws Exception {
+		System.out.println("***");
+		return fridgeRepository.findByUser_Id(id);
+	}
 }
