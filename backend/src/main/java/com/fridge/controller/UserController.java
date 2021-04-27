@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fridge.config.security.JwtTokenProvider;
 import com.fridge.model.User;
-import com.fridge.model.service.JwtServiceImpl;
 import com.fridge.model.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,40 +32,27 @@ public class UserController {
 	private static final String FAIL = "fail";
 
 	@Autowired
-	private JwtServiceImpl jwtService; // 로그인 토큰 생성을 위한 service
-
-	@Autowired
 	private UserService userService; // 데이터베이스에 로그인 시도를 위한 service
+	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	
 	@Operation(summary = "로그인", description = "Access-token과 로그인 결과 메시지를 반환한다.")
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, Object>> login(
+	public String login(
 			@RequestBody @Parameter(name="로그인 시 필요한 회원정보(이메일, 비밀번호)", required = true) User user){
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
-
+		User loginMember = null;
 		try {
-			// Database에서 아이디와 비밀번호를 통해 로그인 정보 찾기
-			User loginMember = userService.login(user);
-
-			if (loginMember != null) { // 로그인 정보가 존재하는 경우
-				// (key, data, subject)
-				String token = jwtService.create("id", loginMember.getId(), "access-token");
-				logger.debug("로그인 토큰 정보 : {}", token); // server side log
-				resultMap.put("access-token", token); // access-token 전달
-				resultMap.put("message", SUCCESS); // "성공" 메세지 전달
-				status = HttpStatus.ACCEPTED;	
-			} else { // 로그인 정보가 존재하지 않는 경우
-				resultMap.put("massage", FAIL); // "실패" 메세지 전달
-				status = HttpStatus.ACCEPTED;
-			}
+			loginMember = userService.login(user);
 		} catch (Exception e) {
-			logger.error("로그인 실패 : {}", e);
-			resultMap.put("massage", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			e.printStackTrace();
+		}
+		
+		if (loginMember == null) { // 로그인 정보가 존재하는 경우
+			throw new IllegalArgumentException("ID, 비밀번호를 다시 확인해주세요.");
 		}
 
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return jwtTokenProvider.createToken(loginMember.getUsername());
 	}
 	
 	
