@@ -9,5 +9,5 @@ import com.fridge.model.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 	User findByEmailAndPwd(String email,String pwd);
 
-	Optional<User> findByEmail(String email);
+	Optional<User> findById(int id);
 }

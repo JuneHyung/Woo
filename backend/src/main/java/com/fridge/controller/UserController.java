@@ -19,6 +19,7 @@ import com.fridge.model.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "UserController v0.1")
@@ -57,7 +58,7 @@ public class UserController {
 	
 	
 	// unb 회원가입
-	@Operation(summary = "회원 가입", description = "회원 가입 결과를 반환한다.")
+	@Operation(summary = "회원 가입", description = "회원 가입 결과를 반환한다.", security = {@SecurityRequirement(name = "X-AUTH-TOKEN")})
 	@PostMapping("/join")
 	public ResponseEntity<Map<String, Object>> join(
 			@RequestBody @Parameter(name = "회원 가입에 필요한 회원 정보", required = true) User user) {
