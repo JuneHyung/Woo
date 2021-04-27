@@ -6,16 +6,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
 @Table(name ="recipe")
 public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Schema(title = "user pk")
 	int id;
+	@Schema(title = "레시피 이름")
 	String name;
+	@Schema(title = "레시피 메인 카테고리")
 	String category;
+	@Schema(title = "레시피 서브 카테고리")
 	String subcategory;
+	@Schema(title = "레시피 주소")
 	String url;
+	@Schema(title = "레시피 조회수")
 	int views;
 	public Recipe(int id, String name, String category, String subcategory, String url, int views) {
 		super();
