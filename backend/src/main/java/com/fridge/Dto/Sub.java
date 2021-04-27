@@ -14,40 +14,36 @@ public class Sub {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	@ManyToOne
-	int recipe_id;
+	private Recipe recipe;
 	@ManyToOne
 	private Ingredientsdetail ingredientsdetail;
-	int ingredientsdetail_id;
-	public Sub(int id, int recipe_id, int ingredientsdetail_id) {
-		super();
-		this.id = id;
-		this.recipe_id = recipe_id;
-		this.ingredientsdetail_id = ingredientsdetail_id;
-	}
-	public Sub() {
-		super();
-	}
+	
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getRecipe_id() {
-		return recipe_id;
+
+	public Recipe getRecipe() {
+		return recipe;
 	}
-	public void setRecipe_id(int recipe_id) {
-		this.recipe_id = recipe_id;
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
 	}
-	public int getIngredientsdetail_id() {
-		return ingredientsdetail_id;
+
+	public Ingredientsdetail getIngredientsdetail() {
+		return ingredientsdetail;
 	}
-	public void setIngredientsdetail_id(int ingredientsdetail_id) {
-		this.ingredientsdetail_id = ingredientsdetail_id;
+
+	public void setIngredientsdetail(Ingredientsdetail ingredientsdetail) {
+		this.ingredientsdetail = ingredientsdetail;
 	}
+
 	@Override
 	public String toString() {
-		return "Sub [id=" + id + ", recipe_id=" + recipe_id + ", ingredientsdetail_id=" + ingredientsdetail_id + "]";
+		return "Sub [id=" + id + ", recipe=" + recipe + ", ingredientsdetail=" + ingredientsdetail + "]";
 	}
-	
 }
