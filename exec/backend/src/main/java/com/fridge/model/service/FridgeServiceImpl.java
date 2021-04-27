@@ -10,11 +10,16 @@ import com.fridge.model.repository.FridgeRepository;
 
 @Service
 public class FridgeServiceImpl implements FridgeService{
-	@Autowired
-	private FridgeRepository fridgeRepository;
+   @Autowired
+   private FridgeRepository fridgeRepository;
 
-	@Override
-	public void create(Fridge fridge) throws Exception {
-		fridgeRepository.save(fridge);
-	}
+   @Override
+   public void create(Fridge fridge) throws Exception {
+      fridgeRepository.save(fridge);
+   }
+
+   @Override
+   public Fridge[] fridgeList(int id) throws Exception {
+      return fridgeRepository.findByUser_Id(id);
+   }
 }
