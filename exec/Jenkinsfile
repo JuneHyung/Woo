@@ -27,6 +27,7 @@ pipeline {
             // package : 컴파일을 수행하고 컴파일한 소스를 packaging 양식(war or jar)에
             // 맞춰 프로젝트 내 지정한 경로(ex. target) 디렉토리에 생성
             steps {
+                sh 'pwd'
                 sh 'mvn -B -DskipTests -f ./backend/pom.xml clean package'
             }
         }
