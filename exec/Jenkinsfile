@@ -51,7 +51,7 @@ pipeline {
 					| xargs --no-run-if-empty docker container stop'
 				// fridge_front의 이름을 가진 컨테이너를 삭제
 				sh 'docker container ls -a -f name=fridge_front -q \
-					| xar_gs -r docker container rm'
+					| xargs -r docker container rm'
 				// fridge_back의 이름을 가진 컨테이너를 _삭제
 				sh 'docker container ls -a -f name=fridge_back -q \
 					| xargs -r docker container rm'
