@@ -2,7 +2,7 @@ version: '3.7'
 
 services:  # 실행하려는 컨테이너들을 정의
 	jenkins:  # 서비스의 이름
-		image: 'jenkins/jenkins'  # 사용할 도커 이미지
+		image: 'jenkinsci/jenkins'  # 사용할 도커 이미지
 		restart: unless-stopped  # 명시적으로 중지되거나, Docker 자체가 중지되는 경우 재시작
 		user: root
 		privileged: true  # permission denied 관련 설정
@@ -13,3 +13,5 @@ services:  # 실행하려는 컨테이너들을 정의
 			- '/var/run/docker.sock:/var/run/docker.sock'
 			- '/usr/bin/jenkins:/usr/bin/docker'
 		container_name: 'jenkins'
+                environment:
+                        - TZ=Asia/Seoul
