@@ -106,7 +106,7 @@ public class FridgeController {
    }
    
    @Operation (summary = "냉장고 포함 재료", description = "냉장고 번호를 통해 냉장고에 포함된 재료")
-   @GetMapping("/ingrediants/{fridge_id}")
+   @GetMapping("/ingredients/{fridge_id}")
    public  ResponseEntity<Map<String, Object>> ingrediantsList(
 		   @PathVariable("fridge_id")int fridge_id){
 	   Map<String,Object> resultMap = new HashMap<String, Object>();

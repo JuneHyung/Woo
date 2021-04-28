@@ -58,7 +58,7 @@ const routes = [
     components: { default: RefAdd, header: MainHeader },
   },
   {
-    path: "/refmanage",
+    path: "/refmanage/:rid",
     name: "RefManage",
     components: { default: RefManage, header: MainHeader },
   },
