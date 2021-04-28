@@ -27,7 +27,6 @@ pipeline {
             // package : 컴파일을 수행하고 컴파일한 소스를 packaging 양식(war or jar)에
             // 맞춰 프로젝트 내 지정한 경로(ex. target) 디렉토리에 생성
             steps {
-                sh 'pwd'
                 sh 'mvn -B -DskipTests -f ./exec/backend/pom.xml clean package'
             }
         }
@@ -55,8 +54,6 @@ pipeline {
 				// fridge_back의 이름을 가진 컨테이너를 _삭제
 				sh 'docker container ls -a -f name=fridge_back -q \
 					| xargs -r docker container rm'
-                // 종료된 모든 컨테이너 삭제
-                sh 'docker rm $(docker ps -q -f status=exited)'
 				// docker image build 시 기존에 존재하던 이미지는
 				// dangling 상태가 되기 때문에 이미지를 일괄 삭제
 				sh 'docker images -f dangling=true && \
