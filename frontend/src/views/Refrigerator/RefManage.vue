@@ -11,8 +11,42 @@
             </div>
             <v-row>
                 <v-spacer></v-spacer>
-                <div class="addBtn">+ 재료 추가</div>
-                <div class="minusBtn">- 재료 빼기</div>
+                <v-dialog v-model="addDialog">
+                    <template v-slot:activator="{ on, attrs }">
+                        <div class="addBtn" v-bind="attrs" v-on="on">+ 재료 추가</div>
+                    </template>
+                    <v-card>
+                        <v-card-title>재료를 추가해주세요!</v-card-title>
+                        <v-card-text>
+                            재료추가가 들어갈 예정입니다. 재료추가가 들어갈 예정입니다. 재료추가가
+                            들어갈 예정입니다. 재료추가가 들어갈 예정입니다.
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" text @click="addDialog = false">
+                                추가완료
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <v-dialog v-model="minusDialog">
+                    <template v-slot:activator="{ on, attrs }">
+                        <div class="minusBtn" v-bind="attrs" v-on="on">- 재료 빼기</div>
+                    </template>
+                    <v-card>
+                        <v-card-title>재료를 빼주세요!</v-card-title>
+                        <v-card-text>
+                            재료제거가 들어갈 예정입니다. 재료제거가 들어갈 예정입니다. 재료제거가
+                            들어갈 예정입니다. 재료제거가 들어갈 예정입니다.
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" text @click="minusDialog = false">
+                                빼기완료
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
             </v-row>
         </div>
         <div stlye="margin-top:50px;">
@@ -36,9 +70,12 @@
 export default {
     data() {
         return {
+            addDialog: false,
+            minusDialog: false,
             garbage: ['사과', '바나나', '메론', '포도'],
         };
     },
+    methods: {},
 };
 </script>
 <style scoped></style>
