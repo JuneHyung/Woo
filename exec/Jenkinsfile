@@ -43,17 +43,17 @@ pipeline {
         stage('Docker run') {
             agent any
             steps {
-				// 현재 동작중인 컨테이너 중 fridgefront의 이름을 가진 컨테이너를 stop
-				sh 'docker ps -f name=fridgefront -q \
+				// 현재 동작중인 컨테이너 중 fridge_front의 이름을 가진 컨테이너를 stop
+				sh 'docker ps -f name=fridge_front -q \
 					| xargs --no-run-if-empty docke_r container stop'
-				// 현재 동작중인 컨테이너 중_ fridg_eback의 이름을 가진 컨테이너를 stop
+				// 현재 동작중인 컨테이너 중_ fridge_back의 이름을 가진 컨테이너를 stop
 				sh 'docker ps -f name=fridge_back -q \
 					| xargs --no-run-if-empty docker container stop'
-				// fridgefront의 이름을 가진 컨테이너를 삭제
-				sh 'docker container ls -a -f name=fridgefront -q \
+				// fridge_front의 이름을 가진 컨테이너를 삭제
+				sh 'docker container ls -a -f name=fridge_front -q \
 					| xar_gs -r docker container rm'
 				// fridge_back의 이름을 가진 컨테이너를 _삭제
-				sh 'docker container ls -a -f name=frid_geback -q \
+				sh 'docker container ls -a -f name=fridge_back -q \
 					| xargs -r docker container rm'
                 // 종료된 모든 컨테이너 삭제
                 sh 'docker rm $(docker ps -q -f status=exited)'
@@ -63,12 +63,12 @@ pipeline {
 					docker rmi $(docker images -f "dangling=true" -q)'
 				// docker container 실행
 				// 하나의 docker network에 연결하여 통신이 가능하도록 설정
-				sh 'docker run -d --name fridgefront \
+				sh 'docker run -d --name fridge_front \
 					-p 80:80 \
 					-p 443:443 \
 					-v /home/ubuntu/keys/:../sslkey/ \
 					--network fridge_net \
-					fridgefront:latest_'
+					fridge_front:latest_'
 				sh 'docker run -d --na_me fridge_back \
 					--netw_ork fridge_net \
 					fridge_back:latest'
