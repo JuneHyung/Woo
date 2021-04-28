@@ -36,24 +36,24 @@ pipeline {
             steps {
                 // front-end 및 back-end dockerfile 실행을 통해 image 생성
                 // -t : 이미지 이름과 tag 설정, 만약 이미지 이름만 설정하면 latest로 설정됨
-                sh 'docker build -t fridgeFront:latest ./exec/frontend'
-                sh 'docker build -t fridgeBack:latest ./exec/backend'
+                sh 'docker build -t fridge_front:latest ./exec/frontend'
+                sh 'docker build -t fridge_back:latest ./exec/backend'
             }
         }
         stage('Docker run') {
             agent any
             steps {
-				// 현재 동작중인 컨테이너 중 fridgeFront의 이름을 가진 컨테이너를 stop
-				// sh 'docker ps -f name=fridgeFront -q \
-				// 	| xargs --no-run-if-empty docker container stop'
-				// 현재 동작중인 컨테이너 중 fridgeBack의 이름을 가진 컨테이너를 stop
-				sh 'docker ps -f name=fridgeBack -q \
+				// 현재 동작중인 컨테이너 중 fridgefront의 이름을 가진 컨테이너를 stop
+				sh 'docker ps -f name=fridgefront -q \
+					| xargs --no-run-if-empty docke_r container stop'
+				// 현재 동작중인 컨테이너 중_ fridg_eback의 이름을 가진 컨테이너를 stop
+				sh 'docker ps -f name=fridge_back -q \
 					| xargs --no-run-if-empty docker container stop'
-				// fridgeFront의 이름을 가진 컨테이너를 삭제
-				// sh 'docker container ls -a -f name=fridgeFront -q \
-				// 	| xargs -r docker container rm'
-				// fridgeBack의 이름을 가진 컨테이너를 삭제
-				sh 'docker container ls -a -f name=fridgeBack -q \
+				// fridgefront의 이름을 가진 컨테이너를 삭제
+				sh 'docker container ls -a -f name=fridgefront -q \
+					| xar_gs -r docker container rm'
+				// fridge_back의 이름을 가진 컨테이너를 _삭제
+				sh 'docker container ls -a -f name=frid_geback -q \
 					| xargs -r docker container rm'
                 // 종료된 모든 컨테이너 삭제
                 sh 'docker rm $(docker ps -q -f status=exited)'
@@ -63,15 +63,15 @@ pipeline {
 					docker rmi $(docker images -f "dangling=true" -q)'
 				// docker container 실행
 				// 하나의 docker network에 연결하여 통신이 가능하도록 설정
-				sh 'docker run -d --name fridgeFront \
+				sh 'docker run -d --name fridgefront \
 					-p 80:80 \
 					-p 443:443 \
 					-v /home/ubuntu/keys/:../sslkey/ \
 					--network fridge_net \
-					fridgeFront:latest'
-				sh 'docker run -d --name fridgeBack \
-					--network fridge_net \
-					fridgeBack:latest'
+					fridgefront:latest_'
+				sh 'docker run -d --na_me fridge_back \
+					--netw_ork fridge_net \
+					fridge_back:latest'
 			}
 		}
 	}
