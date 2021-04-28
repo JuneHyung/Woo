@@ -4,13 +4,19 @@
             <div>
                 <p class="mainText">내 냉장고 목록</p>
             </div>
-            <div class="myRef">
-                <div
-                    class="col-5"
-                    style="height: 250px; background-color: #eee"
-                    @click="goRefManage()"
-                ></div>
-            </div>
+            <v-slide-group center-active show-arrows>
+                <v-slide-item v-for="(fridge, index) in fridgeList" :key="index">
+                    <v-card class="ma-2" height="150" width="100" @click="setFridgeType(index)">
+                        <img
+                            :src="fridgeImg[fridge.type]"
+                            alt="냉장고"
+                            style="width: 100%; height: 100%"
+                            @click="goRefManage()"
+                        />
+                    </v-card>
+                </v-slide-item>
+            </v-slide-group>
+
             <v-row style="border-top: 1px solid black; border-bottom: 1px solid black">
                 <p>클릭시 냉장고 관리가 가능합니다</p>
                 <v-spacer></v-spacer>
@@ -34,10 +40,25 @@
 </template>
 
 <script>
+import http from '../api/axios.js';
 export default {
     name: 'Main',
-    dat() {
-        return {};
+    data() {
+        return {
+            id: 6,
+            fridgeList: [],
+            fridgeImg: {
+                22: require('@/assets/images/refrigerator/ref_44.png'),
+                33: require('@/assets/images/refrigerator/ref_55.png'),
+                44: require('@/assets/images/refrigerator/ref_66.png'),
+                55: require('@/assets/images/refrigerator/ref_4444.png'),
+                66: require('@/assets/images/refrigerator/ref_5555.png'),
+                1: require('@/assets/images/refrigerator/ref_4444.png'),
+            },
+        };
+    },
+    created() {
+        this.getMyRefrigerator();
     },
     methods: {
         goRefManage() {
@@ -46,12 +67,24 @@ export default {
         goRefAdd() {
             this.$router.push({ name: 'RefAdd' });
         },
+        getMyRefrigerator() {
+            http.get(`fridge/list/${this.id}`)
+                .then((response) => {
+                    this.fridgeList = response.data.fridgeList;
+                    console.log(this.fridgeImg[22]);
+                    alert('받기성공');
+                })
+                .catch(() => {
+                    alert('받기실패');
+                });
+        },
     },
 };
 </script>
 
 <style scoped>
 .myRef {
+    height: 250px;
     margin-bottom: 20px;
 }
 .mainText {
