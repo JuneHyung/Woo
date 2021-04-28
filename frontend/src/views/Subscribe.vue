@@ -8,13 +8,16 @@
         </div>
         <v-row>
             <div
+                @click="moveRecipeDetail()"
                 v-for="(food, index) in foods"
                 :key="index"
                 style="width: 150px; height: 160px; margin: 0 5px"
             >
+                <!-- <router-link to="/Recipedetail"> -->
                 <img :src="food" alt="된장찌개" class="foodImg" />
                 <p style="text-align: center">엄마의 손맛 구수한 된장찌개</p>
                 <p style="text-align: center">작성자 : 민주</p>
+                <!-- </router-link> -->
             </div>
         </v-row>
     </v-container>
@@ -34,6 +37,11 @@ export default {
                 require('@/assets/images/카레라이스.jpg'),
             ],
         };
+    },
+    methods: {
+        moveRecipeDetail() {
+            this.$router.push({ name: 'RecipeDetail' });
+        },
     },
 };
 </script>
