@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fridge.model.Fridge;
+import com.fridge.model.Ingredients;
 import com.fridge.model.service.FridgeService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -104,5 +105,21 @@ public class FridgeController {
 	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
    }
    
-   
+   @Operation (summary = "냉장고 포함 재료", description = "냉장고 번호를 통해 냉장고에 포함된 재료")
+   @GetMapping("/ingrediants/{fridge_id}")
+   public  ResponseEntity<Map<String, Object>> ingrediantsList(
+		   @PathVariable("fridge_id")int fridge_id){
+	   Map<String,Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   Ingredients [] ingredients = fridgeService.ingrediantsList(fridge_id);
+		   resultMap.put("message", SUCCESS);
+		   resultMap.put("ingredients",  ingredients);
+		   status = HttpStatus.ACCEPTED;
+	   } catch(Exception e) {
+		   resultMap.put("message",  e.getMessage());
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
 }
