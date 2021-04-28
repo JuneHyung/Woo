@@ -66,8 +66,8 @@ pipeline {
 					-v /home/ubuntu/keys/:/var/jenkins_home/workspace/fridge/sslkey/ \
 					--network fridge_net \
 					fridge_front:latest'
-				sh 'docker run -d --na_me fridge_back \
-					--netw_ork fridge_net \
+				sh 'docker run -d --name fridge_back \
+					--network fridge_net \
 					fridge_back:latest'
 			}
 		}
