@@ -1,11 +1,9 @@
 package com.fridge.model.service;
 
-import java.util.Map;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.Optional;
 
 import com.fridge.model.Fridge;
+import com.fridge.model.Ingredients;
 
 
 public interface FridgeService {
@@ -15,5 +13,9 @@ public interface FridgeService {
    Fridge[] fridgeList(int id) throws Exception;
 
    void fridgeDel(int fridge_id) throws Exception;
+
+   Optional <Fridge> fridgeDetail(int fridge_id) throws Exception;
+
+   Ingredients[] ingrediantsList(int fridge_id) throws Exception;
 
 }
