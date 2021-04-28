@@ -44,7 +44,7 @@ pipeline {
             steps {
 				// 현재 동작중인 컨테이너 중 fridge_front의 이름을 가진 컨테이너를 stop
 				sh 'docker ps -f name=fridge_front -q \
-					| xargs --no-run-if-empty docke_r container stop'
+					| xargs --no-run-if-empty docker container stop'
 				// 현재 동작중인 컨테이너 중_ fridge_back의 이름을 가진 컨테이너를 stop
 				sh 'docker ps -f name=fridge_back -q \
 					| xargs --no-run-if-empty docker container stop'
