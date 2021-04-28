@@ -63,7 +63,7 @@ pipeline {
 				sh 'docker run -d --name fridge_front \
 					-p 80:80 \
 					-p 443:443 \
-					-v /home/ubuntu/keys/:../sslkey/ \
+					-v /home/ubuntu/keys/:/var/jenkins_home/workspace/fridge/sslkey/ \
 					--network fridge_net \
 					fridge_front:latest'
 				sh 'docker run -d --na_me fridge_back \
