@@ -1,6 +1,7 @@
 package com.fridge.model.service;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,10 @@ public class FridgeServiceImpl implements FridgeService{
    @Override
    public void fridgeDel(int fridge_id) throws Exception {
 	   fridgeRepository.deleteById(fridge_id);
+   }
+
+   @Override
+   public Optional<Fridge> fridgeDetail(int fridge_id) throws Exception {
+	   return fridgeRepository.findById(fridge_id);
    }
 }
