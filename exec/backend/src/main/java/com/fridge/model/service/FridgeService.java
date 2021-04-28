@@ -14,4 +14,6 @@ public interface FridgeService {
 
    Fridge[] fridgeList(int id) throws Exception;
 
+   void fridgeDel(int fridge_id) throws Exception;
+
 }

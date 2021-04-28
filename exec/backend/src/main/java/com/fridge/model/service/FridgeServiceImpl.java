@@ -22,4 +22,9 @@ public class FridgeServiceImpl implements FridgeService{
    public Fridge[] fridgeList(int id) throws Exception {
       return fridgeRepository.findByUser_Id(id);
    }
+
+   @Override
+   public void fridgeDel(int fridge_id) throws Exception {
+	   fridgeRepository.deleteById(fridge_id);
+   }
 }
