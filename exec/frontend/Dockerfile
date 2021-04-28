@@ -1,5 +1,5 @@
 FROM node:lts-alpine as build-stage
-WORKDIR ubn
+WORKDIR /fridge
 COPY package*.json ./
 
 RUN npm install
