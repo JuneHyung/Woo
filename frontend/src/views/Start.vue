@@ -23,9 +23,9 @@
         <div style="margin-top: 10px; margin-bottom: 10px">
             <v-row>
                 <v-spacer></v-spacer>
-                <img src="" alt="" class="startIcon" />
+                <img :src="login" alt="로그인  " class="startIcon" @click="moveLogin()" />
                 <v-spacer></v-spacer>
-                <img src="" alt="" class="startIcon" />
+                <img :src="signup" alt="" class="startIcon" @click="moveSignUp()" />
                 <v-spacer></v-spacer>
             </v-row>
         </div>
@@ -36,6 +36,20 @@
 <script>
 export default {
     name: 'Main',
+    data() {
+        return {
+            signup: require('@/assets/images/header/sign-up.png'),
+            login: require('@/assets/images/header/login.png'),
+        };
+    },
+    methods: {
+        moveLogin() {
+            this.$router.push({ name: 'Login' });
+        },
+        moveSignUp() {
+            this.$router.push({ name: 'SignUp' });
+        },
+    },
 };
 </script>
 
@@ -48,7 +62,7 @@ export default {
     height: 330px;
 }
 .startIcon {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
 }
 </style>
