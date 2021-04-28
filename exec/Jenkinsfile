@@ -65,7 +65,7 @@ pipeline {
 					-p 443:443 \
 					-v /home/ubuntu/keys/:../sslkey/ \
 					--network fridge_net \
-					fridge_front:latest_'
+					fridge_front:latest'
 				sh 'docker run -d --na_me fridge_back \
 					--netw_ork fridge_net \
 					fridge_back:latest'
