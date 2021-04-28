@@ -19,11 +19,11 @@
                         <v-rating
                             background-color="purple lighten-3"
                             color="#bc6ff1"
-                            size="20px"
+                            dense
+                            size="32"
                             length="5"
                             readonly
                             value="4"
-                            medium
                         ></v-rating>
                     </div>
                 </div>
@@ -32,7 +32,10 @@
         </div>
         <div>
             <p>영상보기</p>
-            <div style="width: 300px; height: 200px; margin: 0 auto"></div>
+            <v-img
+                src="../assets/images/다운로드.png"
+                style="width: 250px; height: 150px; margin: 15px auto"
+            ></v-img>
         </div>
     </v-container>
 </template>
