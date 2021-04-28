@@ -6,12 +6,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.fridge.model.Fridge;
 import com.fridge.model.service.FridgeService;
@@ -65,6 +66,23 @@ public class FridgeController {
          status = HttpStatus.INTERNAL_SERVER_ERROR;
       }
       return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
+   @Operation(summary = "냉장고 삭제", description = "등록한 냉장고 삭제.")
+   @DeleteMapping("/list/{fridge_id}")
+   public ResponseEntity<Map<String, Object>> fridgeDel(
+		   @PathVariable("fridge_id")int fridge_id){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   fridgeService.fridgeDel(fridge_id);
+		   resultMap.put("meesage", SUCCESS);
+		   status = HttpStatus.ACCEPTED;
+	   }catch(Exception e) {
+		   resultMap.put("message", FAIL);
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
    }
    
    
