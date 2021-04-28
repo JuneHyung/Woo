@@ -1,6 +1,5 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /home/ubuntu/backend
-RUN echo "PWD is: $PWD"
-ADD ./target/backend-0.0.1-SNAPSHOP.jar app.jar
+ADD ./target/backend-0.0.1-SNAPSHOT.jar app.jar
 ENV JAVA_OPTS=""
 ENTRYPOINT ["java", "-jar", "/app.jar"]
