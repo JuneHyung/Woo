@@ -67,15 +67,36 @@
     </v-container>
 </template>
 <script>
+import http from '../../api/axios.js';
 export default {
     data() {
         return {
             addDialog: false,
             minusDialog: false,
+            ref_id: 0,
             garbage: ['사과', '바나나', '메론', '포도'],
+            ingredients: [],
         };
     },
-    methods: {},
+
+    created() {
+        this.ref_id = this.$route.params.rid;
+        this.getIngredients();
+    },
+    methods: {
+        getIngredients() {
+            // console.log('ref_id : ' + this.ref_id);
+            http.get(`fridge/ingredients/${this.ref_id}`)
+                .then((response) => {
+                    console.log(response.data);
+                    this.ingredients = response.data;
+                    alert('정보받기 성공');
+                })
+                .catch(() => {
+                    alert('정보받기 실패!');
+                });
+        },
+    },
 };
 </script>
 <style scoped></style>

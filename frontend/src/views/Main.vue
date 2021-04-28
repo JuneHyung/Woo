@@ -11,7 +11,7 @@
                             :src="fridgeImg[fridge.type]"
                             alt="냉장고"
                             style="width: 100%; height: 100%"
-                            @click="goRefManage()"
+                            @click="goRefManage(fridge.id)"
                         />
                         <p
                             style="
@@ -60,7 +60,7 @@ export default {
     name: 'Main',
     data() {
         return {
-            id: 6,
+            id: 1,
             fridgeList: [],
             fridgeImg: {
                 22: require('@/assets/images/refrigerator/ref_44.png'),
@@ -76,8 +76,8 @@ export default {
         this.getMyRefrigerator();
     },
     methods: {
-        goRefManage() {
-            this.$router.push({ name: 'RefManage' });
+        goRefManage(rid) {
+            this.$router.push({ name: 'RefManage', params: { rid: rid } });
         },
         goRefAdd() {
             this.$router.push({ name: 'RefAdd' });
