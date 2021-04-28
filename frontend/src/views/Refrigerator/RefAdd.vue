@@ -9,7 +9,7 @@
             <p>단문형(인기순)</p>
             <v-slide-group center-active show-arrows>
                 <v-slide-item v-for="(dan, index) in danItem" :key="index">
-                    <v-card class="ma-2" height="150" width="100" @click="setFridgeType(index)">
+                    <v-card class="ma-2" height="150" width="100" @click="setDanFridgeType(index)">
                         <img :src="dan" alt="냉장고이미지" style="width: 100%; height: 100%" />
                     </v-card>
                 </v-slide-item>
@@ -19,7 +19,13 @@
             <p>양문형 (인기순)</p>
             <v-slide-group center-active show-arrows>
                 <v-slide-item v-for="(yang, index) in yangItem" :key="index">
-                    <v-card class="ma-2" height="150" width="100" v-model="fridge.index">
+                    <v-card
+                        class="ma-2"
+                        height="150"
+                        width="100"
+                        v-model="fridge.index"
+                        @click="setYangFridgeType(index)"
+                    >
                         <img :src="yang" alt="냉장고이미지" style="width: 100%; height: 100%" />
                     </v-card>
                 </v-slide-item>
@@ -66,8 +72,31 @@ export default {
                     alert('통신실패');
                 });
         },
-        setFridgeType(index) {
-            this.fridge.type = index;
+        setDanFridgeType(index) {
+            switch (index) {
+                case 0:
+                    this.fridge.type = 22;
+                    break;
+                case 1:
+                    this.fridge.type = 33;
+                    break;
+                case 2:
+                    this.fridge.type = 44;
+                    break;
+            }
+        },
+        setYangFridgeType(index) {
+            switch (index) {
+                case 0:
+                    this.fridge.type = 55;
+                    break;
+                case 1:
+                    this.fridge.type = 66;
+                    break;
+                case 2:
+                    this.fridge.type = 1;
+                    break;
+            }
         },
     },
 };

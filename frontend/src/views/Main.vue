@@ -6,13 +6,28 @@
             </div>
             <v-slide-group center-active show-arrows>
                 <v-slide-item v-for="(fridge, index) in fridgeList" :key="index">
-                    <v-card class="ma-2" height="150" width="100" @click="setFridgeType(index)">
+                    <v-card class="ma-2" height="150" width="100" style="position: relative">
                         <img
                             :src="fridgeImg[fridge.type]"
                             alt="냉장고"
                             style="width: 100%; height: 100%"
                             @click="goRefManage()"
                         />
+                        <p
+                            style="
+                                width: 20px;
+                                height: 20px;
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                border: 1px solid #f00;
+                                color: #f00;
+                                text-align: center;
+                            "
+                            @click="deleteRefrigerator(fridge.id)"
+                        >
+                            X
+                        </p>
                     </v-card>
                 </v-slide-item>
             </v-slide-group>
@@ -71,11 +86,19 @@ export default {
             http.get(`fridge/list/${this.id}`)
                 .then((response) => {
                     this.fridgeList = response.data.fridgeList;
-                    console.log(this.fridgeImg[22]);
                     alert('받기성공');
                 })
                 .catch(() => {
                     alert('받기실패');
+                });
+        },
+        deleteRefrigerator(fridgeid) {
+            http.delete(`fridge/list/${fridgeid}`)
+                .then(() => {
+                    alert('삭제 성공');
+                })
+                .catch(() => {
+                    alert('삭제 실패');
                 });
         },
     },
