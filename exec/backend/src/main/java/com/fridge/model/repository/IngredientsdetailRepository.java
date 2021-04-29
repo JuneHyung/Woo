@@ -8,4 +8,6 @@ import com.fridge.model.Ingredientsdetail;
 public interface IngredientsdetailRepository extends JpaRepository<Ingredientsdetail, Integer>{
 	@Query("SELECT DISTINCT category FROM Ingredientsdetail")
 	String [] findDistinctCategory();
+	
+	Ingredientsdetail [] findByCategory(String category);
 }

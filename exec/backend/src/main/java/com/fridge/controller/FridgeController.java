@@ -124,7 +124,7 @@ public class FridgeController {
 	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
    }
    
-   @Operation (summary = "재료 목록", description = "재료 추가를 위한 목록  제공")
+   @Operation (summary = "재료 카테고리 목록", description = "재료 추가를 위한 목록  제공")
    @GetMapping("/categoryList")
    public ResponseEntity<Map<String, Object>> categoryList(){
 	   Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -133,6 +133,24 @@ public class FridgeController {
 		   String [] category = fridgeService.categoryList();
 		   resultMap.put("message", SUCCESS);
 		   resultMap.put("category", category);
+		   status = HttpStatus.ACCEPTED;
+	   }catch(Exception e) {
+		   resultMap.put("message", e.getMessage());
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
+   @Operation(summary="카테고리에 따른 재료", description = "카테고리별 재료 리스트 제공")
+   @GetMapping("/categoryByingredients/{category}")
+   public ResponseEntity<Map<String, Object>> categoryByingredientsList(
+		   @PathVariable("category")String category){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   Ingredientsdetail [] ingredients = fridgeService.categoryByingredientsList(category);
+		   resultMap.put("message", SUCCESS);
+		   resultMap.put("ingredients", ingredients);
 		   status = HttpStatus.ACCEPTED;
 	   }catch(Exception e) {
 		   resultMap.put("message", e.getMessage());

@@ -49,5 +49,10 @@ public class FridgeServiceImpl implements FridgeService{
 	@Override
 	public String [] categoryList() throws Exception {
 		return ingredientsdetailRepository.findDistinctCategory();
+	}
+
+	@Override
+	public Ingredientsdetail [] categoryByingredientsList(String category) throws Exception {
+		return ingredientsdetailRepository.findByCategory(category);
 	}  
 }

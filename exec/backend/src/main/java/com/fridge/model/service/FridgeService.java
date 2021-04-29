@@ -21,4 +21,6 @@ public interface FridgeService {
 
    String [] categoryList() throws Exception;
 
+   Ingredientsdetail [] categoryByingredientsList(String category) throws Exception;
+
 }
