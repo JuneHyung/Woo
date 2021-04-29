@@ -1,7 +1,5 @@
 package com.fridge.model;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,14 +12,14 @@ public class Ingredients {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
-	LocalDateTime expired;
+	String expired;
 	int locx;
 	int locy;
 	@ManyToOne
 	private Fridge fridge;
 	@ManyToOne
 	private Ingredientsdetail ingredientsdetail;
-	public Ingredients(int id, LocalDateTime expired, int locx, int locy, Fridge fridge,
+	public Ingredients(int id, String expired, int locx, int locy, Fridge fridge,
 			Ingredientsdetail ingredientsdetail) {
 		super();
 		this.id = id;
@@ -40,10 +38,10 @@ public class Ingredients {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public LocalDateTime getExpired() {
+	public String getExpired() {
 		return expired;
 	}
-	public void setExpired(LocalDateTime expired) {
+	public void setExpired(String expired) {
 		this.expired = expired;
 	}
 	public int getLocx() {

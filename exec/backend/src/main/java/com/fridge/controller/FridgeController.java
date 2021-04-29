@@ -1,6 +1,7 @@
 package com.fridge.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
+import com.fridge.model.Ingredientsdetail;
 import com.fridge.model.service.FridgeService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -122,4 +124,91 @@ public class FridgeController {
 	   }
 	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
    }
+   
+   @Operation (summary = "재료 카테고리 목록", description = "재료 추가를 위한 목록  제공")
+   @GetMapping("/categoryList")
+   public ResponseEntity<Map<String, Object>> categoryList(){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   String [] category = fridgeService.categoryList();
+		   resultMap.put("message", SUCCESS);
+		   resultMap.put("category", category);
+		   status = HttpStatus.ACCEPTED;
+	   }catch(Exception e) {
+		   resultMap.put("message", e.getMessage());
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
+   @Operation(summary="카테고리에 따른 재료", description = "카테고리별 재료 리스트 제공")
+   @GetMapping("/categoryByingredients/{category}")
+   public ResponseEntity<Map<String, Object>> categoryByingredientsList(
+		   @PathVariable("category")String category){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   Ingredientsdetail [] ingredients = fridgeService.categoryByingredientsList(category);
+		   resultMap.put("message", SUCCESS);
+		   resultMap.put("ingredients", ingredients);
+		   status = HttpStatus.ACCEPTED;
+	   }catch(Exception e) {
+		   resultMap.put("message", e.getMessage());
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
+   @Operation(summary="전체 재료 조회", description = "카테고리와 무관하게 전체 조회")
+   @GetMapping("/ingredientsDetailList")
+   public ResponseEntity<Map<String, Object>> ingredientsDetailList(){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   List <Ingredientsdetail> ingredients = fridgeService.ingredientsDetailList();
+		   resultMap.put("message", SUCCESS);
+		   resultMap.put("ingredients", ingredients);
+		   status = HttpStatus.ACCEPTED;
+	   }catch(Exception e) {
+		   resultMap.put("message", FAIL);
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
+   @Operation(summary="재료 추가", description = "냉장고에 재료 추가")
+   @PostMapping("/addIngredients")
+   public ResponseEntity<Map<String, Object>> addIngredients(
+		   @RequestBody Ingredients ingredients){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   fridgeService.addIngredients(ingredients);
+		   resultMap.put("message", SUCCESS);
+		   status = HttpStatus.ACCEPTED;
+	   }catch(Exception e) {
+		   resultMap.put("message", FAIL);
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
+   @Operation(summary="재료 제거", description = "냉장고 재료 제거")
+   @DeleteMapping("delIngredients/{ingredients_id}")
+   public ResponseEntity<Map<String, Object>> delIngredients(
+		   @PathVariable("ingredients_id") int ingredients_id){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   fridgeService.delIngredients(ingredients_id);
+		   resultMap.put("message", SUCCESS);
+		   status = HttpStatus.ACCEPTED;
+	   }catch (Exception e){
+		   resultMap.put("message", FAIL);
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
 }
