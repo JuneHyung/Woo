@@ -1,6 +1,7 @@
 package com.fridge.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -154,6 +155,23 @@ public class FridgeController {
 		   status = HttpStatus.ACCEPTED;
 	   }catch(Exception e) {
 		   resultMap.put("message", e.getMessage());
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
+   @Operation(summary="전체 재료 조회", description = "카테고리와 무관하게 전체 조회")
+   @GetMapping("/ingredientsDetailList")
+   public ResponseEntity<Map<String, Object>> ingredientsDetailList(){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   List <Ingredientsdetail> ingredients = fridgeService.ingredientsDetailList();
+		   resultMap.put("message", SUCCESS);
+		   resultMap.put("ingredients", ingredients);
+		   status = HttpStatus.ACCEPTED;
+	   }catch(Exception e) {
+		   resultMap.put("message", FAIL);
 		   status = HttpStatus.INTERNAL_SERVER_ERROR;
 	   }
 	   return new ResponseEntity<Map<String, Object>>(resultMap, status);

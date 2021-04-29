@@ -1,5 +1,6 @@
 package com.fridge.model.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.fridge.model.Fridge;
@@ -22,5 +23,7 @@ public interface FridgeService {
    String [] categoryList() throws Exception;
 
    Ingredientsdetail [] categoryByingredientsList(String category) throws Exception;
+
+   List<Ingredientsdetail> ingredientsDetailList() throws Exception;
 
 }

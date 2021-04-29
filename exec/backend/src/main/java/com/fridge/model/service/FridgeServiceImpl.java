@@ -1,5 +1,6 @@
 package com.fridge.model.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,10 @@ public class FridgeServiceImpl implements FridgeService{
 	@Override
 	public Ingredientsdetail [] categoryByingredientsList(String category) throws Exception {
 		return ingredientsdetailRepository.findByCategory(category);
+	}
+
+	@Override
+	public List <Ingredientsdetail> ingredientsDetailList() throws Exception {
+		return ingredientsdetailRepository.findAll();
 	}  
 }
