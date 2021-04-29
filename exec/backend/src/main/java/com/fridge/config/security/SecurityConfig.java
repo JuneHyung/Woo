@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
@@ -39,18 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.httpBasic().disable()
-			.cors().configurationSource(corsConfigurationSource()).and()
 			.csrf().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 인증 기반이므로 세션 역시 사용 X
 			.and()
 			.authorizeRequests()	// 요청에 대한 사용권한 체크
 			.antMatchers("/fridge/fridgeinfo").authenticated()
 			.anyRequest().permitAll()	// 그 외 나머지 요청은 누구나 접근 가능
+			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-					UsernamePasswordAuthenticationFilter.class);
-//		http.authorizeRequests().anyRequest().permitAll();
-//		http.cors().and().csrf().disable();
+					UsernamePasswordAuthenticationFilter.class)
+			.cors().configurationSource(corsConfigurationSource()).and();
 	}
 	
 	@Override
