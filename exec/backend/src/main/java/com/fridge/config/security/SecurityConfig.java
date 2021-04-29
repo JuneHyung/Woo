@@ -47,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().permitAll()	// 그 외 나머지 요청은 누구나 접근 가능
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-					UsernamePasswordAuthenticationFilter.class)
-			.cors().configurationSource(corsConfigurationSource()).and();
+					UsernamePasswordAuthenticationFilter.class);
+		http.cors();
 	}
 	
 	@Override
