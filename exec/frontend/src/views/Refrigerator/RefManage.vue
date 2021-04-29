@@ -18,14 +18,35 @@
                     <v-card>
                         <v-card-title>재료를 추가해주세요!</v-card-title>
                         <v-card-text>
-                            재료추가가 들어갈 예정입니다. 재료추가가 들어갈 예정입니다. 재료추가가
-                            들어갈 예정입니다. 재료추가가 들어갈 예정입니다.
+                            <v-select
+                                :items="category"
+                                v-model="addIngredients.ingredientsdetail.category"
+                                label="Solo field"
+                                solo
+                                @change="getIngredientsName()"
+                            ></v-select>
+                            <v-select
+                                :items="ingredientsName"
+                                v-model="addIngredients.ingredientsdetail.name"
+                                label="Solo field"
+                                solo
+                                @change="selectId(addIngredients.ingredientsdetail.name)"
+                            ></v-select>
+                            <input type="date" v-model="addIngredients.expired" />
+                            <v-text-field
+                                label="X"
+                                type="number"
+                                v-model="addIngredients.locx"
+                            ></v-text-field>
+                            <v-text-field
+                                label="Y"
+                                type="number"
+                                v-model="addIngredients.locy"
+                            ></v-text-field>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" text @click="addDialog = false">
-                                추가완료
-                            </v-btn>
+                            <v-btn color="primary" text @click="addIngred()"> 추가완료 </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -36,14 +57,15 @@
                     <v-card>
                         <v-card-title>재료를 빼주세요!</v-card-title>
                         <v-card-text>
-                            재료제거가 들어갈 예정입니다. 재료제거가 들어갈 예정입니다. 재료제거가
-                            들어갈 예정입니다. 재료제거가 들어갈 예정입니다.
+                            <v-row v-for="(ingredient, index) in ingredients" :key="index">
+                                <p>{{ ingredient.ingredientsdetail.name }}</p>
+                                <v-spacer></v-spacer>
+                                <div @click="removeIngred(ingredient.id)">X</div>
+                            </v-row>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" text @click="minusDialog = false">
-                                빼기완료
-                            </v-btn>
+                            <v-btn color="primary" text @click="removeIngred()"> 빼기완료 </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -81,15 +103,68 @@ export default {
             ref_id: 0,
             garbages: [],
             ingredients: [],
-            ingredientsDetail: [],
+            category: ['All'],
+            addIngredients: {
+                expired: 'string',
+                locx: 0,
+                locy: 0,
+                fridge: {
+                    id: 0,
+                },
+                ingredientsdetail: {
+                    id: 0,
+                    category: '',
+                    name: '',
+                },
+            },
+            ingredientsName: [],
+            ingredientsId: [],
         };
     },
 
     created() {
         this.ref_id = this.$route.params.rid;
+        this.addIngredients.fridge.id = this.ref_id;
         this.getIngredients();
+        this.getCategory();
     },
     methods: {
+        getCategory() {
+            http.get(`fridge/categoryList`)
+                .then((response) => {
+                    this.category = response.data.category;
+                    this.category.unshift('All');
+                })
+                .catch(() => {
+                    console.log('실패');
+                });
+        },
+        getIngredientsName() {
+            this.ingredientsName.splice(0);
+            this.ingredientsId.splice(0);
+            let category = this.addIngredients.ingredientsdetail.category;
+            if (category == 'All') {
+                http.get(`fridge/ingredientsDetailList`).then((response) => {
+                    let name = response.data.ingredients;
+                    for (var i = 0; i < name.length; i++) {
+                        this.ingredientsName.push(name[i].name);
+                        this.ingredientsId.push(name[i].id);
+                    }
+                });
+            } else {
+                http.get(`fridge/categoryByingredients/${category}`)
+                    .then((response) => {
+                        let name = response.data.ingredients;
+                        for (var i = 0; i < name.length; i++) {
+                            this.ingredientsName.push(name[i].name);
+                            this.ingredientsId.push(name[i].id);
+                        }
+                    })
+                    .catch(() => {
+                        alert('실패');
+                    });
+            }
+        },
         getIngredients() {
             // console.log('ref_id : ' + this.ref_id);
 
@@ -104,6 +179,7 @@ export default {
                     alert('정보받기 실패!');
                 });
         },
+
         checkShelfLife() {
             var current = new Date();
 
@@ -123,13 +199,32 @@ export default {
                     this.garbages = this.ingredients[i];
                 }
             }
-            // this.ingredients.forEach(function () {
-            //     const ingre = new Date(this.ingredients.ingredientsdetail.avgdate);
-            //     console.log('ingreT : ' + ingre.getTime());
-            //     if (ingre.getTime() > todayO.getTime()) {
-            //         this.garbage = this.ingredients;
-            //     }
-            // });
+        },
+        selectId(name) {
+            console.log('왔니?');
+            let idx = this.ingredientsName.indexOf(name);
+            console.log('idx : ' + idx);
+            this.addIngredients.ingredientsdetail.id = this.ingredientsId[idx];
+        },
+        addIngred() {
+            http.post(`fridge/addIngredients`, this.addIngredients)
+                .then(() => {
+                    alert('추가성공');
+                    this.addDialog = false;
+                })
+                .catch((error) => {
+                    alert(error);
+                });
+        },
+        removeIngred(id) {
+            http.delete(`fridge/delIngredients/${id}`)
+                .then(() => {
+                    alert('삭제 성공');
+                    this.minusDialog = false;
+                })
+                .catch((error) => {
+                    alert(error);
+                });
         },
     },
 };
