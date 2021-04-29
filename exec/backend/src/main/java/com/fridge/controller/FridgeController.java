@@ -176,4 +176,21 @@ public class FridgeController {
 	   }
 	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
    }
+   
+   @Operation(summary="재료 추가", description = "냉장고에 재료 추가")
+   @PostMapping("/addIngredients")
+   public ResponseEntity<Map<String, Object>> addIngredients(
+		   @RequestBody Ingredients ingredients){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   fridgeService.addIngredients(ingredients);
+		   resultMap.put("message", SUCCESS);
+		   status = HttpStatus.ACCEPTED;
+	   }catch(Exception e) {
+		   resultMap.put("message", FAIL);
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
 }

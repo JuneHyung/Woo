@@ -26,4 +26,6 @@ public interface FridgeService {
 
    List<Ingredientsdetail> ingredientsDetailList() throws Exception;
 
+   void addIngredients(Ingredients ingredients) throws Exception;
+
 }

@@ -60,5 +60,10 @@ public class FridgeServiceImpl implements FridgeService{
 	@Override
 	public List <Ingredientsdetail> ingredientsDetailList() throws Exception {
 		return ingredientsdetailRepository.findAll();
+	}
+
+	@Override
+	public void addIngredients(Ingredients ingredients) throws Exception {
+		ingredientsRepository.save(ingredients);
 	}  
 }
