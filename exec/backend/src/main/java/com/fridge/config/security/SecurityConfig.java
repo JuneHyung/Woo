@@ -1,5 +1,7 @@
 package com.fridge.config.security;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 @Configuration
 @EnableWebSecurity
@@ -36,7 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.httpBasic().disable()
-			.cors().and()
 			.csrf().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 인증 기반이므로 세션 역시 사용 X
 			.and()
@@ -46,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
 					UsernamePasswordAuthenticationFilter.class);
+		http.cors().disable();
 	}
 	
 	@Override
@@ -57,5 +63,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                    "/swagger-ui.html",
                                    "/webjars/**",
                                    "/swagger-ui/**");
+    }
+	
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
