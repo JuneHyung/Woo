@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
+import com.fridge.model.Ingredientsdetail;
 
 
 public interface FridgeService {
@@ -17,5 +18,7 @@ public interface FridgeService {
    Optional <Fridge> fridgeDetail(int fridge_id) throws Exception;
 
    Ingredients[] ingrediantsList(int fridge_id) throws Exception;
+
+   String [] categoryList() throws Exception;
 
 }

@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
+import com.fridge.model.Ingredientsdetail;
 import com.fridge.model.repository.FridgeRepository;
 import com.fridge.model.repository.IngredientsRepository;
+import com.fridge.model.repository.IngredientsdetailRepository;
 
 @Service
 public class FridgeServiceImpl implements FridgeService{
@@ -16,6 +18,8 @@ public class FridgeServiceImpl implements FridgeService{
    private FridgeRepository fridgeRepository;
    @Autowired
    private IngredientsRepository ingredientsRepository;
+   @Autowired
+   private IngredientsdetailRepository ingredientsdetailRepository;
 
    @Override
    public void create(Fridge fridge) throws Exception {
@@ -41,4 +45,9 @@ public class FridgeServiceImpl implements FridgeService{
 	public Ingredients[] ingrediantsList(int fridge_id) throws Exception {
 		return ingredientsRepository.findByFridge_Id(fridge_id);
 	}
+
+	@Override
+	public String [] categoryList() throws Exception {
+		return ingredientsdetailRepository.findDistinctCategory();
+	}  
 }
