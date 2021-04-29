@@ -16,8 +16,23 @@
                     <img :src="logout" alt="로그아웃 이미지" class="menuImg" />
                     <p>로그아웃</p>
                 </li>
-                <li class="menuList">
-                    <img :src="alarm" alt="알림 이미지" class="menuImg" />
+                <li class="menuList" @click="openAlarmList">
+                    <img :src="alarm" alt="알림 이미지" class="menuImg" v-bind="attrs" v-on="on" />
+                    <p>알람</p>
+                    <div class="alarm">
+                        <img :src="alarm" style="width: 25px; height: 25px; padding-bottom: 3px" />
+                        <div style="text-align: left">
+                            <button style="word-break: break-all; padding-bottom: 7px">
+                                - 구독하신 00님의 새 영상
+                            </button>
+                            <button style="word-break: break-all; padding-bottom: 7px">
+                                - 구독하신 00님의 새 영상
+                            </button>
+                            <button style="word-break: break-all; padding-bottom: 7px">
+                                - 구독하신 00님의 새로운 레시피
+                            </button>
+                        </div>
+                    </div>
                 </li>
             </v-row>
         </header>
@@ -33,6 +48,7 @@ export default {
             subscribe: require('@/assets/images/header/subscribe.png'),
             logout: require('@/assets/images/header/logout.png'),
             alarm: require('@/assets/images/header/alarm.png'),
+            alertDialog: false,
         };
     },
     methods: {
@@ -44,6 +60,14 @@ export default {
         },
         goSubscribe() {
             this.$router.push({ name: 'Subscribe' });
+        },
+        openAlertDialog() {
+            console.log('알람창 오픈');
+        },
+        openAlarmList() {
+            this.alarmDialog = true;
+            var alarm = document.querySelector('.alarm');
+            alarm.classList.toggle('alarmOpen');
         },
     },
 };
@@ -68,6 +92,7 @@ header {
     line-height: 15px;
     text-align: center;
     margin: 0 5px;
+    position: relative;
 }
 
 .menuImg {
@@ -78,5 +103,20 @@ header {
 li p {
     font-size: 8px;
     height: 25%;
+}
+.alarm {
+    position: absolute;
+    top: 68px;
+    background-color: #929aab;
+    opacity: 0.9 !important;
+    right: 0;
+    width: 180px;
+    display: none;
+    transition: all 0.4s;
+    border: solid #494949 2px;
+    color: white;
+}
+.alarmOpen {
+    display: block;
 }
 </style>
