@@ -193,4 +193,22 @@ public class FridgeController {
 	   }
 	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
    }
+   
+   @Operation(summary="재료 제거", description = "냉장고 재료 제거")
+   @DeleteMapping("delIngredients/{ingredients_id}")
+   public ResponseEntity<Map<String, Object>> delIngredients(
+		   @PathVariable("ingredients_id") int ingredients_id){
+	   Map<String, Object> resultMap = new HashMap<String, Object>();
+	   HttpStatus status = null;
+	   try {
+		   fridgeService.delIngredients(ingredients_id);
+		   resultMap.put("message", SUCCESS);
+		   status = HttpStatus.ACCEPTED;
+	   }catch (Exception e){
+		   resultMap.put("message", FAIL);
+		   status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+   }
+   
 }

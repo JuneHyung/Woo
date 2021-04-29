@@ -65,5 +65,11 @@ public class FridgeServiceImpl implements FridgeService{
 	@Override
 	public void addIngredients(Ingredients ingredients) throws Exception {
 		ingredientsRepository.save(ingredients);
+	}
+
+	@Override
+	public void delIngredients(int ingredients_id) throws Exception {
+		ingredientsRepository.deleteById(ingredients_id);
+		
 	}  
 }

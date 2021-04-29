@@ -28,4 +28,6 @@ public interface FridgeService {
 
    void addIngredients(Ingredients ingredients) throws Exception;
 
+   void delIngredients(int ingredients_id) throws Exception;
+
 }
