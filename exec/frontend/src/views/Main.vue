@@ -60,7 +60,7 @@ export default {
     name: 'Main',
     data() {
         return {
-            id: 1,
+            id: 6,
             fridgeList: [],
             fridgeImg: {
                 22: require('@/assets/images/refrigerator/ref_44.png'),

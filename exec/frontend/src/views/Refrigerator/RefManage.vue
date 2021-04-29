@@ -52,14 +52,19 @@
         <div stlye="margin-top:50px;">
             <p>유통기한 1주일 미만</p>
             <v-slide-group center-active show-arrows>
-                <v-slide-item v-for="(gar, index) in garbage" :key="index">
+                <v-slide-item v-for="(ingredient, index) in ingredients" :key="index">
                     <v-card class="ma-1" height="120" width="80">
                         <img
-                            :src="require('@/assets/images/ingredients/apple.png')"
+                            :src="
+                                require(`@/assets/images/ingredients/${ingredient.ingredientsdetail.image}`)
+                            "
                             alt="재료이미지"
                             style="width: 100%; height: 85%; padding: 5px"
                         />
-                        <p style="text-align: center; height: 15%">{{ gar }}</p>
+
+                        <p style="text-align: center; height: 15%">
+                            {{ ingredient.ingredientsdetail.name }}
+                        </p>
                     </v-card>
                 </v-slide-item>
             </v-slide-group>
@@ -74,8 +79,9 @@ export default {
             addDialog: false,
             minusDialog: false,
             ref_id: 0,
-            garbage: ['사과', '바나나', '메론', '포도'],
+            garbages: [],
             ingredients: [],
+            ingredientsDetail: [],
         };
     },
 
@@ -86,15 +92,44 @@ export default {
     methods: {
         getIngredients() {
             // console.log('ref_id : ' + this.ref_id);
+
             http.get(`fridge/ingredients/${this.ref_id}`)
                 .then((response) => {
-                    console.log(response.data);
-                    this.ingredients = response.data;
+                    // console.log(response.data);
+                    this.ingredients = response.data.ingredients;
+                    this.checkShelfLife();
                     alert('정보받기 성공');
                 })
                 .catch(() => {
                     alert('정보받기 실패!');
                 });
+        },
+        checkShelfLife() {
+            var current = new Date();
+
+            let year = current.getFullYear();
+            let month = current.getMonth();
+            let date = current.getDate();
+            let today = `${year}-${month}-${date}`;
+            let todayO = new Date(today);
+            console.log(todayO.getTime());
+            console.log(this.ingredients.length);
+
+            console.log('왔나? : ' + this.ingredients[0].expired);
+            for (var i = 0; i < this.ingredients.length; i++) {
+                console.log(i);
+                var ingre = new Date(this.ingredients[0].expired);
+                if (ingre.getTime() > todayO.getTime()) {
+                    this.garbages = this.ingredients[i];
+                }
+            }
+            // this.ingredients.forEach(function () {
+            //     const ingre = new Date(this.ingredients.ingredientsdetail.avgdate);
+            //     console.log('ingreT : ' + ingre.getTime());
+            //     if (ingre.getTime() > todayO.getTime()) {
+            //         this.garbage = this.ingredients;
+            //     }
+            // });
         },
     },
 };
