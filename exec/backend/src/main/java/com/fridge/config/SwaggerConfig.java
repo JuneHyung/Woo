@@ -3,6 +3,8 @@ package com.fridge.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -12,6 +14,10 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
 
 @Configuration
+@OpenAPIDefinition(servers = {
+		@Server(url = "https://k4d109.p.ssafy.io/api", description = "AWS Server"),
+		@Server(url = "http://localhost:8000/api", description = "localhost")
+})
 public class SwaggerConfig {
 	
 	@Bean
