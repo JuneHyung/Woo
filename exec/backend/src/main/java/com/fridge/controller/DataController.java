@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fridge.model.Ingredientsdetail;
 import com.fridge.model.Recipe;
 import com.fridge.model.service.DataService;
 
@@ -38,6 +39,23 @@ public class DataController {
 			   resultMap.put("messgae", SUCCESS);
 			   status = HttpStatus.ACCEPTED;
 		   } catch(Exception e) {
+			   resultMap.put("message", FAIL);
+			   status = HttpStatus.INTERNAL_SERVER_ERROR;
+		   }
+		   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	   }
+	   
+	   @Operation (summary = "Ingredientsdetail 추가", description = "Ingredientsdetail 추가")
+	   @PostMapping("/createIngredientsdetail")
+	   public ResponseEntity<Map<String, Object>> createIngredientsdetail(
+			   @RequestBody Ingredientsdetail ingredientsdetail){
+		   Map<String, Object> resultMap = new HashMap<String, Object>();
+		   HttpStatus status = null;
+		   try {
+			   dataService.createIngredientsdetail(ingredientsdetail);
+			   resultMap.put("message", SUCCESS);
+			   status = HttpStatus.ACCEPTED;
+		   }catch(Exception e) {
 			   resultMap.put("message", FAIL);
 			   status = HttpStatus.INTERNAL_SERVER_ERROR;
 		   }
