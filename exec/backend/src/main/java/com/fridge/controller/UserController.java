@@ -1,4 +1,5 @@
 package com.fridge.controller;
+
 //dummy
 import java.util.HashMap;
 import java.util.Map;
@@ -36,29 +37,31 @@ public class UserController {
 
 	@Autowired
 	private UserService userService; // 데이터베이스에 로그인 시도를 위한 service
-	
+
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
-	
+
 	@Operation(summary = "로그인", description = "Access-token과 로그인 결과 메시지를 반환한다.")
 	@PostMapping("/login")
-	public String login(
-			@RequestBody @Parameter(name="로그인 시 필요한 회원정보(이메일, 비밀번호)", required = true) User user){
+	public ResponseEntity<Map<String, Object>> login(
+			@RequestBody @Parameter(name = "로그인 시 필요한 회원정보(이메일, 비밀번호)", required = true) User user) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.OK;
 		User loginMember = null;
 		try {
 			loginMember = userService.login(user);
+			System.out.println("here");
+			System.out.println(jwtTokenProvider.createToken(Integer.toString(loginMember.getId())));
+			resultMap.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(Integer.toString(loginMember.getId())));
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		if (loginMember == null) { // 로그인 정보가 존재하는 경우
-			throw new IllegalArgumentException("ID, 비밀번호를 다시 확인해주세요.");
+			logger.error(e.getMessage());
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
-		return jwtTokenProvider.createToken(Integer.toString(loginMember.getId()));
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
-	
+
 	// unb 회원가입
 	@Operation(summary = "회원 가입", description = "회원 가입 결과를 반환한다.")
 	@PostMapping("/join")
@@ -78,11 +81,10 @@ public class UserController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@Operation(summary = "회원 정보 수정", description = "수정할 정보를 받아 회원 정보 수정")
 	@PutMapping("/modify/{user}")
-	public ResponseEntity<Map<String, Object>> modify(
-			@RequestBody User user){
+	public ResponseEntity<Map<String, Object>> modify(@RequestBody User user) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
@@ -95,26 +97,21 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@Operation(summary = "회원 탈퇴", description = "회원 id를 받아서 회원 탈퇴")
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Map<String, Object>> delete(
-			@PathVariable("id") int id){
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable("id") int id) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
 			userService.delete(id);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
-
-	
-
 
 }
