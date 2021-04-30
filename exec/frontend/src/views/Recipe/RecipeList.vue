@@ -49,6 +49,7 @@ export default {
                     thumbnail: '',
                 },
             ],
+            ingredient_id: 0,
         };
     },
     created() {
@@ -62,19 +63,34 @@ export default {
             this.$router.push({ name: 'RecipeDetail', params: { recipe_id: recipe_id } });
         },
         getRecipeList() {
-            http.get(`recipes`)
-                .then(({ data }) => {
-                    this.listItem = data.recipelist;
-                    for (var i = 0; i < this.listItem.length; i++) {
-                        console.log('왔나?');
-                        let temp = this.listItem[i].url;
-                        let urlId = temp.substr(17);
-                        let thumbnail = `http://img.youtube.com/vi/${urlId}/0.jpg`;
-                        this.listItem[i].thumbnail = thumbnail;
-                        console.log(this.listItem[i].thumbnail);
-                    }
-                })
-                .catch((error) => console.log(error));
+            if (this.ingredient_id == 0) {
+                http.get(`recipes`)
+                    .then(({ data }) => {
+                        this.ingredient_id = this.$route.params.ingredient_id;
+                        this.listItem = data.recipelist;
+                        for (var i = 0; i < this.listItem.length; i++) {
+                            let temp = this.listItem[i].url;
+                            let urlId = temp.substr(17);
+                            let thumbnail = `http://img.youtube.com/vi/${urlId}/0.jpg`;
+                            this.listItem[i].thumbnail = thumbnail;
+                            console.log(this.listItem[i].thumbnail);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            } else {
+                http.get(`detail/${this.ingredient_id}`)
+                    .then(({ data }) => {
+                        this.listItem = data.recipelist;
+                        for (var i = 0; i < this.listItem.length; i++) {
+                            let temp = this.listItem[i].url;
+                            let urlId = temp.substr(17);
+                            let thumbnail = `http://img.youtube.com/vi/${urlId}/0.jpg`;
+                            this.listItem[i].thumbnail = thumbnail;
+                            console.log(this.listItem[i].thumbnail);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            }
         },
     },
 };
