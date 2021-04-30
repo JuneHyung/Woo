@@ -9,22 +9,33 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Table(name ="post")
 @Entity
 public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Schema(title = "게시글 번호 (PK)")
 	int id;
-	
+	@Schema(title = "게시글 제목")
 	String title;
+	@Schema(title = "게시글 내용")
 	String contents;
+	@Schema(title = "게시글 작성일")
 	LocalDateTime date;
+	@Schema(title = "게시글 이미지 개수")
 	int imagecnt;
+	@Schema(title = "게시글 조회수")
 	int visit;
+	@Schema(title = "게시글 좋아요 수")
 	int good;
+	@Schema(title = "개시글 싫어요 수")
 	int hate;
+	@Schema(title = "게시글 작성자(nickname)")
 	String user_name;
 	@ManyToOne
+	@Schema(title = "user table과의 FK")
 	private User user;
 	public Post(int id, String title, String contents, LocalDateTime date, int imagecnt, int visit, int good, int hate,
 			String user_name, User user) {

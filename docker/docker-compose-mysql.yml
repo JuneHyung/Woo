@@ -15,6 +15,8 @@ services:
                         - --collation-server=utf8mb4_unicode_ci
                 volumes:
                         - /usr/shared/data/fridge-mysql:/var/lib/mysql
+                networks: 
+                        - fridge_net
 networks:
         fridge_net:
                 external: true
