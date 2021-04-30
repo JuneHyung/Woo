@@ -51,5 +51,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public void delete(int id) throws Exception {
 		userRepository.deleteById(id);
 	}
+
+	@Override
+	public User getUserInfo(String id) throws Exception {
+		return userRepository.findById(Integer.parseInt(id)).get();
+	}
 	
 }
