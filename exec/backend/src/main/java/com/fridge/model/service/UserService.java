@@ -9,5 +9,7 @@ public interface UserService  {
 
 	public void modify(User user) throws Exception;
 
-	public void delete(int id) throws Exception;;
+	public void delete(int id) throws Exception;
+
+public User getUserInfo(String id) throws Exception;
 }

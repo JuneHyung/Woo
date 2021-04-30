@@ -1,5 +1,6 @@
 package com.fridge.controller;
 
+import java.security.Principal;
 //dummy
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,6 +25,7 @@ import com.fridge.model.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "UserController v0.1")
@@ -50,9 +53,31 @@ public class UserController {
 		User loginMember = null;
 		try {
 			loginMember = userService.login(user);
-			System.out.println("here");
-			System.out.println(jwtTokenProvider.createToken(Integer.toString(loginMember.getId())));
 			resultMap.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(Integer.toString(loginMember.getId())));
+			resultMap.put("message", SUCCESS);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@Operation(summary = "로그인 회원 정보 제공", description = "로그인한 회원의 정보를 제공", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@GetMapping("/info")
+	public ResponseEntity<Map<String, Object>> getUserInfo(
+			@Parameter(name = "로그인 회원") Principal user) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.OK;
+		
+		System.out.println(user.getName());
+		try {
+			User userInfo = userService.getUserInfo(user.getName());
+			
+			resultMap.put("user", userInfo);
+			resultMap.put("message", SUCCESS);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			resultMap.put("message", FAIL);
