@@ -39,35 +39,41 @@ public class PostServiceImpl implements PostService {
 		post.setUser(user.get());
 
 		Post now = postRepository.save(post);
-		if(now == null) {
+		if (now == null) {
 			logger.error("DB insert Error!!!!");
 			throw new SQLException();
 		}
-		
+
 		String filePath = "fridge";
 		File folder = new File(filePath);
-		
-		if(!folder.exists()) {
+
+		if (!folder.exists()) {
 			try {
 				folder.mkdir();
-				
-				filePath += "/post";
-				folder = new File(filePath);
-				if(!folder.exists())
-					folder.mkdir();
 				System.out.println(filePath + " 폴더 생성 완료!!");
 			} catch (Exception e) {
 				e.getStackTrace();
 			}
 		}
-		
+		filePath += "/post";
+		folder = new File(filePath);
+
+		if (!folder.exists()) {
+			try {
+				folder.mkdir(); // 폴더 생성합니다.
+				System.out.println("폴더가 생성되었습니다.");
+			} catch (Exception e) {
+				e.getStackTrace();
+			}
+		}
+
 		for (int i = 0; i < images.size(); i++) {
 			String path = "fridge/post/" + now.getId() + "_" + i + ".png";
-			
+
 			// file image가 없을 경우
 			File dest = new File(path);
 			dest.createNewFile();
-			
+
 			try (FileOutputStream fout = new FileOutputStream(dest)) {
 				fout.write(images.get(i).getBytes());
 			} catch (Exception e) {
@@ -75,7 +81,7 @@ public class PostServiceImpl implements PostService {
 				throw new RuntimeException();
 			}
 		}
-		
+
 	}
 
 }
