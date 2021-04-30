@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fridge.model.Ingredientsdetail;
 import com.fridge.model.Main;
 import com.fridge.model.Recipe;
+import com.fridge.model.Sub;
 import com.fridge.model.service.DataService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -78,6 +79,23 @@ public class DataController {
 			   status = HttpStatus.INTERNAL_SERVER_ERROR;
 		   }
 		   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	   }
+	   
+	   @Operation (summary = "Sub 추가", description = "Sub 부재료 추가")
+	   @PostMapping("/createSub")
+	   public ResponseEntity<Map<String, Object>> createSub(
+			   @RequestBody Sub sub){
+		   Map<String, Object> resultMap = new HashMap<String, Object>();
+		   HttpStatus status = null;
+		   try {
+			   dataService.createSub(sub);
+			   resultMap.put("message", SUCCESS);
+			   status = HttpStatus.ACCEPTED;
+		   }catch(Exception e) {
+			   resultMap.put("message", FAIL);
+			   status = HttpStatus.INTERNAL_SERVER_ERROR;
+		   }
+		   return new ResponseEntity<Map<String, Object>> (resultMap, status);
 	   }
 	   
 }

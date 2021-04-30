@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import com.fridge.model.Ingredientsdetail;
 import com.fridge.model.Main;
 import com.fridge.model.Recipe;
+import com.fridge.model.Sub;
 import com.fridge.model.repository.IngredientsdetailRepository;
 import com.fridge.model.repository.MainRepository;
 import com.fridge.model.repository.RecipesRepository;
+import com.fridge.model.repository.SubRepository;
 
 @Service
 public class DataServiceImpl implements DataService {
@@ -18,6 +20,8 @@ public class DataServiceImpl implements DataService {
 	private IngredientsdetailRepository ingredientsdetailRepository;
 	@Autowired
 	private MainRepository mainRepository;
+	@Autowired
+	private SubRepository subRepository;
 	
 	@Override
 	public void creteRecipe(Recipe recipe) throws Exception {
@@ -32,6 +36,11 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public void createMain(Main main) throws Exception {
 		mainRepository.save(main);
+	}
+
+	@Override
+	public void createSub(Sub sub) throws Exception {
+		subRepository.save(sub);
 	}
 
 }

@@ -18,39 +18,39 @@ import com.fridge.model.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 	@Autowired
-	private UserRepository userrepo;
+	private UserRepository userRepository;
 	@Override
 	public User login(User user) throws Exception {
 		if(user.getEmail() == null || user.getPwd() == null)
 			return null;
 		
-		return userrepo.findByEmailAndPwd(user.getEmail(), user.getPwd());
+		return userRepository.findByEmailAndPwd(user.getEmail(), user.getPwd());
 	}
 
 	@Override
 	public void join(User user) throws Exception {
-		userrepo.save(user);
+		userRepository.save(user);
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return (UserDetails) userrepo.findById(Integer.parseInt(username))
+		return (UserDetails) userRepository.findById(Integer.parseInt(username))
 				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 	}
 
 	@Override
 	public void modify(User user) throws Exception {
-		User u = userrepo.getOne(user.getId());
+		User u = userRepository.getOne(user.getId());
 		System.out.println(u.toString());
 		u.setEmail(user.getEmail());
 		u.setPwd(user.getPwd());
 		u.setNick(user.getNick());
-		userrepo.save(u);
+		userRepository.save(u);
 	}
 
 	@Override
 	public void delete(int id) throws Exception {
-		userrepo.deleteById(id);
+		userRepository.deleteById(id);
 	}
 	
 }
