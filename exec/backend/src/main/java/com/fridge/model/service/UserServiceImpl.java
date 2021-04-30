@@ -47,5 +47,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		u.setNick(user.getNick());
 		userrepo.save(u);
 	}
+
+	@Override
+	public void delete(int id) throws Exception {
+		userrepo.deleteById(id);
+	}
 	
 }

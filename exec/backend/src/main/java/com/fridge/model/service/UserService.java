@@ -8,4 +8,6 @@ public interface UserService  {
 	public void join(User user) throws Exception;
 
 	public void modify(User user) throws Exception;
+
+	public void delete(int id) throws Exception;;
 }
