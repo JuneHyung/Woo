@@ -7,6 +7,7 @@ import SubHeader from "../components/commons/SubHeader.vue"
 
 import SignUp from "../views/member/SignUp.vue";
 import Login from "../views/member/Login.vue";
+import MyPage from "../views/member/MyPage.vue";
 
 import ShareRecipe from "../views/ShareRecipe.vue";
 import Subscribe from "../views/Subscribe.vue";
@@ -36,6 +37,11 @@ const routes = [
     path: "/signup",
     name: "SignUp",
     components: { default: SignUp, header: SubHeader },
+  },
+  {
+    path: "/MyPage",
+    name: "MyPage",
+    components: { default: MyPage, header: MainHeader },
   },
   {
     path: "/login",
@@ -68,7 +74,7 @@ const routes = [
     components: { default: RecipeList, header: MainHeader },
   },
   {
-    path: "/recipeDetail",
+    path: "/recipeDetail/:recipe_id",
     name: "RecipeDetail",
     components: { default: RecipeDetail, header: MainHeader },
   },
@@ -81,6 +87,11 @@ const routes = [
     path: "/FoodDetail",
     name: "FoodDetail",
     components: { default: FoodDetail, header: MainHeader },
+  },
+  {
+    path: "/MyPage",
+    name: "MyPage",
+    components: { default: MyPage, header: MainHeader },
   },
 ];
 
