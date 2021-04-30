@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.fridge.model.CustomUserDetail;
 import com.fridge.model.User;
 import com.fridge.model.repository.UserRepository;
 
@@ -28,8 +29,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return (UserDetails) userrepo.findById(Integer.parseInt(username))
-				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+		User user = userrepo.findById(Integer.parseInt(username)).get();
+		if (user == null)
+			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+		UserDetails userDetails = new CustomUserDetail(user);
+		
+		return userDetails;
 	}
 	
 }
