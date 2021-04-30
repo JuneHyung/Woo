@@ -68,10 +68,10 @@ pipeline {
 					--network fridge_net \
 					fridge_front:latest'
 				sh 'docker run -d --name fridge_back \
-					-v fridge-vol:/var/jenkins_home/workspace/fridge/exec/backend/fridge \
-					-e TZ=Asia/Seoul
+					-v fridge-vol:/fridge \
+					-e TZ=Asia/Seoul \
 					--network fridge_net \
-					fridge_back:latest'
+					fridge_back:latest'	
 			}
 		}
 	}
