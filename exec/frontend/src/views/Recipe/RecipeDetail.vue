@@ -2,61 +2,73 @@
     <v-container>
         <h1 style="text-align: center">{{ item.title }}</h1>
         <div style="width: 100%; height: 300px; margin: 20px auto">
-            <iframe
-                id="mainVideo"
-                width="100%"
-                height="300"
-                :src="videoUrl"
-                title="YouTube video player"
-                frameborder="0"
-                marginheight="0"
-                marginwidth="0"
-                align="center"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-            ></iframe>
+            <img :src="url" style="width: 100%; height: 100%" />
         </div>
 
-        <div>
-            <v-row>
-                <p>이름 : {{ item.name }}</p>
-                <v-spacer></v-spacer>
-                <p>조회수 : {{ item.views }}</p>
-            </v-row>
-            <v-row>
-                <p>분류 : {{ item.category }} | {{ item.subcategory }}</p>
-            </v-row>
-        </div>
+        <v-sheet class="mx-auto">
+            <v-slide-group center-active>
+                <v-slide-item v-for="(thumbnail, idx) in item.img" :key="idx">
+                    <v-card
+                        class="ma-2 thumbnail"
+                        height="60"
+                        width="60"
+                        @click="changeImage(thumbnail)"
+                    >
+                        <img :src="thumbnail" style="width: 100%; height: 100%" />
+                    </v-card>
+                </v-slide-item>
+            </v-slide-group>
+        </v-sheet>
+
+        <v-row style="margin-top: 20px !important">
+            <p>작성자 : {{ item.writer }}</p>
+            <v-spacer></v-spacer>
+            <div style="width: 20px; height: 20px; margin: 0 5px">
+                <img
+                    src="../../assets/images/thumbs_up.jpg"
+                    alt="좋아요"
+                    style="width: 100%; height: 100%"
+                />
+            </div>
+            <div style="width: 20px; height: 20px; margin: 0 5px">
+                <img
+                    src="../../assets/images/thumbs_down.jpg"
+                    alt="싫어요"
+                    style="width: 100%; height: 100%"
+                />
+            </div>
+        </v-row>
+        <v-row>
+            <p>구독자 : 1K</p>
+            <div class="addBtn">구독하기</div>
+        </v-row>
     </v-container>
 </template>
 
 <script>
-import http from '../../api/axios.js';
 export default {
     data() {
         return {
-            recipe_id: 0,
-            item: {},
-            videoUrl: '',
+            item: {
+                title: '대마초보다 중독성 강한 마약 계란',
+                img: [
+                    require('@/assets/images/ingredients/pear.png'),
+                    require('@/assets/images/ingredients/onion.png'),
+                    require('@/assets/images/ingredients/milk.png'),
+                    require('@/assets/images/ingredients/lemon.png'),
+                    require('@/assets/images/ingredients/plum.png'),
+                ],
+                writer: 'paka999',
+            },
+            url: '',
         };
     },
     created() {
-        this.recipe_id = this.$route.params.recipe_id;
-        this.getRecipeDetail();
+        this.url = this.item.img[0];
     },
     methods: {
         changeImage(thumbnail) {
             this.url = thumbnail;
-        },
-        getRecipeDetail() {
-            http.get(`recipes/detail/${this.recipe_id}`)
-                .then(({ data }) => {
-                    this.item = data.recipe;
-                    let temp = this.item.url.substr(17);
-
-                    this.videoUrl = 'https://www.youtube.com/embed/' + temp;
-                })
-                .catch((error) => console.log(error));
         },
     },
 };
