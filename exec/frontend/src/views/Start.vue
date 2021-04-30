@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <div class="startImage">
-            <img src="" alt="" />
+            <img :src="main" alt="메인이미지" style="width: 100%; height: 100%" />
         </div>
         <div class="startText" style="margin-bottom: 20px">
             <p>냉장고 관리의 현명한 선택</p>
@@ -40,6 +40,7 @@ export default {
         return {
             signup: require('@/assets/images/header/sign-up.png'),
             login: require('@/assets/images/header/login.png'),
+            main: require('@/assets/images/mainIntro.png'),
         };
     },
     methods: {
@@ -54,12 +55,16 @@ export default {
 </script>
 
 <style scoped>
+.mainText {
+    text-align: center;
+}
 .startText {
     text-align: center;
 }
 .startImage {
-    width: 330px;
-    height: 330px;
+    margin: 0 auto;
+    width: 300px;
+    height: 280px;
 }
 .startIcon {
     width: 50px;
