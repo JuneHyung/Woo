@@ -44,6 +44,23 @@ public class PostServiceImpl implements PostService {
 			throw new SQLException();
 		}
 		
+		String filePath = "fridge";
+		File folder = new File(filePath);
+		
+		if(!folder.exists()) {
+			try {
+				folder.mkdir();
+				
+				filePath += "/post";
+				folder = new File(filePath);
+				if(!folder.exists())
+					folder.mkdir();
+				System.out.println(filePath + " 폴더 생성 완료!!");
+			} catch (Exception e) {
+				e.getStackTrace();
+			}
+		}
+		
 		for (int i = 0; i < images.size(); i++) {
 			String path = "fridge/post/" + now.getId() + "_" + i + ".png";
 			
@@ -52,7 +69,7 @@ public class PostServiceImpl implements PostService {
 			dest.createNewFile();
 			
 			try (FileOutputStream fout = new FileOutputStream(dest)) {
-				fout.write(images.get(0).getBytes());
+				fout.write(images.get(i).getBytes());
 			} catch (Exception e) {
 				logger.error("파일 입출력 실패!!");
 				throw new RuntimeException();
