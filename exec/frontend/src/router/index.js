@@ -68,7 +68,7 @@ const routes = [
     components: { default: RecipeList, header: MainHeader },
   },
   {
-    path: "/recipeDetail",
+    path: "/recipeDetail/:recipe_id",
     name: "RecipeDetail",
     components: { default: RecipeDetail, header: MainHeader },
   },

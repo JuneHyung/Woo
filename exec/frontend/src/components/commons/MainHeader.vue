@@ -17,7 +17,7 @@
                     <p>로그아웃</p>
                 </li>
                 <li class="menuList" @click="openAlarmList">
-                    <img :src="alarm" alt="알림 이미지" class="menuImg" v-bind="attrs" v-on="on" />
+                    <img :src="alarm" alt="알림 이미지" class="menuImg" />
                     <p>알람</p>
                     <div class="alarm">
                         <img :src="alarm" style="width: 25px; height: 25px; padding-bottom: 3px" />
