@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
 		}
 		
 		for (int i = 0; i < images.size(); i++) {
-			String path = "post/" + now.getId() + "_" + i + ".png";
+			String path = "fridge/post/" + now.getId() + "_" + i + ".png";
 			
 			// file image가 없을 경우
 			File dest = new File(path);

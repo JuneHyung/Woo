@@ -64,9 +64,12 @@ pipeline {
 					-p 80:80 \
 					-p 443:443 \
 					-v /home/ubuntu/keys/:/var/jenkins_home/workspace/fridge/sslkey/ \
+					-e TZ=Asia/Seoul \
 					--network fridge_net \
 					fridge_front:latest'
 				sh 'docker run -d --name fridge_back \
+					-v fridge-vol:/var/jenkins_home/workspace/fridge/exec/backend/fridge \
+					-e TZ=Asia/Seoul
 					--network fridge_net \
 					fridge_back:latest'
 			}
