@@ -1,7 +1,9 @@
 package com.fridge.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,30 +43,58 @@ public class RecipesController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			// TODO: handle exception
+			resultMap.put("message", FAIL);
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@Operation(summary = "레시비 목록 조회" ,description = "레시피 목록을 조회한다")
+	@GetMapping
+	public ResponseEntity<Map<String, Object>> recipelist(){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			List<Recipe> list = recipesService.recipelist();
+			resultMap.put("recipelist", list);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", FAIL);
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 	@Operation(summary = "레시피 정보 조회", description = "레시피를 조회한다")
 	@GetMapping("/detail/{recipe_id}")
 	public ResponseEntity<Map<String, Object>> recipedetail(@PathVariable int recipe_id){
-//		resultMap.put("recipe", re);
-		
-		return null;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			Optional<Recipe> re = recipesService.recipeselect(recipe_id);
+			resultMap.put("recipe", re);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", FAIL);
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "메인 재료 입력", description = "재를 입력한다")
-	@PostMapping("/main")
-	public ResponseEntity<Map<String, Object>> maininsert(@RequestBody Main main){
-		System.out.println(main);
-		return null;
-	}
-	
-	@Operation(summary = "테스트 입력", description = "테스트 입력한다")
-	@GetMapping("/testmain/{id}")
-	public ResponseEntity<Map<String, Object>> tesetinsert(@PathVariable int id){
-		System.out.println(id);
-		return null;
-	}
+//	@Operation(summary = "메인 재료 입력", description = "재료를 입력한다")
+//	@PostMapping("/main")
+//	public ResponseEntity<Map<String, Object>> maininsert(@RequestBody Main main){
+//		System.out.println(main);
+//		return null;
+//	}
+//	
+//	@Operation(summary = "테스트 입력", description = "테스트 입력한다")
+//	@GetMapping("/testmain/{id}")
+//	public ResponseEntity<Map<String, Object>> tesetinsert(@PathVariable int id){
+//		System.out.println(id);
+//		return null;
+//	}
 
 	
 }
