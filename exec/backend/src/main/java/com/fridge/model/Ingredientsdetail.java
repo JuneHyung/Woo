@@ -1,7 +1,5 @@
 package com.fridge.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +15,6 @@ public class Ingredientsdetail {
 	String name;
 	String category;
 	String image;
-	LocalDate avgdate;
 
 	protected Ingredientsdetail() {
 	}
@@ -58,18 +55,11 @@ public class Ingredientsdetail {
 		this.image = image;
 	}
 
-	public LocalDate getAvgdate() {
-		return avgdate;
-	}
-
-	public void setAvgdate(LocalDate avgdate) {
-		this.avgdate = avgdate;
-	}
 
 	@Override
 	public String toString() {
 		return "Ingredientsdetail [id=" + id + ", name=" + name + ", category=" + category + ", image=" + image
-				+ ", avgdate=" + avgdate + "]";
+				+ "]";
 	}
 
 }
