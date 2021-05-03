@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.security.Principal;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fridge.model.Post;
 import com.fridge.model.User;
+import com.fridge.model.dto.PostDto;
 import com.fridge.model.repository.PostRepository;
 import com.fridge.model.repository.UserRepository;
 
@@ -76,4 +81,34 @@ public class PostServiceImpl implements PostService {
 
 	}
 
+	@Override
+	public List<PostDto> getPostList() throws Exception {
+		List<Post> posts = postRepository.findAllByOrderByDateDesc();
+		
+		List<PostDto> postList = new ArrayList<PostDto>();
+		for(Post post : posts) {
+			PostDto postDto = new PostDto();
+			
+			postDto.setId(post.getId());
+			postDto.setTitle(post.getTitle());
+			postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
+			postDto.setImageCnt(post.getImagecnt());
+			postDto.setVisit(post.getVisit());
+			postDto.setGood(post.getGood());
+			postDto.setHate(post.getHate());
+			postDto.setUser_name(post.getUser_name());
+			
+			String fileName = Integer.toString(post.getId()) + "_0.png";
+			String filePath = "fridge/post/" + fileName;
+			
+			byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath));
+			postDto.setImageStrArr(new String[] {Base64.getEncoder().encodeToString(fileContent)});
+			
+			postList.add(postDto);
+		}
+		
+		System.out.println(postList);
+		
+		return postList;
+	}
 }
