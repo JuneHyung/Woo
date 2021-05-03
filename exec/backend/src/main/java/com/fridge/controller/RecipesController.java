@@ -1,6 +1,7 @@
 package com.fridge.controller;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -81,7 +82,23 @@ public class RecipesController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-
+	
+	@Operation(summary = "특정재료를 메인으로 하는 레시피 조회",description = "특정 재료를 메인으로 하는 레시피를 조회한다")
+	@GetMapping("/ingredients/{id}")
+	public ResponseEntity<Map<String, Object>> ingredientrecipe(@PathVariable int id){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			List<Main> recipelist = recipesService.ingredientrecipes(id);
+			resultMap.put("recipelist", recipelist);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", FAIL);
+		}
+		return new ResponseEntity<Map<String,Object>>(resultMap,status);
+	}
 //	@Operation(summary = "메인 재료 입력", description = "재료를 입력한다")
 //	@PostMapping("/main")
 //	public ResponseEntity<Map<String, Object>> maininsert(@RequestBody Main main){

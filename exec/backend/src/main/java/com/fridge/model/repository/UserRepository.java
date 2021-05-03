@@ -10,4 +10,10 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	User findByEmailAndPwd(String email,String pwd);
 
 	Optional<User> findById(int id);
+
+	
+//	@Modifying
+//	@Query("update User set email = :#{#user.email}, pwd = :#{#user.pwd}, nick = :#{#user.nick} where id = :#{#user.id}")
+//	void updateById(User user);
+	
 }

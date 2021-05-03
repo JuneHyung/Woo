@@ -74,7 +74,11 @@
         <div stlye="margin-top:50px;">
             <p>유통기한 1주일 미만</p>
             <v-slide-group center-active show-arrows>
-                <v-slide-item v-for="(ingredient, index) in ingredients" :key="index">
+                <v-slide-item
+                    v-for="(ingredient, index) in ingredients"
+                    :key="index"
+                    @click="goRecipeList(ingredient.ingredientsdetail.id)"
+                >
                     <v-card class="ma-1" height="120" width="80">
                         <img
                             :src="
@@ -225,6 +229,12 @@ export default {
                 .catch((error) => {
                     alert(error);
                 });
+        },
+        goRecipeList(id) {
+            this.$router.push({
+                name: 'RecipeList',
+                params: { ingredient_id: id },
+            });
         },
     },
 };

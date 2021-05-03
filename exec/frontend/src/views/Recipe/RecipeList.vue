@@ -20,69 +20,77 @@
                 v-for="(list, index) in listItem"
                 :key="index"
                 class="my-5"
-                @click="goRecipeDetail()"
+                @click="goRecipeDetail(list.id)"
                 style="cursor: pointer"
             >
-                <img :src="list.img" alt="이미지" style="width: 60px; height: 60px" />
+                <img :src="list.thumbnail" alt="이미지" style="width: 60px; height: 60px" />
                 <div style="margin-left: 10px">
-                    <p>{{ list.title }}</p>
-                    <p>내용 : {{ list.description }}</p>
-                    <p>{{ list.writeDate }}</p>
+                    <p>{{ list.name }}</p>
+                    <p>category : {{ list.category }} | {{ list.subcategory }}</p>
+                    <p>{{ list.views }}</p>
                 </div>
             </v-row>
         </div>
     </v-container>
 </template>
 <script>
+import http from '../../api/axios.js';
 export default {
     data() {
         return {
             listItem: [
                 {
-                    title: '리스트 1번',
-                    description: '1번 요리 맛나다 맛나.',
-                    img: require('@/assets/images/ingredients/apple.png'),
-                    writeDate: '2021-04-29',
-                },
-                {
-                    title: '리스트 2번',
-                    description: '2번 요리 맛나다 맛나.',
-                    img: require('@/assets/images/ingredients/banana.png'),
-                    writeDate: '2021-04-28',
-                },
-                {
-                    title: '리스트 3번',
-                    description: '3번 요리 맛나다 맛나.',
-                    img: require('@/assets/images/ingredients/beaf.png'),
-                    writeDate: '2021-04-27',
-                },
-                {
-                    title: '리스트 4번',
-                    description: '4번 요리 맛나다 맛나.',
-                    img: require('@/assets/images/ingredients/chicken.jpg'),
-                    writeDate: '2021-04-26',
-                },
-                {
-                    title: '리스트 5번',
-                    description: '5번 요리 맛나다 맛나.',
-                    img: require('@/assets/images/ingredients/lemon.png'),
-                    writeDate: '2021-04-25',
-                },
-                {
-                    title: '리스트 6번',
-                    description: '6번 요리 맛나다 맛나.',
-                    img: require('@/assets/images/ingredients/plum.png'),
-                    writeDate: '2021-04-24',
+                    category: '',
+                    id: '',
+                    name: '',
+                    subcategory: '',
+                    url: '',
+                    views: '',
+                    thumbnail: '',
                 },
             ],
+            ingredient_id: 0,
         };
+    },
+    created() {
+        this.getRecipeList();
     },
     methods: {
         goRecipeCreate() {
             this.$router.push({ name: 'RecipeCreate' });
         },
-        goRecipeDetail() {
-            this.$router.push({ name: 'RecipeDetail' });
+        goRecipeDetail(recipe_id) {
+            this.$router.push({ name: 'RecipeDetail', params: { recipe_id: recipe_id } });
+        },
+        getRecipeList() {
+            if (this.ingredient_id == 0) {
+                http.get(`recipes`)
+                    .then(({ data }) => {
+                        this.ingredient_id = this.$route.params.ingredient_id;
+                        this.listItem = data.recipelist;
+                        for (var i = 0; i < this.listItem.length; i++) {
+                            let temp = this.listItem[i].url;
+                            let urlId = temp.substr(17);
+                            let thumbnail = `http://img.youtube.com/vi/${urlId}/0.jpg`;
+                            this.listItem[i].thumbnail = thumbnail;
+                            console.log(this.listItem[i].thumbnail);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            } else {
+                http.get(`detail/${this.ingredient_id}`)
+                    .then(({ data }) => {
+                        this.listItem = data.recipelist;
+                        for (var i = 0; i < this.listItem.length; i++) {
+                            let temp = this.listItem[i].url;
+                            let urlId = temp.substr(17);
+                            let thumbnail = `http://img.youtube.com/vi/${urlId}/0.jpg`;
+                            this.listItem[i].thumbnail = thumbnail;
+                            console.log(this.listItem[i].thumbnail);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            }
         },
     },
 };
