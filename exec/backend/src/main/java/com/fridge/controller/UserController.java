@@ -108,14 +108,13 @@ public class UserController {
 	@Operation(summary = "회원 정보 수정", description = "수정할 정보를 받아 회원 정보 수정", security = {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@PutMapping("/modify")
-	public ResponseEntity<Map<String, Object>> modify(@Parameter(name = "로그인 회원 PK") Principal loginUser,
+	public ResponseEntity<Map<String, Object>> modify(@Parameter(name = "로그인 회원 PK") Principal loginId,
 			@Parameter(name = "수정할 회원 정보", required = true) @RequestBody User user) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 
 		try {
-			user.setId(Integer.parseInt(loginUser.getName()));
-			userService.modify(user);
+			userService.modify(loginId, user);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
