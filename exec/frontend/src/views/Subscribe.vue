@@ -1,11 +1,11 @@
 <template>
     <v-container>
-        <div style="padding-bottom: 10px">
+        <div style="padding-bottom: 15px">
             <v-row>
                 <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
-                <p class="mainText">구독</p>
+                <p class="subscribeTitle" style="margin-left: 10px !important">구독</p>
                 <v-spacer></v-spacer>
-                <button>레시피 등록</button>
+                <button style="margin-bottom: 5px" @click="goRecipeCreate()">레시피 등록</button>
             </v-row>
         </div>
         <v-row>
@@ -13,10 +13,15 @@
                 @click="moveRecipeDetail()"
                 v-for="(food, index) in foods"
                 :key="index"
-                style="width: 150px; height: 160px; margin: 0 5px"
+                style="width: 165px; height: 200px; margin: 0 auto"
             >
                 <!-- <router-link to="/Recipedetail"> -->
-                <img :src="food" alt="된장찌개" class="foodImg" />
+                <img
+                    :src="food"
+                    alt="된장찌개"
+                    class="foodImg"
+                    style="width: 160px; height: 160px; margin: 0 auto"
+                />
                 <p style="text-align: center">엄마의 손맛 구수한 된장찌개</p>
                 <p style="text-align: center">작성자 : 민주</p>
                 <!-- </router-link> -->
@@ -44,18 +49,22 @@ export default {
         moveRecipeDetail() {
             this.$router.push({ name: 'RecipeDetail' });
         },
+        goRecipeCreate() {
+            this.$router.push({ name: 'RecipeCreate' });
+        },
     },
 };
 </script>
 
 <style scoped>
 .subscribeImg {
-    width: 36px;
-    height: 50%;
-    padding-right: 10px;
+    width: 30px;
+    height: 70%;
+    margin: auto 1px;
 }
-.mainText {
-    font-size: 20px;
+.subscribeTitle {
+    font-size: 24px;
+    line-height: 24px;
 }
 
 .foodImg {
