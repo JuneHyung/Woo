@@ -1,5 +1,7 @@
 package com.fridge.model.service;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,12 +40,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public void modify(User user) throws Exception {
-		User u = userRepository.getOne(user.getId());
-		System.out.println(u.toString());
-		u.setEmail(user.getEmail());
-		u.setPwd(user.getPwd());
-		u.setNick(user.getNick());
+	public void modify(Principal loginId, User user) throws Exception {
+		User u = new User(Integer.parseInt(loginId.getName()), user.getEmail(), user.getPwd(), user.getNick());
+		
 		userRepository.save(u);
 	}
 

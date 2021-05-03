@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fridge.model.dto.FridgeDto;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Table(name = "fridge")
@@ -24,43 +26,39 @@ public class Fridge {
 	@ManyToOne
 	@Schema(title = "fridge fk")
 	private User user;
+
+	protected Fridge() {
+	}
 	
-	public int getId() {
-		return id;
+	public Fridge(int fridgeId) {
+		this.id = fridgeId;
+	}
+	
+	public Fridge(FridgeDto fridgeDto, int userId) {
+		this.name = fridgeDto.getName();
+		this.type = fridgeDto.getType();
+		this.user = new User(userId);
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public int getId() {
+		return id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public int getType() {
 		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
 	}
 
 	public User getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	@Override
 	public String toString() {
 		return "Fridge [id=" + id + ", name=" + name + ", type=" + type + ", user=" + user + "]";
 	}
-	
-	
+
 }

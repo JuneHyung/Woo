@@ -22,37 +22,41 @@ public class User {
 	String pwd;
 	@Schema(title = "닉네임")
 	String nick;
+	
+	public User() {
+	}
+	
+	public User(int id) {
+		this.id = id;
+	}
+	
+	public User(String email, String pwd, String nick) {
+		this.email = email;
+		this.pwd = pwd;
+		this.nick = nick;
+	}
+	
+	public User(int id, String email, String pwd, String nick) {
+		this.id = id;
+		this.email = email;
+		this.pwd = pwd;
+		this.nick = nick;
+	}
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getPwd() {
 		return pwd;
 	}
 
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
-
 	public String getNick() {
 		return nick;
-	}
-
-	public void setNick(String nick) {
-		this.nick = nick;
 	}
 
 	@Override

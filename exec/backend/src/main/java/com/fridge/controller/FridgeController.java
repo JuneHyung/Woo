@@ -1,10 +1,13 @@
 package com.fridge.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
 import com.fridge.model.Ingredientsdetail;
+import com.fridge.model.dto.FridgeDto;
+import com.fridge.model.dto.IngredientsDto;
 import com.fridge.model.service.FridgeService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +35,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/fridge")
 public class FridgeController {
+	private static final Logger logger = LoggerFactory.getLogger(FridgeController.class);
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -37,14 +43,17 @@ public class FridgeController {
 	@Autowired
 	private FridgeService fridgeService;
 
-	@Operation(summary = "냉장고 등록", description = "냉장고 정보를 입력하고 등록한다.")
+	@Operation(summary = "냉장고 등록", description = "냉장고 정보를 입력하고 등록한다.", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@PostMapping("/create")
-	public ResponseEntity<Map<String, Object>> create(
-			@RequestBody @Parameter(name = "냉장고 등록에 필요한 정보", required = true) Fridge fridge) {
+	public ResponseEntity<Map<String, Object>> create(@Parameter(name = "로그인한 유저") Principal user,
+			@RequestBody @Parameter(name = "냉장고 등록에 필요한 정보", required = true) FridgeDto fridgeDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+
 		try {
-			fridgeService.create(fridge);
+			fridgeService.create(user, fridgeDto);
+
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -54,13 +63,36 @@ public class FridgeController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "내 냉장고 목록 보기", description = "내가 등록한 냉장고의 정보를 가져온다.")
-	@GetMapping("/list/{user_id}")
-	public ResponseEntity<Map<String, Object>> fridgeList(@PathVariable("user_id") int user_id) {
+	@Operation(summary = "재료 추가", description = "냉장고에 재료 추가", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@PostMapping("/addIngredients")
+	public ResponseEntity<Map<String, Object>> addIngredients(
+			@Parameter(name = "추가할 재료 정보 및 냉장고 아이디") @RequestBody IngredientsDto ingredientsDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+
 		try {
-			Fridge[] fridgeList = fridgeService.fridgeList(user_id);
+			fridgeService.addIngredients(ingredientsDto);
+
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@Operation(summary = "내 냉장고 목록 보기", description = "내가 등록한 냉장고의 정보를 가져온다.", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@GetMapping("/list")
+	public ResponseEntity<Map<String, Object>> fridgeList(@Parameter(name = "로그인 유저") Principal user) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		
+		try {
+			Fridge[] fridgeList = fridgeService.fridgeList(Integer.parseInt(user.getName()));
+			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("fridgeList", fridgeList);
 			status = HttpStatus.ACCEPTED;
@@ -71,15 +103,18 @@ public class FridgeController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "냉장고 삭제", description = "등록한 냉장고 삭제.", security = {
+	@Operation(summary = "전체 재료 조회", description = "카테고리와 무관하게 전체 조회", security = {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
-	@DeleteMapping("/list/{fridge_id}")
-	public ResponseEntity<Map<String, Object>> fridgeDel(@PathVariable("fridge_id") int fridge_id) {
+	@GetMapping("/ingredientsDetailList")
+	public ResponseEntity<Map<String, Object>> ingredientsDetailList() {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		
 		try {
-			fridgeService.fridgeDel(fridge_id);
-			resultMap.put("meesage", SUCCESS);
+			List<Ingredientsdetail> ingredients = fridgeService.ingredientsDetailList();
+			
+			resultMap.put("message", SUCCESS);
+			resultMap.put("ingredients", ingredients);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
@@ -87,31 +122,17 @@ public class FridgeController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-
-	@Operation(summary = "냉장고 디테일", description = "냉장고 번호를 통해 냉장고 디테일 정보")
-	@GetMapping("/detail/{fridge_id}")
-	public ResponseEntity<Map<String, Object>> fridgeDetail(@PathVariable("fridge_id") int fridge_id) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
-		try {
-			Optional<Fridge> fridge = fridgeService.fridgeDetail(fridge_id);
-			resultMap.put("message", SUCCESS);
-			resultMap.put("fridge", fridge);
-			status = HttpStatus.ACCEPTED;
-		} catch (Exception e) {
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
-	@Operation(summary = "냉장고 포함 재료", description = "냉장고 번호를 통해 냉장고에 포함된 재료")
+	
+	@Operation(summary = "냉장고 포함 재료", description = "냉장고 번호를 통해 냉장고에 포함된 재료", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@GetMapping("/ingredients/{fridge_id}")
 	public ResponseEntity<Map<String, Object>> ingrediantsList(@PathVariable("fridge_id") int fridge_id) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		
 		try {
 			Ingredients[] ingredients = fridgeService.ingrediantsList(fridge_id);
+			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("ingredients", ingredients);
 			status = HttpStatus.ACCEPTED;
@@ -122,13 +143,36 @@ public class FridgeController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "재료 카테고리 목록", description = "재료 추가를 위한 목록  제공")
+	@Operation(summary = "냉장고 디테일", description = "냉장고 번호를 통해 냉장고 디테일 정보", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@GetMapping("/detail/{fridge_id}")
+	public ResponseEntity<Map<String, Object>> fridgeDetail(@PathVariable("fridge_id") int fridge_id) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		
+		try {
+			Optional<Fridge> fridge = fridgeService.fridgeDetail(fridge_id);
+			
+			resultMap.put("message", SUCCESS);
+			resultMap.put("fridge", fridge);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@Operation(summary = "재료 카테고리 목록", description = "재료 추가를 위한 목록  제공", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@GetMapping("/categoryList")
 	public ResponseEntity<Map<String, Object>> categoryList() {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		
 		try {
 			String[] category = fridgeService.categoryList();
+			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("category", category);
 			status = HttpStatus.ACCEPTED;
@@ -139,7 +183,8 @@ public class FridgeController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "카테고리에 따른 재료", description = "카테고리별 재료 리스트 제공")
+	@Operation(summary = "카테고리에 따른 재료", description = "카테고리별 재료 리스트 제공", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@GetMapping("/categoryByingredients/{category}")
 	public ResponseEntity<Map<String, Object>> categoryByingredientsList(@PathVariable("category") String category) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -156,40 +201,28 @@ public class FridgeController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "전체 재료 조회", description = "카테고리와 무관하게 전체 조회")
-	@GetMapping("/ingredientsDetailList")
-	public ResponseEntity<Map<String, Object>> ingredientsDetailList() {
+	@Operation(summary = "냉장고 삭제", description = "등록한 냉장고 삭제.", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@DeleteMapping("/list/{fridge_id}")
+	public ResponseEntity<Map<String, Object>> fridgeDel(
+			@Parameter(name = "로그인 유저") Principal user,
+			@PathVariable("fridge_id") int fridge_id) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			List<Ingredientsdetail> ingredients = fridgeService.ingredientsDetailList();
-			resultMap.put("message", SUCCESS);
-			resultMap.put("ingredients", ingredients);
+			fridgeService.fridgeDel(user, fridge_id);
+			
+			resultMap.put("meesage", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "재료 추가", description = "냉장고에 재료 추가")
-	@PostMapping("/addIngredients")
-	public ResponseEntity<Map<String, Object>> addIngredients(@RequestBody Ingredients ingredients) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
-		try {
-			fridgeService.addIngredients(ingredients);
-			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
-		} catch (Exception e) {
-			resultMap.put("message", FAIL);
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
-	@Operation(summary = "재료 제거", description = "냉장고 재료 제거")
+	@Operation(summary = "재료 제거", description = "냉장고 재료 제거", security = { @SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@DeleteMapping("delIngredients/{ingredients_id}")
 	public ResponseEntity<Map<String, Object>> delIngredients(@PathVariable("ingredients_id") int ingredients_id) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
