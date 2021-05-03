@@ -2,10 +2,23 @@
     <v-container>
         <div style="padding-bottom: 15px">
             <v-row>
-                <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
-                <p class="subscribeTitle" style="margin-left: 10px !important">구독</p>
+                <v-col>
+                    <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
+                    <p class="subscribeTitle" style="margin-left: 10px !important; height: 70%">
+                        {{ title }}
+                    </p>
+                </v-col>
+
                 <v-spacer></v-spacer>
-                <button style="margin-bottom: 5px" @click="goRecipeCreate()">레시피 등록</button>
+                <div>
+                    <button style="margin-bottom: 5px" @click="changeSubscribePage()">
+                        {{ btnTitle }}
+                    </button>
+                    <v-spacer></v-spacer>
+                    <button style="margin-bottom: 5px" @click="goRecipeCreate()">
+                        레시피 등록
+                    </button>
+                </div>
             </v-row>
         </div>
         <v-row>
@@ -15,7 +28,6 @@
                 :key="index"
                 style="width: 165px; height: 200px; margin: 0 auto"
             >
-                <!-- <router-link to="/Recipedetail"> -->
                 <img
                     :src="food"
                     alt="된장찌개"
@@ -24,7 +36,6 @@
                 />
                 <p style="text-align: center">엄마의 손맛 구수한 된장찌개</p>
                 <p style="text-align: center">작성자 : 민주</p>
-                <!-- </router-link> -->
             </div>
         </v-row>
     </v-container>
@@ -43,6 +54,9 @@ export default {
                 require('@/assets/images/치즈밥.jpg'),
                 require('@/assets/images/카레라이스.jpg'),
             ],
+            subscribeflag: false,
+            title: '전체 레시피',
+            btnTitle: '구독자 레시피',
         };
     },
     methods: {
@@ -52,6 +66,16 @@ export default {
         goRecipeCreate() {
             this.$router.push({ name: 'RecipeCreate' });
         },
+        changeSubscribePage() {
+            this.subscribeflag = !this.subscribeflag;
+            if (this.subscribeflag == false) {
+                this.title = '전체 레시피';
+                this.btnTitle = '구독자 레시피';
+            } else {
+                this.title = '구독자 레시피';
+                this.btnTitle = '전체 레시피';
+            }
+        },
     },
 };
 </script>
@@ -60,7 +84,6 @@ export default {
 .subscribeImg {
     width: 30px;
     height: 70%;
-    margin: auto 1px;
 }
 .subscribeTitle {
     font-size: 24px;
