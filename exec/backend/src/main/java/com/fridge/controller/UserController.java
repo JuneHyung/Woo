@@ -64,29 +64,6 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "로그인 회원 정보 제공", description = "로그인한 회원의 정보를 제공", security = {
-			@SecurityRequirement(name = "X-AUTH-TOKEN") })
-	@GetMapping("/info")
-	public ResponseEntity<Map<String, Object>> getUserInfo(
-			@Parameter(name = "로그인 회원") Principal user) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.OK;
-		
-		System.out.println(user.getName());
-		try {
-			User userInfo = userService.getUserInfo(user.getName());
-			
-			resultMap.put("user", userInfo);
-			resultMap.put("message", SUCCESS);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			resultMap.put("message", FAIL);
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
 	// unb 회원가입
 	@Operation(summary = "회원 가입", description = "회원 가입 결과를 반환한다.")
 	@PostMapping("/join")
@@ -107,29 +84,58 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "회원 정보 수정", description = "수정할 정보를 받아 회원 정보 수정")
-	@PutMapping("/modify/{user}")
-	public ResponseEntity<Map<String, Object>> modify(@RequestBody User user) {
+	@Operation(summary = "로그인 회원 정보 제공", description = "로그인한 회원의 정보를 제공", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@GetMapping("/info")
+	public ResponseEntity<Map<String, Object>> getUserInfo(@Parameter(name = "로그인 회원") Principal user) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.OK;
+
+		System.out.println(user.getName());
+		try {
+			User userInfo = userService.getUserInfo(user.getName());
+
+			resultMap.put("user", userInfo);
+			resultMap.put("message", SUCCESS);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@Operation(summary = "회원 정보 수정", description = "수정할 정보를 받아 회원 정보 수정", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@PutMapping("/modify")
+	public ResponseEntity<Map<String, Object>> modify(
+			@Parameter(name = "로그인 회원 PK") Principal loginUser,
+			@Parameter(name = "수정할 회원 정보", required = true) @RequestBody User user) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		
 		try {
+			user.setId(Integer.parseInt(loginUser.getName()));
 			userService.modify(user);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@Operation(summary = "회원 탈퇴", description = "회원 id를 받아서 회원 탈퇴")
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable("id") int id) {
+	@Operation(summary = "회원 탈퇴", description = "회원 id를 받아서 회원 탈퇴", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@DeleteMapping("/delete")
+	public ResponseEntity<Map<String, Object>> delete(@Parameter(name = "탈퇴할 회원") Principal user) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			userService.delete(id);
+			userService.delete(Integer.parseInt(user.getName()));
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
