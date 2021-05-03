@@ -1,33 +1,36 @@
 package com.fridge.model.service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
 import com.fridge.model.Ingredientsdetail;
-
+import com.fridge.model.dto.FridgeDto;
+import com.fridge.model.dto.IngredientsDto;
 
 public interface FridgeService {
 
-   void create(Fridge fridge) throws Exception;
+	void create(Principal user, FridgeDto fridgeDto) throws Exception;
 
-   Fridge[] fridgeList(int id) throws Exception;
+	void addIngredients(IngredientsDto ingredientsDto) throws Exception;
 
-   void fridgeDel(int fridge_id) throws Exception;
+	Fridge[] fridgeList(int id) throws Exception;
 
-   Optional <Fridge> fridgeDetail(int fridge_id) throws Exception;
+	List<Ingredientsdetail> ingredientsDetailList() throws Exception;
 
-   Ingredients[] ingrediantsList(int fridge_id) throws Exception;
+	Optional<Fridge> fridgeDetail(int fridge_id) throws Exception;
 
-   String [] categoryList() throws Exception;
+	Ingredients[] ingrediantsList(int fridge_id) throws Exception;
 
-   Ingredientsdetail [] categoryByingredientsList(String category) throws Exception;
+	String[] categoryList() throws Exception;
 
-   List<Ingredientsdetail> ingredientsDetailList() throws Exception;
+	Ingredientsdetail[] categoryByingredientsList(String category) throws Exception;
 
-   void addIngredients(Ingredients ingredients) throws Exception;
 
-   void delIngredients(int ingredients_id) throws Exception;
+	void fridgeDel(Principal user, int fridge_id) throws Exception;
+
+	void delIngredients(int ingredients_id) throws Exception;
 
 }

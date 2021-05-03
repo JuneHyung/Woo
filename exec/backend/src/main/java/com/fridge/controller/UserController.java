@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -109,12 +108,11 @@ public class UserController {
 	@Operation(summary = "회원 정보 수정", description = "수정할 정보를 받아 회원 정보 수정", security = {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@PutMapping("/modify")
-	public ResponseEntity<Map<String, Object>> modify(
-			@Parameter(name = "로그인 회원 PK") Principal loginUser,
+	public ResponseEntity<Map<String, Object>> modify(@Parameter(name = "로그인 회원 PK") Principal loginUser,
 			@Parameter(name = "수정할 회원 정보", required = true) @RequestBody User user) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
-		
+
 		try {
 			user.setId(Integer.parseInt(loginUser.getName()));
 			userService.modify(user);

@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 인증 기반이므로 세션 역시 사용 X
 			.and()
 			.authorizeRequests()	// 요청에 대한 사용권한 체크
-			.antMatchers("/user/info", "/user/modify", "/user/delete").authenticated()
+			.antMatchers("/user/info", "/user/modify", "/user/delete", "/fridge/**").authenticated()
 			.anyRequest().permitAll()	// 그 외 나머지 요청은 누구나 접근 가능
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),

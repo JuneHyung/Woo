@@ -22,6 +22,19 @@ public class User {
 	String pwd;
 	@Schema(title = "닉네임")
 	String nick;
+	
+	public User() {
+	}
+	
+	public User(int id) {
+		this.id = id;
+	}
+	
+	public User(String email, String pwd, String nick) {
+		this.email = email;
+		this.pwd = pwd;
+		this.nick = nick;
+	}
 
 	public int getId() {
 		return id;

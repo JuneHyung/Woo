@@ -6,7 +6,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-@Table(name ="ingredients")
+
+import com.fridge.model.dto.IngredientsDto;
+
+@Table(name = "ingredients")
 @Entity
 public class Ingredients {
 	@Id
@@ -19,59 +22,70 @@ public class Ingredients {
 	private Fridge fridge;
 	@ManyToOne
 	private Ingredientsdetail ingredientsdetail;
-	public Ingredients(int id, String expired, int locx, int locy, Fridge fridge,
-			Ingredientsdetail ingredientsdetail) {
-		super();
-		this.id = id;
-		this.expired = expired;
-		this.locx = locx;
-		this.locy = locy;
-		this.fridge = fridge;
-		this.ingredientsdetail = ingredientsdetail;
+
+	protected Ingredients() {
 	}
-	public Ingredients() {
-		super();
+
+	public Ingredients(IngredientsDto ingredientsDto) {
+		this.expired = ingredientsDto.getExpired();
+		this.locx = ingredientsDto.getLocx();
+		this.locy = ingredientsDto.getLocy();
+		this.fridge = new Fridge(ingredientsDto.getFridgeId());
+		this.ingredientsdetail = new Ingredientsdetail(ingredientsDto.getIngredientsDetailId());
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getExpired() {
 		return expired;
 	}
+
 	public void setExpired(String expired) {
 		this.expired = expired;
 	}
+
 	public int getLocx() {
 		return locx;
 	}
+
 	public void setLocx(int locx) {
 		this.locx = locx;
 	}
+
 	public int getLocy() {
 		return locy;
 	}
+
 	public void setLocy(int locy) {
 		this.locy = locy;
 	}
+
 	public Fridge getFridge() {
 		return fridge;
 	}
+
 	public void setFridge(Fridge fridge) {
 		this.fridge = fridge;
 	}
+
 	public Ingredientsdetail getIngredientsdetail() {
 		return ingredientsdetail;
 	}
+
 	public void setIngredientsdetail(Ingredientsdetail ingredientsdetail) {
 		this.ingredientsdetail = ingredientsdetail;
 	}
+
 	@Override
 	public String toString() {
 		return "Ingredients [id=" + id + ", expired=" + expired + ", locx=" + locx + ", locy=" + locy + ", fridge="
 				+ fridge + ", ingredientsdetail=" + ingredientsdetail + "]";
 	}
-	
+
 }
