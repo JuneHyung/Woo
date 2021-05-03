@@ -112,6 +112,20 @@ public class RecipesController {
 //		System.out.println(id);
 //		return null;
 //	}
-
 	
+	@Operation(summary = "레시피 확인시 views 수 증가", description = "views 증가")
+	@GetMapping("/views/{recipe_id}")
+	public ResponseEntity<Map<String, Object>> upViews(@PathVariable("recipe_id") int recipe_id) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			recipesService.upViews(recipe_id);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		}catch(Exception e) {
+			resultMap.put("mewssage", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 }

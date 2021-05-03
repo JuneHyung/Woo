@@ -15,5 +15,7 @@ public interface RecipesService {
 	public List<Recipe> recipelist();
 
 	public List<Main> ingredientrecipes(int id);
+
+	public void upViews(int recipe_id) throws Exception;
 	
 }
