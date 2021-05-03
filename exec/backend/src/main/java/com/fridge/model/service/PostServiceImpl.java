@@ -2,8 +2,8 @@ package com.fridge.model.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.security.Principal;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,23 +27,15 @@ public class PostServiceImpl implements PostService {
 	private UserRepository userRepository;
 
 	@Override
-	public void upload(String title, List<MultipartFile> images, int id) throws Exception {
-		Post post = new Post();
-		Optional<User> user = userRepository.findById(id);
+	public void upload(String title, List<MultipartFile> images, Principal id) throws Exception {
+		Optional<User> user = userRepository.findById(Integer.parseInt(id.getName()));
 
-		post.setTitle(title);
-		post.setContents("....");
-		post.setDate(LocalDateTime.now());
-		post.setImagecnt(images.size());
-		post.setUser_name(user.get().getNick());
-		post.setUser(user.get());
-
-		Post now = postRepository.save(post);
+		Post now = postRepository.save(new Post(title, images.size(), user.get().getNick(), user.get()));
 		if (now == null) {
 			logger.error("DB insert Error!!!!");
 			throw new SQLException();
 		}
-
+		// 최초 실행 시 폴더가 없기에 폴더 생성
 		String filePath = "fridge";
 		File folder = new File(filePath);
 
@@ -66,7 +58,7 @@ public class PostServiceImpl implements PostService {
 				e.getStackTrace();
 			}
 		}
-
+		// 이미지 저장
 		for (int i = 0; i < images.size(); i++) {
 			String path = "fridge/post/" + now.getId() + "_" + i + ".png";
 
