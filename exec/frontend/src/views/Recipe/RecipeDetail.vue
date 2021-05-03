@@ -41,6 +41,7 @@ export default {
     },
     created() {
         this.recipe_id = this.$route.params.recipe_id;
+
         this.getRecipeDetail();
     },
     methods: {

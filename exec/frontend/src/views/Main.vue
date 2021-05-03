@@ -83,7 +83,7 @@ export default {
             this.$router.push({ name: 'RefAdd' });
         },
         getMyRefrigerator() {
-            http.get(`fridge/list/${this.id}`)
+            http.get(`fridge/list`)
                 .then((response) => {
                     this.fridgeList = response.data.fridgeList;
                     alert('받기성공');
