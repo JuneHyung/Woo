@@ -111,4 +111,35 @@ public class PostServiceImpl implements PostService {
 		
 		return postList;
 	}
+	
+	@Override
+	public PostDto getPostDetail(int postId) throws Exception {
+		Optional<Post> post = postRepository.findById(postId);
+		
+		if(!post.isPresent())
+			throw new Exception("찾으시는 레시피가 없습니다.");
+		
+		PostDto postDto = null;
+		postDto = new PostDto();
+		postDto.setId(postId);
+		postDto.setTitle(post.get().getTitle());
+		postDto.setDate(post.get().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
+		postDto.setImageCnt(post.get().getImagecnt());
+		postDto.setVisit(post.get().getVisit());
+		postDto.setGood(post.get().getGood());
+		postDto.setHate(post.get().getHate());
+		postDto.setUser_name(post.get().getUser_name());
+		
+		String filePath = "fridge/post/";
+		String[] imageStrArr = new String[post.get().getImagecnt()];
+		
+		for(int i = 0; i < post.get().getImagecnt(); i++) {
+			String fileName = Integer.toString(post.get().getId()) + "_" + i + ".png";
+			byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath + fileName));
+			imageStrArr[i] = Base64.getEncoder().encodeToString(fileContent);
+		}
+		postDto.setImageStrArr(imageStrArr);
+		
+		return postDto;
+	}
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,6 +71,27 @@ public class PostController {
 			List<PostDto> postList = postService.getPostList();
 
 			resultMap.put("postList", postList);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@Operation(summary = "사용자 등록 레시피 상세정보", description = "선택한 사용자 등록 레시피 상세 정보를 제공한다.")
+	@GetMapping(path = "/detail/{post_id}")
+	public ResponseEntity<Map<String, Object>> getPostDetail(@PathVariable("post_id") int postId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+
+		try {
+			PostDto post = postService.getPostDetail(postId);
+
+			resultMap.put("post", post);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {

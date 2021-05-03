@@ -11,4 +11,6 @@ public interface PostService {
 	void upload(String title, List<MultipartFile> images, Principal id) throws Exception;
 	
 	List<PostDto> getPostList() throws Exception;
+
+	PostDto getPostDetail(int postId) throws Exception;
 }
