@@ -6,21 +6,65 @@
                 label="ID (Email)"
                 placeholder="ex)ssafy@naver.com"
                 type="string"
+                v-model="user.id"
             ></v-text-field>
             <v-text-field
                 label="PW (대소문자 특수문자 조합 8자 이상)"
                 placeholder="ssafy123!"
                 type="string"
+                v-model="user.password"
             ></v-text-field>
             <v-row>
                 <v-spacer></v-spacer>
                 <button class="resetBtn">초기화</button>
 
-                <button class="loginBtn">로그인</button>
+                <button class="loginBtn" @click="confirm()">로그인</button>
             </v-row>
         </div>
     </v-container>
 </template>
+<script>
+import { login } from '@/api/user.js';
+export default {
+    data() {
+        return {
+            user: {
+                id: '',
+                password: '',
+            },
+        };
+    },
+    methods: {
+        confirm() {
+            localStorage.setItem('X-AUTH-TOKEN', '');
+            login(
+                this.user,
+                (response) => {
+                    if (response.data.message === 'success') {
+                        let token = response.data['X-AUTH-TOKEN'];
+                        this.$store.commit('setIsLogined', true);
+                        localStorage.setItem('X-AUTH-TOKEN', token);
+                        console.log(localStorage.getItem('X-AUTH-TOKEN'));
+                        this.$router.push({ name: 'Main' });
+                    } else {
+                        this.isLoginError = true;
+                        if (this.user.id == '') {
+                            alert('아이디 입력 해라!');
+                        } else if (this.user.pw == '') {
+                            alert('비번 입력 해라!');
+                        } else {
+                            alert('아이디 또는 비번이 일치하지않아유~');
+                        }
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        },
+    },
+};
+</script>
 <style scoped>
 .loginFormBox {
     width: calc(100% - 100px);
