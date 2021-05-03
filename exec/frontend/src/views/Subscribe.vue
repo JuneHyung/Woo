@@ -4,6 +4,8 @@
             <v-row>
                 <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
                 <p class="mainText">구독</p>
+                <v-spacer></v-spacer>
+                <button>레시피 등록</button>
             </v-row>
         </div>
         <v-row>
