@@ -1,9 +1,24 @@
 <template>
     <v-container>
-        <div style="padding-bottom: 10px">
+        <div style="padding-bottom: 15px">
             <v-row>
-                <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
-                <p class="mainText">구독</p>
+                <v-col>
+                    <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
+                    <p class="subscribeTitle" style="margin-left: 10px !important; height: 70%">
+                        {{ title }}
+                    </p>
+                </v-col>
+
+                <v-spacer></v-spacer>
+                <div>
+                    <button style="margin-bottom: 5px" @click="changeSubscribePage()">
+                        {{ btnTitle }}
+                    </button>
+                    <v-spacer></v-spacer>
+                    <button style="margin-bottom: 5px" @click="goRecipeCreate()">
+                        레시피 등록
+                    </button>
+                </div>
             </v-row>
         </div>
         <v-row>
@@ -11,13 +26,16 @@
                 @click="moveRecipeDetail()"
                 v-for="(food, index) in foods"
                 :key="index"
-                style="width: 150px; height: 160px; margin: 0 5px"
+                style="width: 165px; height: 200px; margin: 0 auto"
             >
-                <!-- <router-link to="/Recipedetail"> -->
-                <img :src="food" alt="된장찌개" class="foodImg" />
+                <img
+                    :src="food"
+                    alt="된장찌개"
+                    class="foodImg"
+                    style="width: 160px; height: 160px; margin: 0 auto"
+                />
                 <p style="text-align: center">엄마의 손맛 구수한 된장찌개</p>
                 <p style="text-align: center">작성자 : 민주</p>
-                <!-- </router-link> -->
             </div>
         </v-row>
     </v-container>
@@ -36,11 +54,27 @@ export default {
                 require('@/assets/images/치즈밥.jpg'),
                 require('@/assets/images/카레라이스.jpg'),
             ],
+            subscribeflag: false,
+            title: '전체 레시피',
+            btnTitle: '구독자 레시피',
         };
     },
     methods: {
         moveRecipeDetail() {
             this.$router.push({ name: 'RecipeDetail' });
+        },
+        goRecipeCreate() {
+            this.$router.push({ name: 'RecipeCreate' });
+        },
+        changeSubscribePage() {
+            this.subscribeflag = !this.subscribeflag;
+            if (this.subscribeflag == false) {
+                this.title = '전체 레시피';
+                this.btnTitle = '구독자 레시피';
+            } else {
+                this.title = '구독자 레시피';
+                this.btnTitle = '전체 레시피';
+            }
         },
     },
 };
@@ -48,12 +82,12 @@ export default {
 
 <style scoped>
 .subscribeImg {
-    width: 36px;
-    height: 50%;
-    padding-right: 10px;
+    width: 30px;
+    height: 70%;
 }
-.mainText {
-    font-size: 20px;
+.subscribeTitle {
+    font-size: 24px;
+    line-height: 24px;
 }
 
 .foodImg {

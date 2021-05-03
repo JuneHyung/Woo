@@ -1,11 +1,17 @@
 <template>
     <v-container>
-        <div class="loginFormBox">
-            <h1 class="myPageTitle">My Page</h1>
-            <p style="height: 100px">닉네임</p>
-            <p style="height: 100px">구독 중인 사람</p>
-            <p style="height: 100px">내가 올린 레시피</p>
-
+        <v-row style="margin: auto 0">
+            <img :src="myPage" alt="마이페이지" class="myPageImg" />
+            <p class="myPageTitle" style="margin-left: 10px !important">My Page</p>
+            <v-spacer></v-spacer>
+        </v-row>
+        <div>
+            <p style="font-size: 18px">닉네임</p>
+        </div>
+        <div style="padding-top: 5px; margin-bottom: 10px">
+            <p style="height: 100px; font-size: 18px">내가 올린 레시피</p>
+        </div>
+        <div>
             <v-row>
                 <v-spacer></v-spacer>
                 <v-dialog v-model="modifyDialog" transition="dialog-top-transition" max-width="600">
@@ -14,7 +20,9 @@
                     </template>
                     <template v-slot:default="dialog">
                         <v-card>
-                            <v-toolbar color="#494949" dark>회원정보 수정 </v-toolbar>
+                            <v-toolbar style="color: white; background-color: #494949">
+                                <p style="font-size: 18px">회원 정보 수정</p>
+                            </v-toolbar>
                             <v-card-text>
                                 <v-row>
                                     <v-text-field
@@ -48,13 +56,13 @@
                 </v-dialog>
                 <v-dialog
                     v-model="deleteDialog"
-                    style="width: 300px; height: 250px; margin: 0 auto"
+                    style="width: 300px; height: 150px; margin: 0 auto"
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <div class="deleteBtn" v-bind="attrs" v-on="on">회원탈퇴</div>
                     </template>
                     <v-card>
-                        <v-card-title style="text-align: center">정말 탈퇴하실껀가요?</v-card-title>
+                        <v-card-title style="margin: 0 auto">정말 탈퇴하실껀가요?</v-card-title>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn @click="deleteDialog = false"> 탈퇴하기 </v-btn
@@ -74,8 +82,10 @@ export default {
     name: 'MyPage',
     data() {
         return {
+            myPage: require('@/assets/images/header/MyPage.png'),
             modifyDialog: false,
             deleteDialog: false,
+            subscribeDialog: false,
         };
     },
     methods: {
@@ -96,9 +106,15 @@ export default {
 <style scoped>
 .myPageTitle {
     font-size: 24px;
-    text-align: center;
+    line-height: 24px;
+    height: 32px;
 }
-
+.myPageImg {
+    width: 30px;
+    height: 100%;
+    margin: auto 1px;
+    padding-bottom: 10px;
+}
 .modifyBtn {
     width: 60px;
     height: 60px;
