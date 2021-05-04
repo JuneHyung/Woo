@@ -2,8 +2,11 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: 'twayair';
+    font-family: 'twayair', sans-serif;
     font-size: 12px;
+}
+*[type='password'] {
+    font-family: arial;
 }
 img {
     display: block !important;
@@ -44,6 +47,7 @@ p {
         format('woff');
     font-weight: normal;
     font-style: normal;
+    color: black;
 }
 
 @font-face {
