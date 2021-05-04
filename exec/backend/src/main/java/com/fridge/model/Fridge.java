@@ -29,11 +29,11 @@ public class Fridge {
 
 	protected Fridge() {
 	}
-	
+
 	public Fridge(int fridgeId) {
 		this.id = fridgeId;
 	}
-	
+
 	public Fridge(FridgeDto fridgeDto, int userId) {
 		this.name = fridgeDto.getName();
 		this.type = fridgeDto.getType();

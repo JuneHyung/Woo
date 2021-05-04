@@ -18,7 +18,7 @@ public class Ingredientsdetail {
 
 	protected Ingredientsdetail() {
 	}
-	
+
 	public Ingredientsdetail(int id) {
 		this.id = id;
 	}
@@ -27,39 +27,21 @@ public class Ingredientsdetail {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
 	public String getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
-	}
-
-
 	@Override
 	public String toString() {
-		return "Ingredientsdetail [id=" + id + ", name=" + name + ", category=" + category + ", image=" + image
-				+ "]";
+		return "Ingredientsdetail [id=" + id + ", name=" + name + ", category=" + category + ", image=" + image + "]";
 	}
 
 }
