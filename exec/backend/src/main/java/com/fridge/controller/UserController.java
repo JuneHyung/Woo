@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,12 +49,14 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> login(
 			@RequestBody @Parameter(name = "로그인 시 필요한 회원정보(이메일, 비밀번호)", required = true) User user) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.OK;
+		HttpStatus status = null;
 		User loginMember = null;
 		try {
 			loginMember = userService.login(user);
+			
 			resultMap.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(Integer.toString(loginMember.getId())));
 			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			resultMap.put("message", FAIL);
@@ -63,7 +66,6 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	// unb 회원가입
 	@Operation(summary = "회원 가입", description = "회원 가입 결과를 반환한다.")
 	@PostMapping("/join")
 	public ResponseEntity<Map<String, Object>> join(
@@ -74,7 +76,49 @@ public class UserController {
 		try {
 			userService.join(user);
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put("massage", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@Operation(summary = "email 중복 확인", description = "새로 입력한 email 주소가 이미 가입되어 있는지 확인한다.")
+	@GetMapping("/idcheck/{email}")
+	public ResponseEntity<Map<String, Object>> checkEmail(
+			@PathVariable("email") String email) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+
+		try {
+			userService.checkEmail(email);
+			
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put("massage", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@Operation(summary = "닉네임 중복 확인", description = "새로 입력한 닉네임이 이미 가입되어 있는지 확인한다.")
+	@GetMapping("/nickcheck/{nick}")
+	public ResponseEntity<Map<String, Object>> checkNick(
+			@PathVariable("nick") String nick) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+
+		try {
+			userService.checkNick(nick);
+			
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("massage", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -88,7 +132,7 @@ public class UserController {
 	@GetMapping("/info")
 	public ResponseEntity<Map<String, Object>> getUserInfo(@Parameter(name = "로그인 회원") Principal user) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.OK;
+		HttpStatus status = null;
 
 		System.out.println(user.getName());
 		try {
@@ -96,6 +140,7 @@ public class UserController {
 
 			resultMap.put("user", userInfo);
 			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			resultMap.put("message", FAIL);
@@ -116,7 +161,7 @@ public class UserController {
 		try {
 			userService.modify(loginId, user);
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			resultMap.put("message", FAIL);
@@ -134,7 +179,7 @@ public class UserController {
 		try {
 			userService.delete(Integer.parseInt(user.getName()));
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
