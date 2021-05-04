@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 @Table(name = "subscribe")
@@ -13,13 +14,13 @@ public class Subscribe {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	@ManyToOne
+	@JoinColumn(name="user_id")
 	private User user;
 	
 	int subscribe_id;
 
-	public Subscribe(int id, User user, int subscribe_id) {
+	public Subscribe(User user, int subscribe_id) {
 		super();
-		this.id = id;
 		this.user = user;
 		this.subscribe_id = subscribe_id;
 	}
@@ -28,24 +29,12 @@ public class Subscribe {
 		super();
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public int getSubscribe_id() {
-		return subscribe_id;
 	}
 
 	public void setSubscribe_id(int subscribe_id) {
