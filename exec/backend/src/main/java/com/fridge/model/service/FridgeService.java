@@ -33,4 +33,6 @@ public interface FridgeService {
 
 	void delIngredients(int ingredients_id) throws Exception;
 
+	void moveIngredients(IngredientsDto ingredientsDto) throws Exception;
+
 }

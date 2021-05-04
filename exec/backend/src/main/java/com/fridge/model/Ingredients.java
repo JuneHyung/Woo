@@ -27,6 +27,7 @@ public class Ingredients {
 	}
 
 	public Ingredients(IngredientsDto ingredientsDto) {
+		this.id = ingredientsDto.getId();
 		this.expired = ingredientsDto.getExpired();
 		this.locx = ingredientsDto.getLocx();
 		this.locy = ingredientsDto.getLocy();
