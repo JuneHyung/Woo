@@ -28,7 +28,6 @@ public class SubscribeServiceImlp implements SubscribeService{
 	@Override
 	public void deletescribe(int id) {
 		// TODO Auto-generated method stub
-		System.out.println("진입");
 		subscribeRepository.deleteById(id);
 	}
 
