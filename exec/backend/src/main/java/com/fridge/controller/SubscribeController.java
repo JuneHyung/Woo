@@ -49,8 +49,7 @@ public class SubscribeController {
 		HttpStatus status = null;
 		System.out.println(user_id + " , " + subscribe_id);
 		try {
-			User user = new User();
-			user.setId(user_id);
+			User user = new User(user_id);
 			Subscribe subscribe = new Subscribe(user, subscribe_id); 
 			System.out.println(subscribe);
 			subscribeservice.insertscribe(subscribe);
