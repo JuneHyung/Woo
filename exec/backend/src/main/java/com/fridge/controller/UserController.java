@@ -79,7 +79,7 @@ public class UserController {
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			resultMap.put("massage", FAIL);
+			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
@@ -100,7 +100,7 @@ public class UserController {
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			resultMap.put("massage", FAIL);
+			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
@@ -120,7 +120,7 @@ public class UserController {
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
-			resultMap.put("massage", FAIL);
+			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
