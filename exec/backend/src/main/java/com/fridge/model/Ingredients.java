@@ -26,6 +26,17 @@ public class Ingredients {
 	protected Ingredients() {
 	}
 
+	
+	public Ingredients(int id, String expired, int locx, int locy, Fridge fridge, Ingredientsdetail ingredientsdetail) {
+		super();
+		this.id = id;
+		this.expired = expired;
+		this.locx = locx;
+		this.locy = locy;
+		this.fridge = fridge;
+		this.ingredientsdetail = ingredientsdetail;
+	}
+
 	public Ingredients(IngredientsDto ingredientsDto) {
 		this.id = ingredientsDto.getId();
 		this.expired = ingredientsDto.getExpired();

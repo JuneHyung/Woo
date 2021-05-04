@@ -8,6 +8,18 @@ public class IngredientsDto {
 	private int fridgeId;
 	private int ingredientsDetailId;
 
+	public IngredientsDto(int id, String expired, int locx, int locy, int fridgeId, int ingredientsDetailId) {
+		super();
+		this.id = id;
+		this.expired = expired;
+		this.locx = locx;
+		this.locy = locy;
+		this.fridgeId = fridgeId;
+		this.ingredientsDetailId = ingredientsDetailId;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}
