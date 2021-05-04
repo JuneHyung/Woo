@@ -28,6 +28,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public void join(User user) throws Exception {
 		userRepository.save(user);
 	}
+	
+	@Override
+	public void checkEmail(String email) throws Exception {
+		if(userRepository.findByEmail(email).isPresent())
+			throw new Exception("이미 있는 가입되어 있는 이메일입니다.");
+	}
+	
+	@Override
+	public void checkNick(String nick) throws Exception {
+		if(userRepository.findByNick(nick).isPresent())
+			throw new Exception("사용 중인 닉네임입니다.");
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -14,4 +14,8 @@ public interface UserService {
 	public void delete(int id) throws Exception;
 
 	public User getUserInfo(String id) throws Exception;
+
+	public void checkEmail(String email) throws Exception;
+
+	public void checkNick(String nick) throws Exception;
 }
