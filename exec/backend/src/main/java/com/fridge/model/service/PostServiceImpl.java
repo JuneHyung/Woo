@@ -26,49 +26,24 @@ import com.fridge.model.repository.UserRepository;
 @Service
 public class PostServiceImpl implements PostService {
 	public static final Logger logger = LoggerFactory.getLogger(PostService.class);
+	public static final String POST_PATH = "fridge/post/";
+
 	@Autowired
 	private PostRepository postRepository;
 	@Autowired
 	private UserRepository userRepository;
 
-	@Override
-	public void upload(String title, List<MultipartFile> images, Principal id) throws Exception {
-		Optional<User> user = userRepository.findById(Integer.parseInt(id.getName()));
+	public String makePath(int id, int num) {
+		return POST_PATH + id + "_" + num + ".png";
+	}
 
-		Post now = postRepository.save(new Post(title, images.size(), user.get().getNick(), user.get()));
-		if (now == null) {
-			logger.error("DB insert Error!!!!");
-			throw new SQLException();
-		}
-		// 최초 실행 시 폴더가 없기에 폴더 생성
-		String filePath = "fridge";
-		File folder = new File(filePath);
-
-		if (!folder.exists()) {
-			try {
-				folder.mkdir();
-				System.out.println(filePath + " 폴더 생성 완료!!");
-			} catch (Exception e) {
-				e.getStackTrace();
-			}
-		}
-		filePath += "/post";
-		folder = new File(filePath);
-
-		if (!folder.exists()) {
-			try {
-				folder.mkdir(); // 폴더 생성합니다.
-				System.out.println("폴더가 생성되었습니다.");
-			} catch (Exception e) {
-				e.getStackTrace();
-			}
-		}
+	public void createFile(int id, int imageCnt, List<MultipartFile> images) throws Exception {
 		// 이미지 저장
-		for (int i = 0; i < images.size(); i++) {
-			String path = "fridge/post/" + now.getId() + "_" + i + ".png";
+		for (int i = 0; i < imageCnt; i++) {
+			String filePath = makePath(id, i);
 
 			// file image가 없을 경우
-			File dest = new File(path);
+			File dest = new File(filePath);
 			dest.createNewFile();
 
 			try (FileOutputStream fout = new FileOutputStream(dest)) {
@@ -78,17 +53,41 @@ public class PostServiceImpl implements PostService {
 				throw new RuntimeException();
 			}
 		}
+	}
 
+	public void deleteFile(int id, int imageCnt) throws Exception {
+		for (int i = 0; i < imageCnt; i++) {
+			String filePath = makePath(id, i);
+
+			File deleteFile = new File(filePath);
+
+			if (deleteFile.exists())
+				deleteFile.delete();
+			else
+				throw new Exception("파일이 존재하지 않습니다.");
+		}
+	}
+
+	@Override
+	public void upload(String title, List<MultipartFile> images, Principal id) throws Exception {
+		Optional<User> user = userRepository.findById(Integer.parseInt(id.getName()));
+
+		Post now = postRepository.save(new Post(title, images.size(), user.get().getNick(), user.get()));
+		if (now == null) {
+			throw new SQLException("DB insert Error!!!!");
+		}
+
+		createFile(now.getId(), now.getImagecnt(), images);
 	}
 
 	@Override
 	public List<PostDto> getPostList() throws Exception {
 		List<Post> posts = postRepository.findAllByOrderByDateDesc();
-		
+
 		List<PostDto> postList = new ArrayList<PostDto>();
-		for(Post post : posts) {
+		for (Post post : posts) {
 			PostDto postDto = new PostDto();
-			
+
 			postDto.setId(post.getId());
 			postDto.setTitle(post.getTitle());
 			postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
@@ -97,28 +96,25 @@ public class PostServiceImpl implements PostService {
 			postDto.setGood(post.getGood());
 			postDto.setHate(post.getHate());
 			postDto.setUser_name(post.getUser_name());
-			
-			String fileName = Integer.toString(post.getId()) + "_0.png";
-			String filePath = "fridge/post/" + fileName;
-			
+
+			String filePath = makePath(post.getId(), 0);
+
 			byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath));
-			postDto.setImageStrArr(new String[] {Base64.getEncoder().encodeToString(fileContent)});
-			
+			postDto.setImageStrArr(new String[] { Base64.getEncoder().encodeToString(fileContent) });
+
 			postList.add(postDto);
 		}
-		
-		System.out.println(postList);
-		
+
 		return postList;
 	}
-	
+
 	@Override
 	public PostDto getPostDetail(int postId) throws Exception {
 		Optional<Post> post = postRepository.findById(postId);
-		
-		if(!post.isPresent())
+
+		if (!post.isPresent())
 			throw new Exception("찾으시는 레시피가 없습니다.");
-		
+
 		PostDto postDto = null;
 		postDto = new PostDto();
 		postDto.setId(postId);
@@ -129,17 +125,48 @@ public class PostServiceImpl implements PostService {
 		postDto.setGood(post.get().getGood());
 		postDto.setHate(post.get().getHate());
 		postDto.setUser_name(post.get().getUser_name());
-		
-		String filePath = "fridge/post/";
-		String[] imageStrArr = new String[post.get().getImagecnt()];
-		
-		for(int i = 0; i < post.get().getImagecnt(); i++) {
-			String fileName = Integer.toString(post.get().getId()) + "_" + i + ".png";
-			byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath + fileName));
+
+		String[] imageStrArr = new String[postDto.getImageCnt()];
+
+		for (int i = 0; i < postDto.getImageCnt(); i++) {
+			String filePath = makePath(postDto.getId(), i);
+			byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath));
 			imageStrArr[i] = Base64.getEncoder().encodeToString(fileContent);
 		}
 		postDto.setImageStrArr(imageStrArr);
-		
+
 		return postDto;
 	}
+
+	@Override
+	public void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images) throws Exception {
+		Post post = postRepository.findByIdAndUser_id(postId, Integer.parseInt(userId.getName()));
+		int deleteCnt = post.getImagecnt();
+
+		Post modifyPost = new Post(postId, title, images.size(), post.getUser_name(), post.getUser());
+		postRepository.save(modifyPost);
+
+		deleteFile(postId, deleteCnt);
+		createFile(postId, images.size(), images);
+	}
+
+	@Override
+	public void deletePost(Principal userId, int postId) throws Exception {
+		Post deletePost = postRepository.findByIdAndUser_id(postId, Integer.parseInt(userId.getName()));
+
+		if (deletePost == null)
+			throw new Exception("찾으시는 포스트가 없습니다.");
+
+		System.out.println(deletePost);
+		int id = deletePost.getId();
+		int imgCnt = deletePost.getImagecnt();
+		postRepository.delete(deletePost);
+
+		try {
+			deleteFile(id, imgCnt);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+
 }

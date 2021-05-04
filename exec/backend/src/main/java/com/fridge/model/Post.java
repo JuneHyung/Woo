@@ -50,6 +50,16 @@ public class Post {
 		this.user_name = user_name;
 		this.user = user;
 	}
+	
+	public Post(int id, String title, int imageCnt, String user_name, User user) {
+		this.id = id;
+		this.title = title;
+		this.contents = "";
+		this.date = LocalDateTime.now();
+		this.imagecnt = imageCnt;
+		this.user_name = user_name;
+		this.user = user;
+	}
 
 	public int getId() {
 		return id;
