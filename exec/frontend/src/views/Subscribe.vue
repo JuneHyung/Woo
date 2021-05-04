@@ -1,26 +1,21 @@
 <template>
     <v-container>
-        <div style="padding-bottom: 15px">
-            <v-row>
-                <v-col>
-                    <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
-                    <p class="subscribeTitle" style="margin-left: 10px !important; height: 70%">
-                        {{ title }}
-                    </p>
-                </v-col>
-
-                <v-spacer></v-spacer>
-                <div>
-                    <button style="margin-bottom: 5px" @click="changeSubscribePage()">
-                        {{ btnTitle }}
-                    </button>
-                    <v-spacer></v-spacer>
-                    <button style="margin-bottom: 5px" @click="goRecipeCreate()">
-                        레시피 등록
-                    </button>
-                </div>
-            </v-row>
+        <v-row>
+            <div style="width: 24px; height: 40px">
+                <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
+            </div>
+            <p style="font-size: 24px; line-height: 24px; margin-left: 15px !important">
+                {{ title }}
+            </p>
+        </v-row>
+        <div style="margin-left: 260px; text-align: center">
+            <button style="margin-bottom: 5px" @click="changeSubscribePage()">
+                {{ btnTitle }}
+            </button>
+            <v-spacer></v-spacer>
+            <button style="margin-bottom: 5px" @click="goRecipeCreate()">레시피 등록</button>
         </div>
+
         <v-row>
             <div
                 @click="moveRecipeDetail()"
@@ -82,14 +77,9 @@ export default {
 
 <style scoped>
 .subscribeImg {
-    width: 30px;
+    width: 100%;
     height: 70%;
 }
-.subscribeTitle {
-    font-size: 24px;
-    line-height: 24px;
-}
-
 .foodImg {
     width: 100%;
     height: 100px;
