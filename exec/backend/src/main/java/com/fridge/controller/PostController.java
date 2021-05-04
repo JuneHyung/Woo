@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,7 +83,7 @@ public class PostController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@Operation(summary = "사용자 등록 레시피 상세정보", description = "선택한 사용자 등록 레시피 상세 정보를 제공한다.")
 	@GetMapping(path = "/detail/{post_id}")
 	public ResponseEntity<Map<String, Object>> getPostDetail(@PathVariable("post_id") int postId) {
@@ -92,6 +94,52 @@ public class PostController {
 			PostDto post = postService.getPostDetail(postId);
 
 			resultMap.put("post", post);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@Operation(summary = "사용자 등록 레시피 수정", description = "선택한 포스트 내용을 수정한다.", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@PutMapping(path = "/modify", consumes = "multipart/form-data", produces = "application/json")
+	public ResponseEntity<Map<String, Object>> modifyPost(@Parameter(description = "유저 ID") Principal userId,
+			@Parameter(description = "포스트 ID") @RequestParam("postId") int postId,
+			@Parameter(description = "수정할 이미지 제목") @RequestParam("title") String title,
+			@Parameter(description = "수정할 레시피 이미지들", required = true) @RequestParam("images") List<MultipartFile> images) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+
+		try {
+			postService.modifyPost(userId, postId, title, images);
+			
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@Operation(summary = "사용자 등록 레시피 삭제", description = "선택한 포스트 내용을 삭제한다.", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@DeleteMapping(path = "/delete/{post_id}")
+	public ResponseEntity<Map<String, Object>> deletePost(@Parameter(description = "유저 ID") Principal userId,
+			@PathVariable("post_id") int postId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+
+		try {
+			postService.deletePost(userId, postId);
+			
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
