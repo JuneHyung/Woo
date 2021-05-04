@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
 import com.fridge.model.Ingredientsdetail;
+import com.fridge.model.User;
 import com.fridge.model.dto.FridgeDto;
 import com.fridge.model.dto.IngredientsDto;
 import com.fridge.model.repository.FridgeRepository;
@@ -83,5 +84,13 @@ public class FridgeServiceImpl implements FridgeService {
 	public void delIngredients(int ingredients_id) throws Exception {
 		ingredientsRepository.deleteById(ingredients_id);
 
+	}
+
+	@Override
+	public void moveIngredients(IngredientsDto ingredientsDto) throws Exception {
+		System.out.println(ingredientsDto.toString());
+		Ingredients ingredients = new Ingredients(ingredientsDto);
+	
+		ingredientsRepository.save(ingredients);
 	}
 }
