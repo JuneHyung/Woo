@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <div>
-            <p>자취방 냉장고</p>
+            <p>{{ ref_name }}</p>
             <div style="width: 100%; height: 200px">
                 <img
                     :src="require('@/assets/images/refrigerator/ref_44.png')"
@@ -105,9 +105,10 @@ export default {
             addDialog: false,
             minusDialog: false,
             ref_id: 0,
+            ref_name: '',
             garbages: [],
-            ingredients: [],
             category: ['All'],
+            ingredients: [],
             addIngredients: {
                 expired: 'string',
                 locx: 0,
@@ -120,6 +121,13 @@ export default {
                     category: '',
                     name: '',
                 },
+            },
+            addItem: {
+                expired: 'string',
+                locx: 0,
+                locy: 0,
+                fridgeId: 0,
+                ingredientsDetailId: 0,
             },
             ingredientsName: [],
             ingredientsId: [],
@@ -170,12 +178,11 @@ export default {
             }
         },
         getIngredients() {
-            // console.log('ref_id : ' + this.ref_id);
-
             http.get(`fridge/ingredients/${this.ref_id}`)
                 .then((response) => {
-                    // console.log(response.data);
+                    console.log(response.data);
                     this.ingredients = response.data.ingredients;
+                    this.ref_name = this.ingredients[0].fridge.name;
                     this.checkShelfLife();
                     alert('정보받기 성공');
                 })
@@ -211,7 +218,13 @@ export default {
             this.addIngredients.ingredientsdetail.id = this.ingredientsId[idx];
         },
         addIngred() {
-            http.post(`fridge/addIngredients`, this.addIngredients)
+            this.addItem.expired = this.addIngredients.expired;
+            this.addItem.locx = this.addIngredients.locx;
+            this.addItem.locy = this.addIngredients.locy;
+            this.addItem.fridgeId = this.ref_id;
+            this.addItem.ingredientsDetailId = this.addIngredients.ingredientsdetail.id;
+
+            http.post(`fridge/addIngredients`, this.addItem)
                 .then(() => {
                     alert('추가성공');
                     this.addDialog = false;

@@ -27,7 +27,7 @@
                     style="
                         background-color: black;
                         padding: 5px 15px;
-                        color: white;
+
                         font-family: 'MaruBuri-Regular' !important;
                     "
                     class="infobox"
@@ -123,6 +123,7 @@ export default {
 
 <style scoped>
 .infobox p {
+    color: #fff;
     font-family: 'MaruBuri-Regular' !important;
 }
 </style>

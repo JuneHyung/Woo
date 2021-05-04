@@ -62,8 +62,8 @@ export default {
 <style scoped>
 .alarmImg {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
+    right: 0px;
+    bottom: 15px;
     width: 36px;
     height: 36px;
     margin: 22px;

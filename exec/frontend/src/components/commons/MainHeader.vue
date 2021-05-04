@@ -5,7 +5,7 @@
             <v-spacer></v-spacer>
             <div class="menuBox">
                 <v-row class="menu">
-                    <li class="menuList" @click="toggleMenu">
+                    <div class="menuList" @click="toggleMenu">
                         <v-icon
                             style="
                                 width: 60px;
@@ -16,27 +16,27 @@
                             class="openImg"
                             >mdi-arrow-collapse-left</v-icon
                         >
-                    </li>
+                    </div>
 
-                    <li @click="goMyPage" class="menuList">
+                    <div @click="goMyPage" class="menuList">
                         <div class="menuBtn">
                             <img :src="MyPage" alt="마이페이지" class="menuImg" />
                         </div>
                         <p>내 정보</p>
-                    </li>
+                    </div>
 
-                    <li @click="goShareRecipt" class="menuList">
+                    <div @click="goShareRecipt" class="menuList">
                         <img :src="recipe" alt="레시피 이미지" class="menuImg" />
                         <p>추천 레시피</p>
-                    </li>
-                    <li @click="goSubscribe" class="menuList">
+                    </div>
+                    <div @click="goSubscribe" class="menuList">
                         <img :src="subscribe" alt="구독 이미지" class="menuImg" />
                         <p>공유 레시피</p>
-                    </li>
-                    <li class="menuList">
+                    </div>
+                    <div class="menuList">
                         <img :src="logout" alt="로그아웃 이미지" class="menuImg" />
                         <p>로그아웃</p>
-                    </li>
+                    </div>
                 </v-row>
             </div>
         </v-row>
