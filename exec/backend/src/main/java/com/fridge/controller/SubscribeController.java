@@ -89,10 +89,13 @@ public class SubscribeController {
 		HttpStatus status = null;
 		try {
 			subscribeservice.deletescribe(id);
-			
+			resultMap.put("message",SUCCESS);
+			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			// TODO: handle exception
+			resultMap.put("message",FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return null;
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 }
