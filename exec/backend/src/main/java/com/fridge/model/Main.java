@@ -15,7 +15,7 @@ public class Main {
 	private int id;
 	@ManyToOne
 	private Recipe recipe;
-	
+
 	@ManyToOne
 	private Ingredientsdetail ingredientsdetail;
 
@@ -23,29 +23,17 @@ public class Main {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public Recipe getRecipe() {
 		return recipe;
-	}
-
-	public void setRecipe(Recipe recipe) {
-		this.recipe = recipe;
 	}
 
 	public Ingredientsdetail getIngredientsdetail() {
 		return ingredientsdetail;
 	}
 
-	public void setIngredientsdetail(Ingredientsdetail ingredientsdetail) {
-		this.ingredientsdetail = ingredientsdetail;
-	}
-
 	@Override
 	public String toString() {
 		return "Main [id=" + id + ", recipe=" + recipe + ", ingredientsdetail=" + ingredientsdetail + "]";
 	}
-	
+
 }

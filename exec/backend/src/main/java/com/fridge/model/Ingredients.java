@@ -38,48 +38,24 @@ public class Ingredients {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getExpired() {
 		return expired;
-	}
-
-	public void setExpired(String expired) {
-		this.expired = expired;
 	}
 
 	public int getLocx() {
 		return locx;
 	}
 
-	public void setLocx(int locx) {
-		this.locx = locx;
-	}
-
 	public int getLocy() {
 		return locy;
-	}
-
-	public void setLocy(int locy) {
-		this.locy = locy;
 	}
 
 	public Fridge getFridge() {
 		return fridge;
 	}
 
-	public void setFridge(Fridge fridge) {
-		this.fridge = fridge;
-	}
-
 	public Ingredientsdetail getIngredientsdetail() {
 		return ingredientsdetail;
-	}
-
-	public void setIngredientsdetail(Ingredientsdetail ingredientsdetail) {
-		this.ingredientsdetail = ingredientsdetail;
 	}
 
 	@Override

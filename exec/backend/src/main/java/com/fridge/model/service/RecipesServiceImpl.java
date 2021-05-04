@@ -45,10 +45,9 @@ public class RecipesServiceImpl implements RecipesService{
 	@Override
 	public void upViews(int recipe_id) throws Exception {
 		Recipe r = recipesrepository.getOne(recipe_id);
-		int views = r.getViews();
-		r.setViews(views + 1);
-		recipesrepository.save(r);
+		Recipe updateRecipe = new Recipe(r, r.getViews() + 1);
 		
+		recipesrepository.save(updateRecipe);
 	}
 
 }
