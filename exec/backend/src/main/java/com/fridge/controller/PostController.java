@@ -64,13 +64,14 @@ public class PostController {
 	}
 
 	@Operation(summary = "사용자 등록 레시피 목록", description = "사용자가 등록한 레시피 목폭을 최신 순으로 제공. image 한장만 우선 제공")
-	@GetMapping(path = "/list")
-	public ResponseEntity<Map<String, Object>> getPostList() {
+	@GetMapping(path = "/list/{page}/{size}")
+	public ResponseEntity<Map<String, Object>> getPostList(@PathVariable("page") int page,
+			@PathVariable("size") int size) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 
 		try {
-			List<PostDto> postList = postService.getPostList();
+			List<PostDto> postList = postService.getPostList(page, size);
 
 			resultMap.put("postList", postList);
 			resultMap.put("message", SUCCESS);
@@ -104,7 +105,7 @@ public class PostController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@Operation(summary = "사용자 등록 레시피 수정", description = "선택한 포스트 내용을 수정한다.", security = {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@PutMapping(path = "/modify", consumes = "multipart/form-data", produces = "application/json")
@@ -117,7 +118,7 @@ public class PostController {
 
 		try {
 			postService.modifyPost(userId, postId, title, images);
-			
+
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -139,7 +140,7 @@ public class PostController {
 
 		try {
 			postService.deletePost(userId, postId);
-			
+
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
