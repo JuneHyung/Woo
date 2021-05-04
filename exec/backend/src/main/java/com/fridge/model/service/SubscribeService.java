@@ -7,11 +7,11 @@ import com.fridge.model.User;
 
 public interface SubscribeService {
 
-	void insertscribe(Subscribe subscribe);
+	void insertscribe(Subscribe subscribe) throws Exception;
 
-	List<User> getscribe(int id);
+	List<User> getscribe(int id) throws Exception;
 
-	void deletescribe(int id);
+	void deletescribe(int id) throws Exception;
 
 
 }
