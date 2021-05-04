@@ -35,9 +35,16 @@ public class FridgeServiceImpl implements FridgeService {
 
 	@Override
 	public void addIngredients(IngredientsDto ingredientsDto) throws Exception {
-		Ingredients ingredients = new Ingredients(ingredientsDto);
-
-		ingredientsRepository.save(ingredients);
+		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId());
+		if(cnt == 0) {
+			Ingredients ingredients = new Ingredients(ingredientsDto);
+			ingredientsRepository.save(ingredients);
+		}else {
+			Ingredients ingredients = ingredientsRepository.findByIngredientsdetailId(ingredientsDto.getIngredientsDetailId());
+			IngredientsDto ingredientsdto = new IngredientsDto(ingredients.getId(), ingredientsDto.getExpired(), ingredientsDto.getLocx(), ingredientsDto.getLocy(), ingredientsDto.getFridgeId(), ingredientsDto.getIngredientsDetailId());
+			Ingredients ingredients_save = new Ingredients(ingredientsdto);
+			ingredientsRepository.save(ingredients_save);
+		}
 	}
 
 	@Override
@@ -73,7 +80,6 @@ public class FridgeServiceImpl implements FridgeService {
 	@Override
 	public void fridgeDel(Principal user, int fridge_id) throws Exception {
 		Optional<Fridge> fridge = fridgeRepository.findByIdAndUser_Id(fridge_id, Integer.parseInt(user.getName()));
-
 		if (!fridge.isPresent())
 			throw new Exception("삭제 실패!!");
 
@@ -88,7 +94,6 @@ public class FridgeServiceImpl implements FridgeService {
 
 	@Override
 	public void moveIngredients(IngredientsDto ingredientsDto) throws Exception {
-		System.out.println(ingredientsDto.toString());
 		Ingredients ingredients = new Ingredients(ingredientsDto);
 	
 		ingredientsRepository.save(ingredients);
