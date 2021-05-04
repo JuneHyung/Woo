@@ -13,4 +13,8 @@ public interface PostService {
 	List<PostDto> getPostList() throws Exception;
 
 	PostDto getPostDetail(int postId) throws Exception;
+
+	void deletePost(Principal userId, int postId) throws Exception;
+
+	void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images) throws Exception;
 }

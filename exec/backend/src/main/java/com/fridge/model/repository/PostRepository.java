@@ -10,4 +10,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	List<Post> findAllByOrderByDateDesc();
 
+	Post findByIdAndUser_id(int postId, int parseInt);
+
 }
