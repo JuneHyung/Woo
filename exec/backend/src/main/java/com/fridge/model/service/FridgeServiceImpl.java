@@ -35,13 +35,15 @@ public class FridgeServiceImpl implements FridgeService {
 
 	@Override
 	public void addIngredients(IngredientsDto ingredientsDto) throws Exception {
-		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId());
+		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId(), ingredientsDto.getFridgeId());
+		System.out.println(cnt);
 		if(cnt == 0) {
 			Ingredients ingredients = new Ingredients(ingredientsDto);
 			ingredientsRepository.save(ingredients);
 		}else {
-			Ingredients ingredients = ingredientsRepository.findByIngredientsdetailId(ingredientsDto.getIngredientsDetailId());
-			IngredientsDto ingredientsdto = new IngredientsDto(ingredients.getId(), ingredientsDto.getExpired(), ingredientsDto.getLocx(), ingredientsDto.getLocy(), ingredientsDto.getFridgeId(), ingredientsDto.getIngredientsDetailId());
+			int id = ingredientsRepository.findByIngredientsdetailIdandFridgeId(ingredientsDto.getIngredientsDetailId(), ingredientsDto.getFridgeId());
+			System.out.println(id);
+			IngredientsDto ingredientsdto = new IngredientsDto(id, ingredientsDto.getExpired(), ingredientsDto.getLocx(), ingredientsDto.getLocy(), ingredientsDto.getFridgeId(), ingredientsDto.getIngredientsDetailId());
 			Ingredients ingredients_save = new Ingredients(ingredientsdto);
 			ingredientsRepository.save(ingredients_save);
 		}
