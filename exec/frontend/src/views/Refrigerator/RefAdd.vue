@@ -33,7 +33,7 @@
         </div>
         <v-row>
             <v-spacer></v-spacer>
-            <div class="addBtn" @click="RegisterFridge()">등록</div>
+            <div class="addBtn" @click="RegisterFridge()" style="margin: 10px 40px 0 0">등록</div>
         </v-row>
     </v-container>
 </template>

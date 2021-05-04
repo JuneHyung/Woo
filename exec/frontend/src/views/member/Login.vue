@@ -11,7 +11,7 @@
             <v-text-field
                 label="PW (대소문자 특수문자 조합 8자 이상)"
                 placeholder="ssafy123!"
-                type="string"
+                type="password"
                 v-model="user.password"
             ></v-text-field>
             <v-row>
