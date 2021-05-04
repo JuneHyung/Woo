@@ -56,7 +56,7 @@ public class FridgeController {
 			fridgeService.create(user, fridgeDto);
 
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -76,7 +76,7 @@ public class FridgeController {
 			fridgeService.addIngredients(ingredientsDto);
 
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -96,7 +96,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("fridgeList", fridgeList);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -116,7 +116,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("ingredients", ingredients);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -136,7 +136,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("ingredients", ingredients);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -156,7 +156,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("fridge", fridge);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -176,7 +176,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("category", category);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -194,7 +194,7 @@ public class FridgeController {
 			Ingredientsdetail[] ingredients = fridgeService.categoryByingredientsList(category);
 			resultMap.put("message", SUCCESS);
 			resultMap.put("ingredients", ingredients);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -214,7 +214,7 @@ public class FridgeController {
 			fridgeService.fridgeDel(user, fridge_id);
 			
 			resultMap.put("meesage", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			resultMap.put("message", FAIL);
@@ -231,7 +231,7 @@ public class FridgeController {
 		try {
 			fridgeService.delIngredients(ingredients_id);
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -248,7 +248,7 @@ public class FridgeController {
 		try {
 			fridgeService.moveIngredients(ingredientsDto);
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
