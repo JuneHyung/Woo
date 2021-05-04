@@ -101,7 +101,7 @@ public class UserController {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			resultMap.put("massage", FAIL);
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			status = HttpStatus.ACCEPTED;
 		}
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -121,7 +121,7 @@ public class UserController {
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("massage", FAIL);
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			status = HttpStatus.ACCEPTED;
 		}
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
