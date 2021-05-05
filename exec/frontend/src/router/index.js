@@ -12,6 +12,7 @@ import MyPage from "../views/member/MyPage.vue";
 import ShareRecipe from "../views/ShareRecipe.vue";
 import Subscribe from "../views/Subscribe.vue";
 import FoodDetail from "../views/FoodDetail.vue";
+import UserRecipeDetail from "../views/UserRecipeDetail.vue"; 
 
 
 import RefAdd from "../views/Refrigerator/RefAdd.vue";
@@ -57,6 +58,11 @@ const routes = [
     path: "/subscribe",
     name: "Subscribe",
     components: { default: Subscribe, header: MainHeader },
+  },
+  {
+    path: "/UserRecipeDetail/:post_id",
+    name: "UserRecipeDetail",
+    components: { default: UserRecipeDetail, header: MainHeader },
   },
   {
     path: "/refadd",

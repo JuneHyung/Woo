@@ -18,45 +18,52 @@
 
         <v-row>
             <div
-                @click="moveRecipeDetail()"
-                v-for="(food, index) in foods"
+                v-for="(post, index) in postList"
                 :key="index"
                 style="width: 165px; height: 200px; margin: 0 auto"
             >
+                <p>{{ post.title }}</p>
+                <p>{{ post.user_name }}</p>
                 <img
-                    :src="food"
-                    alt="된장찌개"
-                    class="foodImg"
-                    style="width: 160px; height: 160px; margin: 0 auto"
+                    @click="moveRecipeDetail(post.id)"
+                    :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
+                    alt="Customer_image"
+                    style="width: 160px; height: 160px"
                 />
-                <p style="text-align: center">엄마의 손맛 구수한 된장찌개</p>
-                <p style="text-align: center">작성자 : 민주</p>
             </div>
         </v-row>
     </v-container>
 </template>
 <script>
+import http from '@/api/axios.js';
+
 export default {
     name: 'Subscribe',
     data() {
         return {
             subscribe: require('@/assets/images/header/subscribe.png'),
-            foods: [
-                require('@/assets/images/계란말이.jpg'),
-                require('@/assets/images/된장찌개.jpg'),
-                require('@/assets/images/참치김치찌개.jpg'),
-                require('@/assets/images/투움바파스타.jpg'),
-                require('@/assets/images/치즈밥.jpg'),
-                require('@/assets/images/카레라이스.jpg'),
-            ],
             subscribeflag: false,
             title: '전체 레시피',
             btnTitle: '구독자 레시피',
+            postList: [],
+            size: 3,
         };
     },
+    mounted() {
+        http.get(`post/list/0/${this.size}`)
+            .then((response) => {
+                if (response.data.message == 'success') {
+                    this.postList = response.data.postList;
+                } else {
+                    alert('정보 조회 실패');
+                }
+            })
+            .catch(() => {});
+    },
+
     methods: {
-        moveRecipeDetail() {
-            this.$router.push({ name: 'RecipeDetail' });
+        moveRecipeDetail(post_id) {
+            this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
         },
         goRecipeCreate() {
             this.$router.push({ name: 'RecipeCreate' });
