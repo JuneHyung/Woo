@@ -1,14 +1,55 @@
 <template>
     <v-container>
-        <div>
+        <div class="outBox">
             <p>{{ ref_name }}</p>
-            <div style="width: 100%; height: 200px">
-                <img
-                    :src="require('@/assets/images/refrigerator/ref_44.png')"
-                    alt="냉장고 이미지"
-                    style="width: 100%; height: 100%"
-                />
-            </div>
+            <v-row class="box">
+                <div>
+                    <drop
+                        class="drop list"
+                        style="
+                            width: 70px;
+                            height: 200px;
+                            border: 1px solid black;
+                            overflow: scroll;
+                        "
+                    >
+                        <drag
+                            v-for="(ing, index) in addList"
+                            :key="index"
+                            :class="{ [ing]: true }"
+                            :transfer-data="{ item: ing, list: addList, example: 'list' }"
+                            >{{ ing.ingredientsdetail.name }}</drag
+                        >
+                    </drop>
+                </div>
+                <v-row>
+                    <div v-for="(list, i) in lists" :key="i" class="drop">
+                        <div
+                            v-for="(inlist, ind) in list"
+                            :key="ind"
+                            style="border: 1px solid black; width: 115px; height: 50px"
+                        >
+                            <drop
+                                style="width: 120px; height: 50px; overflow: scroll"
+                                class="dropBox"
+                                @drop="handleDrop(inlist, ...arguments, ind, i, inlist)"
+                            >
+                                <drag
+                                    v-for="(ininlist, inde) in inlist"
+                                    :key="inde"
+                                    :transfer-data="{
+                                        item: ininlist,
+                                        list: inlist,
+                                        example: 'list',
+                                    }"
+                                >
+                                    <p>{{ ininlist.ingredientsdetail.name }}</p>
+                                </drag>
+                            </drop>
+                        </div>
+                    </div>
+                </v-row>
+            </v-row>
             <v-row>
                 <v-spacer></v-spacer>
                 <v-dialog v-model="addDialog">
@@ -33,16 +74,6 @@
                                 @change="selectId(addIngredients.ingredientsdetail.name)"
                             ></v-select>
                             <input type="date" v-model="addIngredients.expired" />
-                            <v-text-field
-                                label="X"
-                                type="number"
-                                v-model="addIngredients.locx"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Y"
-                                type="number"
-                                v-model="addIngredients.locy"
-                            ></v-text-field>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -99,7 +130,10 @@
 </template>
 <script>
 import http from '../../api/axios.js';
+import { Drag, Drop } from 'vue-drag-drop';
 export default {
+    components: { Drag, Drop },
+    name: 'RefManage',
     data() {
         return {
             addDialog: false,
@@ -124,13 +158,46 @@ export default {
             },
             addItem: {
                 expired: 'string',
+                locx: 10,
+                locy: 10,
+                fridgeId: 0,
+                ingredientsDetailId: 0,
+            },
+
+            ingredientsName: [],
+            ingredientsId: [],
+            lists: [
+                [[], [], [], []],
+                [[], [], [], []],
+                [[], [], [], []],
+                [[], [], [], []],
+            ],
+            addList: [
+                {
+                    id: 0,
+                    expired: 'string',
+                    locx: 0,
+                    locy: 0,
+                    fridgeId: 0,
+                    fridge: {
+                        id: '',
+                    },
+                    ingredientsdetail: {
+                        id: '',
+                        name: '',
+                    },
+                    ingredientsDetailId: 0,
+                },
+            ],
+            temp: [],
+            moveItem: {
+                id: 0,
+                expired: 'string',
                 locx: 0,
                 locy: 0,
                 fridgeId: 0,
                 ingredientsDetailId: 0,
             },
-            ingredientsName: [],
-            ingredientsId: [],
         };
     },
 
@@ -180,11 +247,45 @@ export default {
         getIngredients() {
             http.get(`fridge/ingredients/${this.ref_id}`)
                 .then((response) => {
-                    console.log(response.data);
                     this.ingredients = response.data.ingredients;
                     this.ref_name = this.ingredients[0].fridge.name;
-                    this.checkShelfLife();
-                    alert('정보받기 성공');
+
+                    this.ingredients.forEach((el) => {
+                        let x = el.locx;
+                        let y = el.locy;
+                        if (x == 10 || y == 10) {
+                            console.log(el);
+                            console.log('옴?');
+                            let temp = {
+                                id: el.id,
+                                expired: el.expired,
+                                fridgeId: el.fridge.id,
+                                fridge: {
+                                    id: el.fridge.id,
+                                },
+                                ingredientsDetailId: el.ingredientsdetail.id,
+                                locx: el.locx,
+                                locy: el.locy,
+                                ingredientsdetail: {
+                                    id: el.ingredientsdetail.id,
+                                    name: el.ingredientsdetail.name,
+                                },
+                            };
+                            // this.moveItem.id = el.id;
+                            // this.moveItem.expired = el.expired;
+                            // this.moveItem.fridgeId = el.fridge.id;
+                            // this.moveItem.ingredientsDetailId = el.fridge.ingredientsdetail.id;
+                            // this.moveItem.locx = el.locx;
+                            // this.moveItem.locy = el.locy;
+                            // this.moveItem.ingredientsDetailName = el.ingredientsdetail.name;
+                            // console.log(this.moveItem);
+                            this.addList.push(temp);
+                            console.log('끝?');
+                        } else {
+                            this.lists[y][x].push(el);
+                        }
+                    });
+                    console.log('정보받기 성공');
                 })
                 .catch(() => {
                     alert('정보받기 실패!');
@@ -219,15 +320,36 @@ export default {
         },
         addIngred() {
             this.addItem.expired = this.addIngredients.expired;
-            this.addItem.locx = this.addIngredients.locx;
-            this.addItem.locy = this.addIngredients.locy;
             this.addItem.fridgeId = this.ref_id;
             this.addItem.ingredientsDetailId = this.addIngredients.ingredientsdetail.id;
 
             http.post(`fridge/addIngredients`, this.addItem)
                 .then(() => {
-                    alert('추가성공');
                     this.addDialog = false;
+                    let detailId = this.addItem.ingredientsDetailId;
+
+                    this.ingredients.forEach((el) => {
+                        if (el.ingredientsdetail.id == detailId) {
+                            let temp = {
+                                id: el.id,
+                                expired: el.expired,
+                                fridgeId: el.firdge.id,
+                                fridge: {
+                                    id: el.fridge.id,
+                                },
+                                ingredientsDetailId: el.ingredientsdetail.id,
+                                locx: el.locx,
+                                locy: el.locy,
+                                ingredientsdetail: {
+                                    id: el.ingredientsdetail.id,
+                                    name: el.ingredientsdetail.name,
+                                },
+                            };
+
+                            this.addList.push(temp);
+                        }
+                    });
+                    window.location.href = `/refmanage/${this.ref_id}`;
                 })
                 .catch((error) => {
                     alert(error);
@@ -238,6 +360,7 @@ export default {
                 .then(() => {
                     alert('삭제 성공');
                     this.minusDialog = false;
+                    window.location.href = `/refmanage/${this.ref_id}`;
                 })
                 .catch((error) => {
                     alert(error);
@@ -249,7 +372,89 @@ export default {
                 params: { ingredient_id: id },
             });
         },
+        handleDrop(toList, data, event, x, y) {
+            // console.log(`event : ${event}`);
+            // console.log(`x: ${x}`);
+            // console.log(`y: ${y}`);
+            this.temp = data.item;
+
+            data.item.locx = x;
+            data.item.locy = y;
+
+            toList.push(data.item);
+            toList.sort((a, b) => a > b);
+            if (data.list) {
+                data.list.splice(data.list.indexOf(data.item), 1);
+            }
+
+            this.moveItem.id = this.temp.id;
+            this.moveItem.expired = this.temp.expired;
+            this.moveItem.locx = x;
+            this.moveItem.locy = y;
+            this.moveItem.fridgeId = this.temp.fridge.id;
+            this.moveItem.ingredientsDetailId = this.temp.ingredientsdetail.id;
+
+            // if(data.addList){
+            //     data.addList.splice(data.)
+            // }
+
+            http.put(`fridge/moveIngredients`, this.moveItem)
+                .then(() => {
+                    console.log('clear');
+                    window.location.href = `/refmanage/${this.ref_id}`;
+                })
+                .catch((error) => alert(error));
+        },
     },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.list {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.inBox {
+    width: 400px;
+    height: 100px;
+}
+
+.ingredient {
+    box-sizing: border-box;
+    border: 1px solid #bbb;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.drop.over {
+    border-color: #aaa;
+    background: #ccc;
+}
+.drag {
+    display: inline-block;
+}
+
+.drop {
+    display: inline-block;
+    vertical-align: top;
+    padding: 8px;
+    margin-bottom: 20px;
+    width: auto;
+    height: auto;
+}
+.box {
+    margin: 10px;
+    width: 610px;
+    height: 250px;
+
+    text-align: center;
+    font-size: 24px;
+}
+.outBox {
+    width: 330px;
+    overflow-x: scroll;
+}
+.dropBox::-webkit-scrollbar {
+    display: none;
+}
+</style>

@@ -10,7 +10,12 @@ export default new Vuex.Store({
     state: {
     isLogin: false,
     },
-    
+    getters: {
+        getIsLogin(state) {
+            
+            return state.isLogin;
+        }
+    },
     mutations: {
     setIsLogined(state, isLogin) {
         state.isLogin = isLogin;

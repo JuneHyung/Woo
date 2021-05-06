@@ -10,5 +10,11 @@ new Vue({
   router,
   store,
   vuetify,
+  async beforeCreate() {
+    let token = localStorage.getItem('X-AUTH-TOKEN');
+    if (store.state.isLogin == false && token) {
+      await store.dispatch('GET_USER_INFO', token);
+    }
+  },
   render: (h) => h(App),
 }).$mount("#app");
