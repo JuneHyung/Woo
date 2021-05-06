@@ -67,6 +67,8 @@ export default {
                 },
             ],
             ingredient_id: 0,
+            page: 0,
+            size: 6,
         };
     },
     created() {
@@ -89,7 +91,7 @@ export default {
         },
         getRecipeList() {
             if (this.ingredient_id == 0) {
-                http.get(`recipes`)
+                http.get(`recipes/${this.page}/${this.size}`)
                     .then(({ data }) => {
                         this.ingredient_id = this.$route.params.ingredient_id;
                         this.listItem = data.recipelist;

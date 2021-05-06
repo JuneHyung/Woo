@@ -45,7 +45,7 @@ export default {
                         let token = response.data['X-AUTH-TOKEN'];
                         this.$store.commit('setIsLogined', true);
                         localStorage.setItem('X-AUTH-TOKEN', token);
-                        console.log(localStorage.getItem('X-AUTH-TOKEN'));
+
                         http.defaults.headers['X-AUTH-TOKEN'] = window.localStorage.getItem(
                             'X-AUTH-TOKEN'
                         );
