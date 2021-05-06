@@ -151,4 +151,28 @@ public class PostController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+
+	@Operation(summary = "포스트 글 좋아요 또는 싫어요 처리", description = "포스트 글의 좋아요 또는 싫어요 여부를 갱신", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@PostMapping(path = "/like")
+	public ResponseEntity<Map<String, Object>> setLike(@Parameter(description = "로그인한 유저") Principal userId,
+			@Parameter(description = "포스트 글 번호") @RequestParam("postId") int postId,
+			@Parameter(description = "good 또는 hate") @RequestParam("like") String like) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+
+		try {
+			postService.setLike(userId, postId, like);
+
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put("message", FAIL);
+			status = HttpStatus.ACCEPTED;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
 }

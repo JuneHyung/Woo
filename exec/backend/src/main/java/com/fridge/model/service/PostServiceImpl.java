@@ -21,8 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fridge.model.Post;
 import com.fridge.model.User;
+import com.fridge.model.UserInterest;
 import com.fridge.model.dto.PostDto;
 import com.fridge.model.repository.PostRepository;
+import com.fridge.model.repository.UserInterestRepository;
 import com.fridge.model.repository.UserRepository;
 
 @Service
@@ -34,6 +36,8 @@ public class PostServiceImpl implements PostService {
 	private PostRepository postRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserInterestRepository userInterestRepository;
 
 	public String makePath(int id, int num) {
 		return POST_PATH + id + "_" + num + ".png";
@@ -172,6 +176,56 @@ public class PostServiceImpl implements PostService {
 			deleteFile(id, imgCnt);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void setLike(Principal user_id, int post_id, String good) throws Exception {
+		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(user_id.getName()), post_id);
+		boolean interest = true;
+		
+		Post post = postRepository.findById(post_id).get();
+		int goodCnt = post.getGood();
+		int hateCnt = post.getHate();
+		
+		if("good".equals(good))
+			interest = true;
+		else
+			interest = false;
+		
+		
+		// 좋아요나 싫어요를 표시한 적 없는 경우
+		if(userInterest == null) {
+			userInterestRepository.save(new UserInterest(Integer.parseInt(user_id.getName()), post_id, interest));
+			if(interest)
+				post = new Post(post, goodCnt + 1, hateCnt);
+			else
+				post = new Post(post, goodCnt, hateCnt + 1);
+			postRepository.save(post);
+		} else {
+			UserInterest updateInterest = new UserInterest(userInterest.getId() ,Integer.parseInt(user_id.getName()), post_id, interest);
+			
+			if(userInterest.isInterest()) {	// 좋아요를 눌러 둔 경우
+				if(interest) { // 좋아요를 한번 더 누른 경우 컬럼 삭제
+					userInterestRepository.delete(userInterest);
+					post = new Post(post, goodCnt - 1, hateCnt);
+				}
+				else { 	// 싫어요를 누른 경우 update
+					userInterestRepository.save(updateInterest);
+					post = new Post(post, goodCnt - 1, hateCnt + 1);
+				}
+			} else {
+				if(!interest) {	// 싫어요를 두번째 누른 경우
+					userInterestRepository.delete(userInterest);
+					post = new Post(post, goodCnt, hateCnt - 1);
+				}
+				else {
+					userInterestRepository.save(updateInterest);
+					post = new Post(post, goodCnt + 1, hateCnt - 1);
+				}
+			}
+			
+			postRepository.save(post);
 		}
 	}
 

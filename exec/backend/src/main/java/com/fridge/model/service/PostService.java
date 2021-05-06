@@ -17,4 +17,6 @@ public interface PostService {
 	void deletePost(Principal userId, int postId) throws Exception;
 
 	void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images) throws Exception;
+
+	void setLike(Principal user_id, int post_id, String good) throws Exception;
 }
