@@ -8,10 +8,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-    isLogin: false,
+        isLogin: false,
+        
     },
-    
     mutations: {
+        
     setIsLogined(state, isLogin) {
         state.isLogin = isLogin;
     },
