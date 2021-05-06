@@ -6,7 +6,7 @@
             <v-spacer></v-spacer>
         </v-row>
         <div>
-            <p style="font-size: 18px">닉네임</p>
+            <p style="font-size: 18px">닉네임 {{ this.memberInfo.nick }}</p>
         </div>
         <div style="padding-top: 5px; margin-bottom: 10px">
             <p style="height: 100px; font-size: 18px">내가 올린 레시피</p>
@@ -77,9 +77,13 @@
 
 <script>
 import swal from 'sweetalert';
+import { mapState } from 'vuex';
 
 export default {
     name: 'MyPage',
+    computed: {
+        ...mapState(['memberInfo']),
+    },
     data() {
         return {
             myPage: require('@/assets/images/header/MyPage.png'),

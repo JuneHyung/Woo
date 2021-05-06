@@ -1,18 +1,20 @@
 <template>
     <v-container>
+        <v-row>
+            <div style="width: 24px; height: 40px">
+                <img :src="meal" alt="요리이미지" class="mealImg" />
+            </div>
+            <p style="font-size: 24px; line-height: 24px; margin-left: 15px !important">
+                {{ post.title }}
+            </p>
+        </v-row>
         <div>
-            <v-row>
-                <p style="font-size: 24px; line-height: 24px; margin-left: 15px !important">
-                    {{ post.title }}
-                </p>
-            </v-row>
-        </div>
-        <div>
-            <p>요리이름 : {{ post.title }}</p>
-            <p>업로드 날짜 : {{ post.date }}</p>
-            <p>작성자 : {{ post.user_name }}</p>
+            <p class="font-14">요리이름 : {{ post.title }}</p>
+            <p class="font-14">업로드 날짜 : {{ post.date }}</p>
+            <p class="font-14">작성자 : {{ post.user_name }}</p>
         </div>
         <div v-for="(img, index) in post.imageStrArr" :key="index">
+            <p class="font-14">요리 방법</p>
             <img :src="`data:image/jpg;base64,${img}`" alt="Customer_image" />
         </div>
     </v-container>
@@ -25,6 +27,7 @@ export default {
     name: 'UserRecipeDetail',
     data: () => ({
         post: '',
+        meal: require('@/assets/images/요리.png'),
     }),
     created() {
         this.post_id = this.$route.params.id;
@@ -58,4 +61,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.mealImg {
+    width: 100%;
+    height: 70%;
+}
+</style>
