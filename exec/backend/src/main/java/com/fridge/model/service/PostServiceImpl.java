@@ -131,7 +131,7 @@ public class PostServiceImpl implements PostService {
 		postDto.setTitle(post.get().getTitle());
 		postDto.setDate(post.get().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
 		postDto.setImageCnt(post.get().getImagecnt());
-		postDto.setVisit(post.get().getVisit());
+		postDto.setVisit(post.get().getVisit() + 1);
 		postDto.setGood(post.get().getGood());
 		postDto.setHate(post.get().getHate());
 		postDto.setUser_name(post.get().getUser_name());
@@ -144,6 +144,8 @@ public class PostServiceImpl implements PostService {
 			imageStrArr[i] = Base64.getEncoder().encodeToString(fileContent);
 		}
 		postDto.setImageStrArr(imageStrArr);
+		
+		postRepository.save(new Post(post.get(), post.get().getVisit() + 1));
 
 		return postDto;
 	}

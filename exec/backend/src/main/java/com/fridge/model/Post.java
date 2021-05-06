@@ -41,11 +41,27 @@ public class Post {
 	protected Post() {
 		super();
 	}
-	
+
 	public Post(int id) {
 		this.id = id;
 	}
-	
+
+	public Post(Post post, int visit) {
+		this.id = post.getId();
+		this.title = post.getTitle();
+		this.contents = post.getContents();
+		this.date = post.getDate();
+		this.imagecnt = post.getImagecnt();
+
+		this.visit = visit;
+
+		this.good = post.getGood();
+		this.hate = post.getHate();
+		this.user_name = post.getUser_name();
+		this.user = post.getUser();
+
+	}
+
 	public Post(Post post, int good, int hate) {
 		this.id = post.getId();
 		this.title = post.getTitle();
@@ -55,11 +71,10 @@ public class Post {
 		this.visit = post.getVisit();
 		this.user_name = post.getUser_name();
 		this.user = post.getUser();
-		
 		this.good = good;
 		this.hate = hate;
 	}
-	
+
 	public Post(String title, int imageCnt, String user_name, User user) {
 		this.title = title;
 		this.contents = "";
@@ -68,7 +83,7 @@ public class Post {
 		this.user_name = user_name;
 		this.user = user;
 	}
-	
+
 	public Post(int id, String title, int imageCnt, String user_name, User user) {
 		this.id = id;
 		this.title = title;
