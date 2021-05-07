@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+// Spring Security를 위한 유저 정보 저장 객체
 public class CustomUserDetail implements UserDetails {
 	private static final long serialVersionUID = 1L;
 

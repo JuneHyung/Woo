@@ -9,23 +9,31 @@ import javax.persistence.Table;
 
 import com.fridge.model.dto.IngredientsDto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Table(name = "ingredients")
 @Entity
+@Schema(name = "재료 정보", description = "재료 정보를 저장하는 Entity")
 public class Ingredients {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Schema(title = "고유 ID - PK")
 	int id;
+	@Schema(title = "유통 기한")
 	String expired;
+	@Schema(title = "냉장고 X 좌표")
 	int locx;
+	@Schema(title = "냉장고 Y 좌표")
 	int locy;
 	@ManyToOne
+	@Schema(title = "냉장고 정보 - FK")
 	private Fridge fridge;
 	@ManyToOne
+	@Schema(title = "재료 상세 정보 - FK")
 	private Ingredientsdetail ingredientsdetail;
 
 	protected Ingredients() {
 	}
-
 	
 	public Ingredients(int id, String expired, int locx, int locy, Fridge fridge, Ingredientsdetail ingredientsdetail) {
 		super();

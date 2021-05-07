@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "userinterest")
+@Schema(name = "좋아요, 싫어요 table", description = "사용자가 누른 좋아요 혹은 싫어요에 대한 정보를 저장")
 public class UserInterest {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
