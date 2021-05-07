@@ -12,6 +12,8 @@ public interface PostService {
 	
 	List<PostDto> getPostList(int page, int size) throws Exception;
 
+	List<PostDto> getPostList(int page, int size,int user_id) throws Exception;
+	
 	PostDto getPostDetail(int postId) throws Exception;
 
 	void deletePost(Principal userId, int postId) throws Exception;
