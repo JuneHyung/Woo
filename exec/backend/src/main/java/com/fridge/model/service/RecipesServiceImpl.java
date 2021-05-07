@@ -1,5 +1,6 @@
 package com.fridge.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,39 +16,47 @@ import com.fridge.model.repository.RecipesRepository;
 @Service
 public class RecipesServiceImpl implements RecipesService {
 	@Autowired
-	private RecipesRepository recipesrepository;
+	private RecipesRepository recipesRepository;
 
 	@Autowired
-	private MainRepository mainrepository;
+	private MainRepository mainRepository;
 
 	@Override
-	public void recipeinsert(Recipe recipe) throws Exception {
-		recipesrepository.save(recipe);
+	public void recipeInsert(Recipe recipe) throws Exception {
+		recipesRepository.save(recipe);
 	}
 
 	@Override
-	public Optional<Recipe> recipeselect(int recipe_id) throws Exception {
-		return recipesrepository.findById(recipe_id);
+	public Optional<Recipe> recipeSelect(int recipe_id) throws Exception {
+		return recipesRepository.findById(recipe_id);
 	}
 
 	@Override
-	public List<Recipe> recipelist(int page, int size) throws Exception {
+	public List<Recipe> recipeList(int page, int size) throws Exception {
 		PageRequest pageRequest = PageRequest.of(page, size);
-		return recipesrepository.findAll(pageRequest).getContent();
+		return recipesRepository.findAll(pageRequest).getContent();
 	}
 
 	@Override
-	public List<Main> ingredientrecipes(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return mainrepository.findByIngredientsdetail_id(id);
+	public List<Recipe> ingredientRecipes(int id, int page, int size) throws Exception {
+		PageRequest pageRequest = PageRequest.of(page, size);
+		
+		List<Main> mainList =  mainRepository.findByIngredientsdetail_id(id, pageRequest);
+		
+		List<Recipe> recipeList = new ArrayList<Recipe>();
+		
+		for(Main main : mainList)
+			recipeList.add(main.getRecipe());
+		
+		return recipeList;
 	}
 
 	@Override
 	public void upViews(int recipe_id) throws Exception {
-		Recipe r = recipesrepository.getOne(recipe_id);
+		Recipe r = recipesRepository.getOne(recipe_id);
 		Recipe updateRecipe = new Recipe(r, r.getViews() + 1);
 
-		recipesrepository.save(updateRecipe);
+		recipesRepository.save(updateRecipe);
 	}
 
 }
