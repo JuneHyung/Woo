@@ -33,7 +33,7 @@ public class PostServiceImpl implements PostService {
 	public static final Logger logger = LoggerFactory.getLogger(PostService.class);
 	public static final String POST_PATH = "fridge/post/";
 	@Autowired
-	private KafkaProducerService kafkaProducerServiceImpl; 
+	private KafkaProducerService kafkaProducerServiceImpl;
 	@Autowired
 	private PostRepository postRepository;
 	@Autowired
@@ -87,7 +87,8 @@ public class PostServiceImpl implements PostService {
 		if (now == null) {
 			throw new SQLException("DB insert Error!!!!");
 		}
-		kafkaProducerServiceImpl.sendMessage(new MessageDto(now.getUser().getId(),now.getId(),now.getUser().getNick()));
+		kafkaProducerServiceImpl
+				.sendMessage(new MessageDto(now.getUser().getId(), now.getId(), now.getUser().getNick()));
 		createFile(now.getId(), now.getImagecnt(), images);
 	}
 
@@ -119,11 +120,11 @@ public class PostServiceImpl implements PostService {
 
 		return postList;
 	}
-	
+
 	@Override
-	public List<PostDto> getPostList(int page, int size,int user_id) throws Exception {
+	public List<PostDto> getMyPosLlist(int page, int size, int user_id) throws Exception {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
-		List<Post> posts = postRepository.findByUser_id(user_id,pageRequest);
+		List<Post> posts = postRepository.findByUser_id(user_id, pageRequest);
 
 		List<PostDto> postList = new ArrayList<PostDto>();
 		for (Post post : posts) {
@@ -148,6 +149,7 @@ public class PostServiceImpl implements PostService {
 
 		return postList;
 	}
+
 	@Override
 	public PostDto getPostDetail(int postId) throws Exception {
 		Optional<Post> post = postRepository.findById(postId);
@@ -174,7 +176,7 @@ public class PostServiceImpl implements PostService {
 			imageStrArr[i] = Base64.getEncoder().encodeToString(fileContent);
 		}
 		postDto.setImageStrArr(imageStrArr);
-		
+
 		postRepository.save(new Post(post.get(), post.get().getVisit() + 1));
 
 		return postDto;
@@ -210,53 +212,52 @@ public class PostServiceImpl implements PostService {
 			throw new Exception(e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public void setLike(Principal user_id, int post_id, String good) throws Exception {
-		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(user_id.getName()), post_id);
+		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(user_id.getName()),
+				post_id);
 		boolean interest = true;
-		
+
 		Post post = postRepository.findById(post_id).get();
 		int goodCnt = post.getGood();
 		int hateCnt = post.getHate();
-		
-		if("good".equals(good))
+
+		if ("good".equals(good))
 			interest = true;
 		else
 			interest = false;
-		
-		
+
 		// 좋아요나 싫어요를 표시한 적 없는 경우
-		if(userInterest == null) {
+		if (userInterest == null) {
 			userInterestRepository.save(new UserInterest(Integer.parseInt(user_id.getName()), post_id, interest));
-			if(interest)
+			if (interest)
 				post = new Post(post, goodCnt + 1, hateCnt);
 			else
 				post = new Post(post, goodCnt, hateCnt + 1);
 			postRepository.save(post);
 		} else {
-			UserInterest updateInterest = new UserInterest(userInterest.getId() ,Integer.parseInt(user_id.getName()), post_id, interest);
-			
-			if(userInterest.isInterest()) {	// 좋아요를 눌러 둔 경우
-				if(interest) { // 좋아요를 한번 더 누른 경우 컬럼 삭제
+			UserInterest updateInterest = new UserInterest(userInterest.getId(), Integer.parseInt(user_id.getName()),
+					post_id, interest);
+
+			if (userInterest.isInterest()) { // 좋아요를 눌러 둔 경우
+				if (interest) { // 좋아요를 한번 더 누른 경우 컬럼 삭제
 					userInterestRepository.delete(userInterest);
 					post = new Post(post, goodCnt - 1, hateCnt);
-				}
-				else { 	// 싫어요를 누른 경우 update
+				} else { // 싫어요를 누른 경우 update
 					userInterestRepository.save(updateInterest);
 					post = new Post(post, goodCnt - 1, hateCnt + 1);
 				}
 			} else {
-				if(!interest) {	// 싫어요를 두번째 누른 경우
+				if (!interest) { // 싫어요를 두번째 누른 경우
 					userInterestRepository.delete(userInterest);
 					post = new Post(post, goodCnt, hateCnt - 1);
-				}
-				else {
+				} else {
 					userInterestRepository.save(updateInterest);
 					post = new Post(post, goodCnt + 1, hateCnt - 1);
 				}
 			}
-			
+
 			postRepository.save(post);
 		}
 	}

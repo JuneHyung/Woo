@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fridge.model.Recipe;
 import com.fridge.model.dto.PostDto;
 import com.fridge.model.service.PostService;
 
@@ -64,15 +62,18 @@ public class PostController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	@Operation(summary = "자기글 확인", description = "자기가 쓴글을 확인한다")
-	@GetMapping(path = "/list/{user_id}/{page}/{size}")
-	public ResponseEntity<Map<String, Object>> recipeMypostlist(@PathVariable("user_id") int user_id,
+
+	@Operation(summary = "자기글 확인", description = "자기가 쓴글을 확인한다", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@GetMapping(path = "/mylist/{page}/{size}")
+	public ResponseEntity<Map<String, Object>> getMyPosLlist(@Parameter(description = "로그인 유저 ID") Principal userId,
 			@PathVariable("page") int page, @PathVariable("size") int size) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			List<PostDto> mypostList = postService.getPostList(page, size,user_id);
-			resultMap.put("message", SUCCESS);
+			List<PostDto> myPostList = postService.getMyPosLlist(page, size, Integer.parseInt(userId.getName()));
+
+			resultMap.put("myPostList", myPostList);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -80,8 +81,10 @@ public class PostController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+
 	@Operation(summary = "사용자 등록 레시피 목록", description = "사용자가 등록한 레시피 목폭을 최신 순으로 제공. image 한장만 우선 제공")
 	@GetMapping(path = "/list/{page}/{size}")
 	public ResponseEntity<Map<String, Object>> getPostList(@PathVariable("page") int page,
