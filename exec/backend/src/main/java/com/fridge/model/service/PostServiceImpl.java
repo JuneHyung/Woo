@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fridge.model.Post;
 import com.fridge.model.User;
+import com.fridge.model.dto.MessageDto;
 import com.fridge.model.dto.PostDto;
 import com.fridge.model.repository.PostRepository;
 import com.fridge.model.repository.UserRepository;
@@ -27,7 +28,8 @@ import com.fridge.model.repository.UserRepository;
 public class PostServiceImpl implements PostService {
 	public static final Logger logger = LoggerFactory.getLogger(PostService.class);
 	public static final String POST_PATH = "fridge/post/";
-
+	@Autowired
+	private KafkaProducerService kafkaProducerServiceImpl; 
 	@Autowired
 	private PostRepository postRepository;
 	@Autowired
@@ -76,7 +78,7 @@ public class PostServiceImpl implements PostService {
 		if (now == null) {
 			throw new SQLException("DB insert Error!!!!");
 		}
-
+		kafkaProducerServiceImpl.sendMessage(new MessageDto(now.getUser().getId(),now.getId(),now.getUser().getNick()));
 		createFile(now.getId(), now.getImagecnt(), images);
 	}
 
