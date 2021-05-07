@@ -24,9 +24,20 @@
         <div>
             <p style="font-size: 18px"></p>
         </div>
-        <div style="padding-top: 5px; margin-bottom: 10px">
-            <p style="height: 100px; font-size: 18px">내가 올린 레시피</p>
+        <div style="padding-top: 5px; margin-bottom: 3px">
+            <p style="font-size: 18px">내가 올린 레시피</p>
         </div>
+        <v-row>
+            <div v-for="(post, index) in myPostList" :key="index" style="margin: 0 auto">
+                <p class="font-14">{{ post.title }}</p>
+                <img
+                    @click="moveRecipeDetail(post.id)"
+                    :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
+                    alt="Recipeimage"
+                    style="width: 150px; height: 160px"
+                />
+            </div>
+        </v-row>
     </v-container>
 </template>
 
@@ -50,6 +61,9 @@ export default {
             subscribeDialog: false,
             user_id: '',
             user: '',
+            myPostList: [],
+            page: 0,
+            size: 4,
         };
     },
     mounted() {
@@ -61,6 +75,15 @@ export default {
                     this.id = this.user.id;
                 } else {
                     alert('조회실패');
+                }
+            })
+            .catch(() => {});
+        http.get(`post/mylist/0/${this.size}`)
+            .then((response) => {
+                if (response.data.message == 'success') {
+                    this.myPostList = response.data.myPostList;
+                } else {
+                    alert('정보 조회 실패');
                 }
             })
             .catch(() => {});
@@ -77,6 +100,9 @@ export default {
         },
         closeEdit() {
             this.dialogEdit = false;
+        },
+        moveRecipeDetail(post_id) {
+            this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
         },
     },
 };
