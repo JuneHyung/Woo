@@ -2,7 +2,7 @@
     <v-container>
         <header>
             <v-row>
-                <div @click="goMain" class="logo"><img :src="logo" alt="로고" /></div>
+                <div @click="goStart" class="logo"><img :src="logo" alt="로고" /></div>
                 <v-spacer></v-spacer>
                 <div @click="goSignUp" class="menuList">
                     <img :src="signup" alt="회원가입 이미지" class="menuImg" />
@@ -29,8 +29,8 @@ export default {
         };
     },
     methods: {
-        goMain() {
-            this.$router.push({ name: 'Main' });
+        goStart() {
+            this.$router.push({ name: 'Start' });
         },
         goSignUp() {
             this.$router.push({ name: 'SignUp' });
