@@ -50,6 +50,7 @@
 <script>
 import http from '@/api/axios.js';
 import swal from 'sweetalert';
+import safe from 'safe-regex';
 
 export default {
     data() {
@@ -76,12 +77,18 @@ export default {
             this.imageName = file.name;
         },
         validPassword(password) {
-            return /^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$@$!%*#?&]).*$/.test(password);
+            const reg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*])([a-zA-Z0-9@#$%^&+=*.\-_]){3,}$/;
+            if (!safe(reg)) {
+                throw new Error(`unsafe regex - ${reg}`);
+            }
+            return reg.test(password);
         },
         validEmail(email) {
-            return /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(
-                email
-            );
+            const reg = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i;
+            if (!safe(reg)) {
+                throw new Error(`unsafe regex - ${reg}`);
+            }
+            return reg.test(email);
         },
         signUp() {
             console.log('회원가입');
