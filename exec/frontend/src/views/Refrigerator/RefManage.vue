@@ -1,17 +1,13 @@
 <template>
     <v-container>
-        <div class="outBox">
-            <p>{{ ref_name }}</p>
+        <div class="outBox listBox">
+            <p style="font-size: 20px">{{ ref_name }}</p>
+            <div class="divider"></div>
             <v-row class="box">
                 <div>
                     <drop
-                        class="drop list"
-                        style="
-                            width: 70px;
-                            height: 200px;
-                            border: 1px solid black;
-                            overflow: scroll;
-                        "
+                        class="drop list listBox"
+                        style="width: 70px; height: 200px; border: 1px solid black"
                     >
                         <drag
                             v-for="(ing, index) in addList"
@@ -21,9 +17,72 @@
                             >{{ ing.ingredientsdetail.name }}</drag
                         >
                     </drop>
+                    <v-row>
+                        <v-dialog v-model="addDialog">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon class="addBtn" style="color: #f00" v-bind="attrs" v-on="on"
+                                    >mdi-plus-circle-outline</v-icon
+                                >
+                            </template>
+                            <v-card>
+                                <v-card-title>재료를 추가해주세요!</v-card-title>
+                                <v-card-text>
+                                    <v-select
+                                        :items="category"
+                                        v-model="addIngredients.ingredientsdetail.category"
+                                        label="Solo field"
+                                        solo
+                                        @change="getIngredientsName()"
+                                    ></v-select>
+                                    <v-select
+                                        :items="ingredientsName"
+                                        v-model="addIngredients.ingredientsdetail.name"
+                                        label="Solo field"
+                                        solo
+                                        @change="selectId(addIngredients.ingredientsdetail.name)"
+                                    ></v-select>
+                                    <input type="date" v-model="addIngredients.expired" />
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="primary" text @click="addIngred()">
+                                        추가완료
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                        <v-dialog v-model="minusDialog">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                    class="minusBtn"
+                                    style="color: #00f"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    >mdi-minus-circle-outline</v-icon
+                                >
+                            </template>
+                            <v-card>
+                                <v-card-title>재료를 빼주세요!</v-card-title>
+                                <v-card-text>
+                                    <v-row v-for="(ingredient, index) in ingredients" :key="index">
+                                        <p>{{ ingredient.ingredientsdetail.name }}</p>
+                                        <v-spacer></v-spacer>
+                                        <div @click="removeIngred(ingredient.id)">X</div>
+                                    </v-row>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="primary" text @click="removeIngred()">
+                                        빼기완료
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-row>
                 </div>
                 <v-row>
                     <div v-for="(list, i) in lists" :key="i" class="drop">
+                        <p>{{ i + 1 }}번 문</p>
                         <div
                             v-for="(inlist, ind) in list"
                             :key="ind"
@@ -50,67 +109,42 @@
                     </div>
                 </v-row>
             </v-row>
-            <v-row>
-                <v-spacer></v-spacer>
-                <v-dialog v-model="addDialog">
-                    <template v-slot:activator="{ on, attrs }">
-                        <div class="addBtn" v-bind="attrs" v-on="on">+ 재료 추가</div>
-                    </template>
-                    <v-card>
-                        <v-card-title>재료를 추가해주세요!</v-card-title>
-                        <v-card-text>
-                            <v-select
-                                :items="category"
-                                v-model="addIngredients.ingredientsdetail.category"
-                                label="Solo field"
-                                solo
-                                @change="getIngredientsName()"
-                            ></v-select>
-                            <v-select
-                                :items="ingredientsName"
-                                v-model="addIngredients.ingredientsdetail.name"
-                                label="Solo field"
-                                solo
-                                @change="selectId(addIngredients.ingredientsdetail.name)"
-                            ></v-select>
-                            <input type="date" v-model="addIngredients.expired" />
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="primary" text @click="addIngred()"> 추가완료 </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                <v-dialog v-model="minusDialog">
-                    <template v-slot:activator="{ on, attrs }">
-                        <div class="minusBtn" v-bind="attrs" v-on="on">- 재료 빼기</div>
-                    </template>
-                    <v-card>
-                        <v-card-title>재료를 빼주세요!</v-card-title>
-                        <v-card-text>
-                            <v-row v-for="(ingredient, index) in ingredients" :key="index">
-                                <p>{{ ingredient.ingredientsdetail.name }}</p>
-                                <v-spacer></v-spacer>
-                                <div @click="removeIngred(ingredient.id)">X</div>
-                            </v-row>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="primary" text @click="removeIngred()"> 빼기완료 </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </v-row>
         </div>
-        <div stlye="margin-top:50px;">
+        <div style="margin-top: 30px">
             <p>유통기한 1주일 미만</p>
             <v-slide-group center-active show-arrows>
-                <v-slide-item
-                    v-for="(ingredient, index) in ingredients"
-                    :key="index"
-                    @click="goRecipeList(ingredient.ingredientsdetail.id)"
-                >
-                    <v-card class="ma-1" height="120" width="80">
+                <v-slide-item v-for="(ingredient, index) in garbages" :key="index">
+                    <v-card
+                        class="ma-1"
+                        height="120"
+                        width="80"
+                        @click="goRecipeList(ingredient.ingredientsdetail.id)"
+                    >
+                        <img
+                            :src="
+                                require(`@/assets/images/ingredients/${ingredient.ingredientsdetail.image}`)
+                            "
+                            alt="재료이미지"
+                            style="width: 100%; height: 85%; padding: 5px"
+                        />
+
+                        <p style="text-align: center; height: 15%">
+                            {{ ingredient.ingredientsdetail.name }}
+                        </p>
+                    </v-card>
+                </v-slide-item>
+            </v-slide-group>
+        </div>
+        <div style="margin-top: 30px">
+            <p>내 재료 목록</p>
+            <v-slide-group center-active show-arrows>
+                <v-slide-item v-for="(ingredient, index) in ingredients" :key="index">
+                    <v-card
+                        class="ma-1"
+                        height="120"
+                        width="80"
+                        @click="goRecipeList(ingredient.ingredientsdetail.id)"
+                    >
                         <img
                             :src="
                                 require(`@/assets/images/ingredients/${ingredient.ingredientsdetail.image}`)
@@ -271,20 +305,14 @@ export default {
                                     name: el.ingredientsdetail.name,
                                 },
                             };
-                            // this.moveItem.id = el.id;
-                            // this.moveItem.expired = el.expired;
-                            // this.moveItem.fridgeId = el.fridge.id;
-                            // this.moveItem.ingredientsDetailId = el.fridge.ingredientsdetail.id;
-                            // this.moveItem.locx = el.locx;
-                            // this.moveItem.locy = el.locy;
-                            // this.moveItem.ingredientsDetailName = el.ingredientsdetail.name;
-                            // console.log(this.moveItem);
                             this.addList.push(temp);
+
                             console.log('끝?');
                         } else {
                             this.lists[y][x].push(el);
                         }
                     });
+                    this.checkShelfLife();
                     console.log('정보받기 성공');
                 })
                 .catch(() => {
@@ -296,19 +324,16 @@ export default {
             var current = new Date();
 
             let year = current.getFullYear();
-            let month = current.getMonth();
-            let date = current.getDate();
+            let month = current.getMonth() + 1;
+            let date = current.getDate() + 7;
             let today = `${year}-${month}-${date}`;
             let todayO = new Date(today);
-            console.log(todayO.getTime());
-            console.log(this.ingredients.length);
 
-            console.log('왔나? : ' + this.ingredients[0].expired);
             for (var i = 0; i < this.ingredients.length; i++) {
-                console.log(i);
-                var ingre = new Date(this.ingredients[0].expired);
-                if (ingre.getTime() > todayO.getTime()) {
-                    this.garbages = this.ingredients[i];
+                var ingre = new Date(this.ingredients[i].expired);
+
+                if (ingre.getTime() <= todayO.getTime()) {
+                    this.garbages.push(this.ingredients[i]);
                 }
             }
         },
@@ -412,6 +437,7 @@ export default {
 .list {
     width: 100px;
     margin-right: 10px;
+    margin-top: 25px;
 }
 
 .inBox {
@@ -438,7 +464,7 @@ export default {
     display: inline-block;
     vertical-align: top;
     padding: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     width: auto;
     height: auto;
 }
@@ -452,9 +478,26 @@ export default {
 }
 .outBox {
     width: 330px;
+    height: 330px;
     overflow-x: scroll;
 }
 .dropBox::-webkit-scrollbar {
     display: none;
+}
+.addBtn,
+.minusBtn {
+    font-weight: 900;
+    width: 20px;
+    height: 20px;
+}
+
+.listBox::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+.divider {
+    width: 180%;
+    height: 2px;
+    border: 1px solid black;
+    margin: 10px auto;
 }
 </style>

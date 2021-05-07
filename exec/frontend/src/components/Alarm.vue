@@ -40,6 +40,7 @@
 </template>
 
 <script>
+// import { Kafka } from 'kafkajs';
 export default {
     data() {
         return {
@@ -55,24 +56,49 @@ export default {
             var alarm = document.querySelector('.alarm');
             alarm.classList.toggle('alarmOpen');
         },
+        getMessage() {
+            // const kafka = new Kafka({
+            //     clientId: 'JuneHyung',
+            //     brokers:['k4d109.p.ssafy.io:9092']
+            // })
+            // const producer = kafka.producer();
+            // await producer.connect();
+            // await producer.send({
+            //     topic:'test-topic',
+            //     messages:[
+            //         {value: 'Hello KafkaJS user!'},
+            //     ],
+            // })
+            // await producer.disconnect()
+            // const consumer = kafka.consumer({groupId:'test-group'})
+            // await consumer.connect();
+            // await consumer.subscribe({topic:'test-topic', fromBeginning:true})
+            // await consumer.run({
+            //     eachMessage: async ({topic, partition, message}) => {
+            //         console.log({
+            //             value: message.value.toString(),
+            //         })
+            //     },
+            // })
+        },
     },
 };
 </script>
 
 <style scoped>
 .alarmImg {
-    position: absolute;
-    right: 0px;
-    bottom: 15px;
+    position: fixed;
+    right: 5px;
+    bottom: 5px;
     width: 36px;
     height: 36px;
     margin: 22px;
 }
 .alarm {
-    position: absolute;
-    bottom: 78px;
+    position: fixed;
+    bottom: 70px;
     opacity: 0.88 !important;
-    right: 0;
+    right: 25px;
     width: 180px;
     display: none;
     transition: all 0.4s;

@@ -71,8 +71,17 @@ export default {
             size: 6,
         };
     },
+
     created() {
+        this.ingredient_id = this.$route.params.ingredient_id;
         this.getRecipeList();
+    },
+    watch: {
+        $route() {
+            console.log('확인!');
+            this.ingredient_id = this.$route.params.ingredient_id;
+            this.getRecipeList();
+        },
     },
     methods: {
         goRecipeCreate() {
@@ -91,6 +100,7 @@ export default {
         },
         getRecipeList() {
             if (this.ingredient_id == 0) {
+                console.log('다시왔니?');
                 http.get(`recipes/${this.page}/${this.size}`)
                     .then(({ data }) => {
                         this.ingredient_id = this.$route.params.ingredient_id;
@@ -105,8 +115,10 @@ export default {
                     })
                     .catch((error) => console.log(error));
             } else {
-                http.get(`detail/${this.ingredient_id}`)
+                console.log(`${this.ingredient_id}`);
+                http.get(`recipes/ingredients/${this.ingredient_id}/${this.page}/${this.size}`)
                     .then(({ data }) => {
+                        console.log('여기?');
                         this.listItem = data.recipelist;
                         for (var i = 0; i < this.listItem.length; i++) {
                             let temp = this.listItem[i].url;
