@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Table(name = "post")
 @Entity
+@Schema(description = "포스트 저장을 위한 Entity")
 public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
