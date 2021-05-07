@@ -1,7 +1,7 @@
 <template>
     <header>
         <v-row class="headerBox">
-            <div @click="goStart" class="logo"><img :src="logo" alt="로고" /></div>
+            <div @click="goMain" class="logo"><img :src="logo" alt="로고" /></div>
             <v-spacer></v-spacer>
             <div class="menuBox">
                 <v-row class="menu">
@@ -33,7 +33,7 @@
                         <img :src="subscribe" alt="구독 이미지" class="menuImg" />
                         <p>공유 레시피</p>
                     </div>
-                    <div class="menuList">
+                    <div class="menuList" @click="clickLogout()">
                         <img :src="logout" alt="로그아웃 이미지" class="menuImg" />
                         <p>로그아웃</p>
                     </div>
@@ -57,8 +57,8 @@ export default {
         };
     },
     methods: {
-        goStart() {
-            this.$router.push({ name: 'Start' });
+        goMain() {
+            this.$router.push({ name: 'Main' });
         },
         goShareRecipt() {
             this.$router.push({ name: 'RecipeList', params: { ingredient_id: 0 } });
@@ -75,6 +75,15 @@ export default {
             const menu = document.querySelector('.menu');
             console.log(menu);
             menu.classList.toggle('openMenu');
+        },
+
+        clickLogout() {
+            this.$store
+                .dispatch('LOGOUT')
+                .then(() => {
+                    this.$router.push({ name: 'Start' });
+                })
+                .catch((error) => alert(error));
         },
     },
 };
