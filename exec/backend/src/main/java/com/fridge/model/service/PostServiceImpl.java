@@ -119,7 +119,35 @@ public class PostServiceImpl implements PostService {
 
 		return postList;
 	}
+	
+	@Override
+	public List<PostDto> getPostList(int page, int size,int user_id) throws Exception {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
+		List<Post> posts = postRepository.findByUser_id(user_id,pageRequest);
 
+		List<PostDto> postList = new ArrayList<PostDto>();
+		for (Post post : posts) {
+			PostDto postDto = new PostDto();
+
+			postDto.setId(post.getId());
+			postDto.setTitle(post.getTitle());
+			postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
+			postDto.setImageCnt(post.getImagecnt());
+			postDto.setVisit(post.getVisit());
+			postDto.setGood(post.getGood());
+			postDto.setHate(post.getHate());
+			postDto.setUser_name(post.getUser_name());
+
+			String filePath = makePath(post.getId(), 0);
+
+			byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath));
+			postDto.setImageStrArr(new String[] { Base64.getEncoder().encodeToString(fileContent) });
+
+			postList.add(postDto);
+		}
+
+		return postList;
+	}
 	@Override
 	public PostDto getPostDetail(int postId) throws Exception {
 		Optional<Post> post = postRepository.findById(postId);
