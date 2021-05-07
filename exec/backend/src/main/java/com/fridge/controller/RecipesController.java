@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fridge.model.Main;
 import com.fridge.model.Recipe;
 import com.fridge.model.service.RecipesService;
 
@@ -40,7 +39,7 @@ public class RecipesController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			recipesService.recipeinsert(recipe);
+			recipesService.recipeInsert(recipe);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -58,7 +57,7 @@ public class RecipesController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			List<Recipe> list = recipesService.recipelist(page, size);
+			List<Recipe> list = recipesService.recipeList(page, size);
 
 			resultMap.put("recipelist", list);
 			resultMap.put("message", SUCCESS);
@@ -77,7 +76,7 @@ public class RecipesController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			Optional<Recipe> re = recipesService.recipeselect(recipe_id);
+			Optional<Recipe> re = recipesService.recipeSelect(recipe_id);
 			resultMap.put("recipe", re);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
@@ -90,12 +89,14 @@ public class RecipesController {
 	}
 
 	@Operation(summary = "특정재료를 메인으로 하는 레시피 조회", description = "특정 재료를 메인으로 하는 레시피를 조회한다")
-	@GetMapping("/ingredients/{id}")
-	public ResponseEntity<Map<String, Object>> ingredientrecipe(@PathVariable int id) {
+	@GetMapping("/ingredients/{id}/{page}/{size}")
+	public ResponseEntity<Map<String, Object>> ingredientrecipe(@PathVariable int id, @PathVariable int page,
+			@PathVariable int size) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			List<Main> recipelist = recipesService.ingredientrecipes(id);
+			List<Recipe> recipelist = recipesService.ingredientRecipes(id, page, size);
+
 			resultMap.put("recipelist", recipelist);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
