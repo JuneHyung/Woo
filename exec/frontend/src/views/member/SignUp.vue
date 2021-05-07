@@ -1,53 +1,68 @@
 <template>
     <v-container>
-        <div class="signFormBox">
+        <div class="signFormBox" style="font-color: black">
             <h1 class="signTitle">회 원 가 입</h1>
-            <div class="pb-5">
-                <img v-if="imageUrl == ''" :src="imageUrl" alt="" />
-                <img v-else :src="imageUrl" class="profileImg" alt="profileImg" />
-            </div>
-
-            <v-row>
-                <v-spacer></v-spacer>
-                <p class="profileName">{{ imageName }}</p>
-
-                <input ref="imageInput" type="file" hidden @change="onChangeImages" />
-                <v-btn type="button" @click="onClickImageUpload">이미지 업로드</v-btn>
-            </v-row>
 
             <v-text-field
                 label="ID (Email)"
                 placeholder="ex)ssafy@naver.com"
                 type="string"
+                v-model="user.email"
             ></v-text-field>
+            <div style="margin-left: 160px">
+                <v-btn @click="checkId()">ID 중복확인</v-btn>
+            </div>
+
             <v-text-field
                 label="PW (대소문자 특수문자 조합 8자 이상)"
                 placeholder="ssafy123!"
-                type="string"
+                type="password"
+                v-model="user.pwd"
             >
-                ></v-text-field
-            >
+            </v-text-field>
             <v-text-field
                 label="PW 확인"
                 placeholder="확인을 위해 한번 더 입력해 주세요."
+                type="password"
+                v-model="pwdchecked"
+            >
+            </v-text-field>
+
+            <v-text-field
+                label="닉네임"
+                placeholder="살림왕"
                 type="string"
+                v-model="user.nick"
             ></v-text-field>
-            <v-text-field label="닉네임" placeholder="살림왕" type="string"></v-text-field>
+            <div style="margin-left: 160px">
+                <v-btn @click="checkNick">닉네임 중복확인</v-btn>
+            </div>
+
             <v-row>
                 <v-spacer></v-spacer>
-                <button class="resetBtn">초기화</button>
+                <button class="resetBtn" @click="reset">초기화</button>
 
-                <button class="registBtn">등록</button>
+                <button class="registBtn" @click="signUp">등록</button>
             </v-row>
         </div>
     </v-container>
 </template>
 <script>
+import http from '@/api/axios.js';
+import swal from 'sweetalert';
+import safe from 'safe-regex';
+
 export default {
     data() {
         return {
-            imageName: this.imageName,
-            imageUrl: '',
+            user: {
+                email: '',
+                pwd: '',
+                nick: '',
+            },
+            pwdchecked: '',
+            idChecked: false,
+            nickChecked: false,
         };
     },
     methods: {
@@ -60,6 +75,135 @@ export default {
             // this.imageFile = file;
             this.imageUrl = URL.createObjectURL(file);
             this.imageName = file.name;
+        },
+        validPassword(password) {
+            const reg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*])([a-zA-Z0-9@#$%^&+=*.\-_]){3,}$/;
+            if (!safe(reg)) {
+                throw new Error(`unsafe regex - ${reg}`);
+            }
+            return reg.test(password);
+        },
+        validEmail(email) {
+            const reg = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i;
+            if (!safe(reg)) {
+                throw new Error(`unsafe regex - ${reg}`);
+            }
+            return reg.test(email);
+        },
+        signUp() {
+            console.log('회원가입');
+            if (this.user.email == '') {
+                console.log(this.user.email);
+                swal('아이디를 입력해주세요!', {
+                    icon: 'error',
+                });
+            } else if (!this.idChecked) {
+                swal('아이디 중복 검사를 진행해주세요!', {
+                    icon: 'error',
+                });
+            } else if (!this.validPassword(this.user.pwd)) {
+                console.log(this.user.pwd);
+                swal('비밀번호를 숫자와 문자, 특수문자 포함 형태의 8자리로 입력해주세요!', {
+                    icon: 'error',
+                });
+            } else if (this.user.pwd == '') {
+                swal('비밀번호를 입력해주세요!', {
+                    icon: 'error',
+                });
+            } else if (this.user.pw != this.pwdChecked) {
+                swal('비밀번호가 일치하지 않습니다!', {
+                    icon: 'error',
+                });
+            } else if (this.pwdChecked == '') {
+                swal('비밀번호를 확인해주세요!', {
+                    icon: 'error',
+                });
+            } else if (this.user.nick == '') {
+                swal('사용하실 닉네임을 입력해주세요!', {
+                    icon: 'error',
+                });
+            } else if (!this.nickChecked) {
+                swal('닉네임 중복 검사를 진행해주세요!', {
+                    icon: 'error',
+                });
+            } else {
+                console.log(this.user);
+                http.post(`user/join`, this.user)
+
+                    .then(() => {
+                        swal('회원가입이 완료되었습니다', {
+                            icon: 'success',
+                            closeOnClickOutside: false, //알람창을 제외하고 다른 곳 클릭시 넘어가지 않음
+                        }).then(() => (location.href = '/'));
+                    })
+                    .catch(() => {
+                        swal('회원가입 실패', {
+                            icon: ' error',
+                        });
+                    });
+            }
+        },
+        checkId() {
+            if (this.user.email == '') {
+                swal('이메일을 입력해주세요!', {
+                    icon: 'warning',
+                });
+            } else if (!this.validEmail(this.user.email)) {
+                // 이메일 형식이 아닐 시
+                swal('이메일 양식을 맞춰주세요!', {
+                    icon: 'error',
+                });
+            } else {
+                // 중복체크시 id를 가지고 체크.
+                http.get(`user/idcheck/${this.user.email}`)
+                    .then((response) => {
+                        console.log(response);
+                        if (response.data.message == 'fail') {
+                            // fail이 오면 이미 존재하는 아이디.
+                            swal('이미 존재하는 아이디입니다!!', {
+                                icon: 'warning',
+                            });
+                            this.isChecked = false;
+                        } else if (response.data.message == 'success') {
+                            // success면 사용가능한 아이디.
+                            swal('사용가능한 닉네임입니다!!', {
+                                icon: 'success',
+                            });
+                            this.idChecked = true;
+                        }
+                    })
+                    .catch();
+            }
+        },
+        checkNick() {
+            if (this.user.nick == '') {
+                swal('닉네임을 입력해주세요!', {
+                    icon: 'warning',
+                });
+            } else {
+                http.get(`user/nickcheck/${this.user.nick}`)
+                    .then((response) => {
+                        console.log(response);
+                        if (response.data.message == 'fail') {
+                            swal('이미 존재하는 닉네임입니다!!', {
+                                icon: 'warning',
+                            });
+                            this.nickChecked = false;
+                        } else if (response.data.message == 'success') {
+                            swal('사용가능한 닉네임입니다!!', {
+                                icon: 'success',
+                            });
+                            this.nickChecked = true;
+                        }
+                    })
+                    .catch();
+            }
+        },
+        reset() {
+            this.user.email = '';
+            this.user.pwd = '';
+            this.pwdchecked = '';
+            this.user.nick = '';
         },
     },
 };

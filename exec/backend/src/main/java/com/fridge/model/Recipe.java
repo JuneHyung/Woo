@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "recipe")
+@Schema(name = "Recipe Table", description = "레시피 정보 저장 Entity")
 public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

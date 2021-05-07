@@ -16,6 +16,8 @@
 
 ------
 
+
+
 ## 기획 배경
 
 자취생 또는 주부들의 고민인 냉장고 관리를 목적으로 하였습니다.
@@ -29,6 +31,18 @@
   
 
 ⇒ 위와 같은 서비스를 통해 효율적 냉장고 관리 및 레시피 추천 및 공유 서비스를 기획했습니다.
+
+------
+
+
+
+# Message Broker?
+
+[Kafka (Zookeeper) 아키텍처](https://www.notion.so/Kafka-Zookeeper-746da634cc314fb7a0f4100518454b99)
+
+- 참고자료
+
+[Spring Boot | Kafka를 이용한 채팅 (2) Kafka 연동 설정](https://gaemi606.tistory.com/entry/Spring-Boot-Kafka를-이용한-채팅-2-Kafka-연동-설정?category=745027)
 
 ------
 
@@ -70,12 +84,12 @@ cd backend
 
 
 
-# 배포(예정)
+# 배포
 
 ### Docker & Jenkins
 
 - Docker에 Jenkins image를 만들고 Jenkinxs와 git commit 시 자동으로 업데이트 반영 되도록 배포
-- Frontend와 Backend에 각각 Dockerfile을 생성해 배포 설저을 저장
+- Frontend와 Backend에 각각 Dockerfile을 생성해 배포 설정을 저장
 
 ### Nginx & SSL
 
@@ -86,9 +100,19 @@ cd backend
 
 
 
-# 파일 구조 (추가 예정)
+# 📚 산출물
+
+[DB Table](https://www.notion.so/DB-Table-d047852191e0455a99c5132aef03e035)
+
+[우냉부 기획 발표자료](https://www.notion.so/00acc056ae1f403a9c366dce9153b22d)
+
+------
 
 
+
+# 파일 구조 
+
+![file_back](images/file_back.png)
 
 ------
 

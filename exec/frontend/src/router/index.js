@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Main from "@/views/Main.vue";
 import Start from "@/views/Start.vue";
 import MainHeader from "../components/commons/MainHeader.vue"
@@ -12,6 +13,7 @@ import MyPage from "../views/member/MyPage.vue";
 import ShareRecipe from "../views/ShareRecipe.vue";
 import Subscribe from "../views/Subscribe.vue";
 import FoodDetail from "../views/FoodDetail.vue";
+import UserRecipeDetail from "../views/UserRecipeDetail.vue"; 
 
 
 import RefAdd from "../views/Refrigerator/RefAdd.vue";
@@ -20,8 +22,16 @@ import RefManage from "../views/Refrigerator/RefManage.vue";
 import RecipeList from "../views/Recipe/RecipeList.vue";
 import RecipeDetail from "../views/Recipe/RecipeDetail.vue";
 import RecipeCreate from "../views/Recipe/RecipeCreate.vue";
-Vue.use(VueRouter);
 
+/** 같은 페이지에서 같은 페이지로 $router.push 한 오률를 처리함 (ex : 홈페이지에서 홈 로고를 클릭한 경우) */
+const originalPush = VueRouter.prototype.push;
+  VueRouter.prototype.push = function push(location){
+  return originalPush.call(this, location).catch(()=>{
+  return window.location.reload()
+  })
+};
+
+Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
@@ -57,6 +67,11 @@ const routes = [
     path: "/subscribe",
     name: "Subscribe",
     components: { default: Subscribe, header: MainHeader },
+  },
+  {
+    path: "/UserRecipeDetail/:post_id",
+    name: "UserRecipeDetail",
+    components: { default: UserRecipeDetail, header: MainHeader },
   },
   {
     path: "/refadd",

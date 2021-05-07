@@ -1,7 +1,6 @@
 import http from './axios.js';
 
 function login(userinput, success, fail) {
-    http.defaults.headers['X-AUTH-TOKEN'] = window.localStorage.getItem('X-AUTH-TOKEN');
     
     const user = {
         email: userinput.id,
@@ -13,6 +12,7 @@ function login(userinput, success, fail) {
 
     async function findById( success, fail) { 
         http.defaults.headers['X-AUTH-TOKEN'] = window.localStorage.getItem('X-AUTH-TOKEN');
+        console.log(`${http.defaults.headers['X-AUTH-TOKEN']}`);
         await http
             .get(`/user/info`)
             .then(success)

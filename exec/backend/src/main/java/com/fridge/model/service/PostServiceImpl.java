@@ -14,14 +14,18 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fridge.model.Post;
 import com.fridge.model.User;
 import com.fridge.model.dto.MessageDto;
+import com.fridge.model.UserInterest;
 import com.fridge.model.dto.PostDto;
 import com.fridge.model.repository.PostRepository;
+import com.fridge.model.repository.UserInterestRepository;
 import com.fridge.model.repository.UserRepository;
 
 @Service
@@ -34,6 +38,8 @@ public class PostServiceImpl implements PostService {
 	private PostRepository postRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserInterestRepository userInterestRepository;
 
 	public String makePath(int id, int num) {
 		return POST_PATH + id + "_" + num + ".png";
@@ -46,13 +52,14 @@ public class PostServiceImpl implements PostService {
 
 			// file image가 없을 경우
 			File dest = new File(filePath);
-			dest.createNewFile();
+
+			if (!dest.createNewFile())
+				throw new Exception("파일 생성 실패");
 
 			try (FileOutputStream fout = new FileOutputStream(dest)) {
 				fout.write(images.get(i).getBytes());
 			} catch (Exception e) {
-				logger.error("파일 입출력 실패!!");
-				throw new RuntimeException();
+				throw new Exception("파일 입출력 실패!!");
 			}
 		}
 	}
@@ -63,10 +70,12 @@ public class PostServiceImpl implements PostService {
 
 			File deleteFile = new File(filePath);
 
-			if (deleteFile.exists())
-				deleteFile.delete();
-			else
+			if (deleteFile.exists()) {
+				if (!deleteFile.delete())
+					throw new Exception("파일 삭제 실패");
+			} else {
 				throw new Exception("파일이 존재하지 않습니다.");
+			}
 		}
 	}
 
@@ -83,8 +92,9 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getPostList() throws Exception {
-		List<Post> posts = postRepository.findAllByOrderByDateDesc();
+	public List<PostDto> getPostList(int page, int size) throws Exception {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
+		List<Post> posts = postRepository.findAll(pageRequest).getContent();
 
 		List<PostDto> postList = new ArrayList<PostDto>();
 		for (Post post : posts) {
@@ -123,7 +133,7 @@ public class PostServiceImpl implements PostService {
 		postDto.setTitle(post.get().getTitle());
 		postDto.setDate(post.get().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
 		postDto.setImageCnt(post.get().getImagecnt());
-		postDto.setVisit(post.get().getVisit());
+		postDto.setVisit(post.get().getVisit() + 1);
 		postDto.setGood(post.get().getGood());
 		postDto.setHate(post.get().getHate());
 		postDto.setUser_name(post.get().getUser_name());
@@ -136,6 +146,8 @@ public class PostServiceImpl implements PostService {
 			imageStrArr[i] = Base64.getEncoder().encodeToString(fileContent);
 		}
 		postDto.setImageStrArr(imageStrArr);
+		
+		postRepository.save(new Post(post.get(), post.get().getVisit() + 1));
 
 		return postDto;
 	}
@@ -168,6 +180,56 @@ public class PostServiceImpl implements PostService {
 			deleteFile(id, imgCnt);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void setLike(Principal user_id, int post_id, String good) throws Exception {
+		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(user_id.getName()), post_id);
+		boolean interest = true;
+		
+		Post post = postRepository.findById(post_id).get();
+		int goodCnt = post.getGood();
+		int hateCnt = post.getHate();
+		
+		if("good".equals(good))
+			interest = true;
+		else
+			interest = false;
+		
+		
+		// 좋아요나 싫어요를 표시한 적 없는 경우
+		if(userInterest == null) {
+			userInterestRepository.save(new UserInterest(Integer.parseInt(user_id.getName()), post_id, interest));
+			if(interest)
+				post = new Post(post, goodCnt + 1, hateCnt);
+			else
+				post = new Post(post, goodCnt, hateCnt + 1);
+			postRepository.save(post);
+		} else {
+			UserInterest updateInterest = new UserInterest(userInterest.getId() ,Integer.parseInt(user_id.getName()), post_id, interest);
+			
+			if(userInterest.isInterest()) {	// 좋아요를 눌러 둔 경우
+				if(interest) { // 좋아요를 한번 더 누른 경우 컬럼 삭제
+					userInterestRepository.delete(userInterest);
+					post = new Post(post, goodCnt - 1, hateCnt);
+				}
+				else { 	// 싫어요를 누른 경우 update
+					userInterestRepository.save(updateInterest);
+					post = new Post(post, goodCnt - 1, hateCnt + 1);
+				}
+			} else {
+				if(!interest) {	// 싫어요를 두번째 누른 경우
+					userInterestRepository.delete(userInterest);
+					post = new Post(post, goodCnt, hateCnt - 1);
+				}
+				else {
+					userInterestRepository.save(updateInterest);
+					post = new Post(post, goodCnt + 1, hateCnt - 1);
+				}
+			}
+			
+			postRepository.save(post);
 		}
 	}
 

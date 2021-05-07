@@ -12,9 +12,9 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 
 	Optional<User> findById(int id);
 	List<User> findByIdIn(List<Integer> id);
-	
-//	@Modifying
-//	@Query("update User set email = :#{#user.email}, pwd = :#{#user.pwd}, nick = :#{#user.nick} where id = :#{#user.id}")
-//	void updateById(User user);
+
+	Optional<User> findByEmail(String email);
+
+	Optional<User> findByNick(String nick);
 	
 }

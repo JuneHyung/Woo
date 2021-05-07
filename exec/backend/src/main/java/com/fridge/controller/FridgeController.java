@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,7 @@ public class FridgeController {
 			fridgeService.create(user, fridgeDto);
 
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -75,7 +76,7 @@ public class FridgeController {
 			fridgeService.addIngredients(ingredientsDto);
 
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -95,7 +96,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("fridgeList", fridgeList);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -115,7 +116,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("ingredients", ingredients);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -135,7 +136,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("ingredients", ingredients);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -155,7 +156,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("fridge", fridge);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -175,7 +176,7 @@ public class FridgeController {
 			
 			resultMap.put("message", SUCCESS);
 			resultMap.put("category", category);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -193,7 +194,7 @@ public class FridgeController {
 			Ingredientsdetail[] ingredients = fridgeService.categoryByingredientsList(category);
 			resultMap.put("message", SUCCESS);
 			resultMap.put("ingredients", ingredients);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -213,7 +214,7 @@ public class FridgeController {
 			fridgeService.fridgeDel(user, fridge_id);
 			
 			resultMap.put("meesage", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			resultMap.put("message", FAIL);
@@ -223,14 +224,31 @@ public class FridgeController {
 	}
 
 	@Operation(summary = "재료 제거", description = "냉장고 재료 제거", security = { @SecurityRequirement(name = "X-AUTH-TOKEN") })
-	@DeleteMapping("delIngredients/{ingredients_id}")
+	@DeleteMapping("/delIngredients/{ingredients_id}")
 	public ResponseEntity<Map<String, Object>> delIngredients(@PathVariable("ingredients_id") int ingredients_id) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
 			fridgeService.delIngredients(ingredients_id);
 			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@Operation(summary = "재료 이동", description = "냉장고 내부에서 재료 이동", security = { @SecurityRequirement(name = "X-AUTH-TOKEN")})
+	@PutMapping("/moveIngredients")
+	public ResponseEntity<Map<String, Object>> moveIngredients(
+			@Parameter(name = "이동할 위치를 포함한 Ingredients") @RequestBody IngredientsDto ingredientsDto) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			fridgeService.moveIngredients(ingredientsDto);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

@@ -39,7 +39,7 @@ export default {
             videoUrl: '',
         };
     },
-    created() {
+    mounted() {
         this.recipe_id = this.$route.params.recipe_id;
 
         this.getRecipeDetail();

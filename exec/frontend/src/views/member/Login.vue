@@ -11,7 +11,7 @@
             <v-text-field
                 label="PW (대소문자 특수문자 조합 8자 이상)"
                 placeholder="ssafy123!"
-                type="string"
+                type="password"
                 v-model="user.password"
             ></v-text-field>
             <v-row>
@@ -45,7 +45,7 @@ export default {
                         let token = response.data['X-AUTH-TOKEN'];
                         this.$store.commit('setIsLogined', true);
                         localStorage.setItem('X-AUTH-TOKEN', token);
-                        console.log(localStorage.getItem('X-AUTH-TOKEN'));
+
                         http.defaults.headers['X-AUTH-TOKEN'] = window.localStorage.getItem(
                             'X-AUTH-TOKEN'
                         );

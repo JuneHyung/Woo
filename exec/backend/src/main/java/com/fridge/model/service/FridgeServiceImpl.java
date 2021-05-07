@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
 import com.fridge.model.Ingredientsdetail;
+import com.fridge.model.User;
 import com.fridge.model.dto.FridgeDto;
 import com.fridge.model.dto.IngredientsDto;
 import com.fridge.model.repository.FridgeRepository;
@@ -34,9 +35,18 @@ public class FridgeServiceImpl implements FridgeService {
 
 	@Override
 	public void addIngredients(IngredientsDto ingredientsDto) throws Exception {
-		Ingredients ingredients = new Ingredients(ingredientsDto);
-
-		ingredientsRepository.save(ingredients);
+		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId(), ingredientsDto.getFridgeId());
+		System.out.println(cnt);
+		if(cnt == 0) {
+			Ingredients ingredients = new Ingredients(ingredientsDto);
+			ingredientsRepository.save(ingredients);
+		}else {
+			int id = ingredientsRepository.findByIngredientsdetailIdandFridgeId(ingredientsDto.getIngredientsDetailId(), ingredientsDto.getFridgeId());
+			System.out.println(id);
+			IngredientsDto ingredientsdto = new IngredientsDto(id, ingredientsDto.getExpired(), ingredientsDto.getLocx(), ingredientsDto.getLocy(), ingredientsDto.getFridgeId(), ingredientsDto.getIngredientsDetailId());
+			Ingredients ingredients_save = new Ingredients(ingredientsdto);
+			ingredientsRepository.save(ingredients_save);
+		}
 	}
 
 	@Override
@@ -72,7 +82,6 @@ public class FridgeServiceImpl implements FridgeService {
 	@Override
 	public void fridgeDel(Principal user, int fridge_id) throws Exception {
 		Optional<Fridge> fridge = fridgeRepository.findByIdAndUser_Id(fridge_id, Integer.parseInt(user.getName()));
-
 		if (!fridge.isPresent())
 			throw new Exception("삭제 실패!!");
 
@@ -83,5 +92,12 @@ public class FridgeServiceImpl implements FridgeService {
 	public void delIngredients(int ingredients_id) throws Exception {
 		ingredientsRepository.deleteById(ingredients_id);
 
+	}
+
+	@Override
+	public void moveIngredients(IngredientsDto ingredientsDto) throws Exception {
+		Ingredients ingredients = new Ingredients(ingredientsDto);
+	
+		ingredientsRepository.save(ingredients);
 	}
 }
