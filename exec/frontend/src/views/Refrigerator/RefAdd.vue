@@ -38,7 +38,10 @@
     </v-container>
 </template>
 <script>
-import http from '../../api/axios.js';
+import { addMyFridge } from '../../api/refrigerator';
+import { moveMain } from '@/api/move.js';
+// import http from '../../api/axios.js';
+import jwt_decode from 'jwt-decode';
 export default {
     data() {
         return {
@@ -46,7 +49,7 @@ export default {
                 name: '',
                 type: 0,
                 user: {
-                    id: 6,
+                    id: 0,
                 },
             },
             selectItem: ['전체', '단문형', '양문형'],
@@ -64,9 +67,13 @@ export default {
     },
     methods: {
         RegisterFridge() {
-            http.post(`fridge/create`, this.fridge)
+            let token = localStorage.getItem('X-AUTH-TOKEN');
+            let decode = jwt_decode(token); // 가져온 token을 decode함.
+            this.fridge.user.id = decode.sub;
+            addMyFridge(this.fridge)
                 .then(() => {
                     alert('추가성공');
+                    moveMain();
                 })
                 .catch(() => {
                     alert('통신실패');

@@ -53,6 +53,7 @@ const routes = [
     name: "MyPage",
     components: { default: MyPage, header: MainHeader },
   },
+  
   {
     path: "/login",
     name: "Login",
@@ -103,11 +104,7 @@ const routes = [
     name: "FoodDetail",
     components: { default: FoodDetail, header: MainHeader },
   },
-  {
-    path: "/MyPage",
-    name: "MyPage",
-    components: { default: MyPage, header: MainHeader },
-  },
+  
 ];
 
 const router = new VueRouter({

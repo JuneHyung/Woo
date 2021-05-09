@@ -37,7 +37,9 @@
 
 <script>
 import swal from 'sweetalert';
-import http from '@/api/axios.js';
+import { createRecipe } from '@/api/recipe.js';
+import { moveSubscribe } from '@/api/move.js';
+// import http from '@/api/axios.js';
 
 export default {
     data() {
@@ -83,13 +85,13 @@ export default {
                 for (var i = 0; i < this.images.length; i++)
                     formData.append('images', this.images[i]);
 
-                http.post(`post/upload/`, formData)
+                createRecipe(formData)
                     .then((response) => {
                         console.log(response);
                         swal('레시피 등록이 완료되었습니다', {
                             icon: 'success',
                         });
-                        this.$router.push({ name: 'Subscribe' });
+                        moveSubscribe();
                     })
                     .catch(() => {
                         swal('등록실패!', {

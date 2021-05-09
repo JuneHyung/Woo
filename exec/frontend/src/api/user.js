@@ -17,5 +17,46 @@ function login(userinput, success, fail) {
             .get(`/user/info`)
             .then(success)
             .catch(fail);
-    }
-export { login, findById }
+}
+/* 회원가입 */
+function joinUser(user) {
+    return http.post(`user/join`, user);
+}
+/* 중복 id체크 */
+function checkId(email) {
+    return http.get(`user/idcheck/${email}`)
+}
+
+/* 중복 닉네임체크 */
+function checkNickName(nickname) {
+    return http.get(`user/nickcheck/${nickname}`)
+}
+
+/* 내 정보 얻기 */
+function getMyInfo() {
+    return http.get(`user/info/`);
+}
+
+/* 비밀번호 변경 */
+function changePassword(email, newPwd, nickname) {
+    return http.put(`user/modify`, { email: email, pwd: newPwd, nick: nickname });
+}
+/* 내 정보 수정 */
+function updateUser(id, email, pwd, nickname) {
+    return http.put(`user/modify`, { id: id, email: email, pwd: pwd, nick: nickname });
+}
+/* 탈퇴 하기 */
+function deleteUser() {
+    return http.delete(`user/delete`);
+}
+export {
+    login,
+    findById,
+    joinUser,
+    checkId,
+    checkNickName,
+    getMyInfo,
+    changePassword,
+    updateUser,
+    deleteUser,
+}

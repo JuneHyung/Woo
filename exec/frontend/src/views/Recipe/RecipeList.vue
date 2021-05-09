@@ -51,7 +51,9 @@
     </v-container>
 </template>
 <script>
-import http from '../../api/axios.js';
+// import http from '../../api/axios.js';
+import { getRecipeListByMenu, getRecipeListByIngredients, viewsUp } from '../../api/recipe.js';
+import { moveRecipeCreate, moveRecipeDetail } from '@/api/move.js';
 export default {
     data() {
         return {
@@ -85,14 +87,15 @@ export default {
     },
     methods: {
         goRecipeCreate() {
-            this.$router.push({ name: 'RecipeCreate' });
+            moveRecipeCreate();
         },
         goRecipeDetail(recipe_id) {
             this.upViews(recipe_id);
-            this.$router.push({ name: 'RecipeDetail', params: { recipe_id: recipe_id } });
+            // this.$router.push({ name: 'RecipeDetail', params: { recipe_id: recipe_id } });
+            moveRecipeDetail(recipe_id);
         },
         upViews(recipe_id) {
-            http.get(`recipes/views/${recipe_id}`)
+            viewsUp(recipe_id)
                 .then(({ data }) => {
                     console.log(data);
                 })
@@ -101,7 +104,7 @@ export default {
         getRecipeList() {
             if (this.ingredient_id == 0) {
                 console.log('다시왔니?');
-                http.get(`recipes/${this.page}/${this.size}`)
+                getRecipeListByMenu(this.page, this.size)
                     .then(({ data }) => {
                         this.ingredient_id = this.$route.params.ingredient_id;
                         this.listItem = data.recipelist;
@@ -116,7 +119,7 @@ export default {
                     .catch((error) => console.log(error));
             } else {
                 console.log(`${this.ingredient_id}`);
-                http.get(`recipes/ingredients/${this.ingredient_id}/${this.page}/${this.size}`)
+                getRecipeListByIngredients(this.ingredient_id, this.page, this.size)
                     .then(({ data }) => {
                         console.log('여기?');
                         this.listItem = data.recipelist;

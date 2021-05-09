@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { moveLogin, moveSignUp } from '../api/move.js';
 export default {
     name: 'Main',
     data() {
@@ -45,10 +46,10 @@ export default {
     },
     methods: {
         moveLogin() {
-            this.$router.push({ name: 'Login' });
+            moveLogin();
         },
         moveSignUp() {
-            this.$router.push({ name: 'SignUp' });
+            moveSignUp();
         },
     },
 };

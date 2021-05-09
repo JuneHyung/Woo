@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { moveStart, moveLogin, moveSignUp } from '@/api/move.js';
 export default {
     name: 'SubHeader',
 
@@ -30,13 +31,13 @@ export default {
     },
     methods: {
         goStart() {
-            this.$router.push({ name: 'Start' });
+            moveStart();
         },
         goSignUp() {
-            this.$router.push({ name: 'SignUp' });
+            moveSignUp();
         },
         goLogin() {
-            this.$router.push({ name: 'Login' });
+            moveLogin();
         },
     },
 };

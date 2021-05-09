@@ -163,7 +163,17 @@
     </v-container>
 </template>
 <script>
-import http from '../../api/axios.js';
+// import http from '../../api/axios.js';
+import {
+    getCategory,
+    getAllIngredients,
+    getSomeIngredients,
+    getIngredients,
+    addIngredients,
+    deleteIngredients,
+    moveIngredients,
+} from '../../api/refrigerator.js';
+import { moveRecipeList } from '@/api/move.js';
 import { Drag, Drop } from 'vue-drag-drop';
 export default {
     components: { Drag, Drop },
@@ -239,11 +249,11 @@ export default {
         this.ref_id = this.$route.params.rid;
         this.addIngredients.fridge.id = this.ref_id;
         this.getIngredients();
-        this.getCategory();
+        this.getAllCategories();
     },
     methods: {
-        getCategory() {
-            http.get(`fridge/categoryList`)
+        getAllCategories() {
+            getCategory()
                 .then((response) => {
                     this.category = response.data.category;
                     this.category.unshift('All');
@@ -257,7 +267,7 @@ export default {
             this.ingredientsId.splice(0);
             let category = this.addIngredients.ingredientsdetail.category;
             if (category == 'All') {
-                http.get(`fridge/ingredientsDetailList`).then((response) => {
+                getAllIngredients().then((response) => {
                     let name = response.data.ingredients;
                     for (var i = 0; i < name.length; i++) {
                         this.ingredientsName.push(name[i].name);
@@ -265,7 +275,7 @@ export default {
                     }
                 });
             } else {
-                http.get(`fridge/categoryByingredients/${category}`)
+                getSomeIngredients(category)
                     .then((response) => {
                         let name = response.data.ingredients;
                         for (var i = 0; i < name.length; i++) {
@@ -279,7 +289,7 @@ export default {
             }
         },
         getIngredients() {
-            http.get(`fridge/ingredients/${this.ref_id}`)
+            getIngredients(this.ref_id)
                 .then((response) => {
                     this.ingredients = response.data.ingredients;
                     this.ref_name = this.ingredients[0].fridge.name;
@@ -348,7 +358,7 @@ export default {
             this.addItem.fridgeId = this.ref_id;
             this.addItem.ingredientsDetailId = this.addIngredients.ingredientsdetail.id;
 
-            http.post(`fridge/addIngredients`, this.addItem)
+            addIngredients(this.addItem)
                 .then(() => {
                     this.addDialog = false;
                     let detailId = this.addItem.ingredientsDetailId;
@@ -381,7 +391,7 @@ export default {
                 });
         },
         removeIngred(id) {
-            http.delete(`fridge/delIngredients/${id}`)
+            deleteIngredients(id)
                 .then(() => {
                     alert('삭제 성공');
                     this.minusDialog = false;
@@ -392,10 +402,11 @@ export default {
                 });
         },
         goRecipeList(id) {
-            this.$router.push({
-                name: 'RecipeList',
-                params: { ingredient_id: id },
-            });
+            moveRecipeList(id);
+            // this.$router.push({
+            //     name: 'RecipeList',
+            //     params: { ingredient_id: id },
+            // });
         },
         handleDrop(toList, data, event, x, y) {
             // console.log(`event : ${event}`);
@@ -422,8 +433,7 @@ export default {
             // if(data.addList){
             //     data.addList.splice(data.)
             // }
-
-            http.put(`fridge/moveIngredients`, this.moveItem)
+            moveIngredients(this.moveItem)
                 .then(() => {
                     console.log('clear');
                     window.location.href = `/refmanage/${this.ref_id}`;

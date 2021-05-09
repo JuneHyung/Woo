@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import http from '../../api/axios.js';
+// import http from '../../api/axios.js';
+import { getRecipeDetail } from '../../api/recipe.js';
 export default {
     data() {
         return {
@@ -49,7 +50,7 @@ export default {
             this.url = thumbnail;
         },
         getRecipeDetail() {
-            http.get(`recipes/detail/${this.recipe_id}`)
+            getRecipeDetail(this.recipe_id)
                 .then(({ data }) => {
                     this.item = data.recipe;
                     let temp = this.item.url.substr(17);

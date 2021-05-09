@@ -26,6 +26,7 @@
 <script>
 import { login } from '@/api/user.js';
 import http from '../../api/axios.js';
+import { moveMain } from '@/api/move.js';
 export default {
     data() {
         return {
@@ -50,7 +51,7 @@ export default {
                             'X-AUTH-TOKEN'
                         );
 
-                        this.$router.push({ name: 'Main' });
+                        moveMain();
                     } else {
                         this.isLoginError = true;
                         if (this.user.id == '') {

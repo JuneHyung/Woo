@@ -35,8 +35,9 @@
     </v-container>
 </template>
 <script>
-import http from '@/api/axios.js';
-
+// import http from '@/api/axios.js';
+import { getPostList } from '@/api/subscribe.js';
+import { moveUserRecipeDetail, moveRecipeCreate } from '@/api/move.js';
 export default {
     name: 'Subscribe',
     data() {
@@ -77,7 +78,7 @@ export default {
             }
         },
         append_list() {
-            http.get(`post/list/${this.page}/${this.size}`)
+            getPostList(this.page, this.size)
                 .then((response) => {
                     var list = response.data.postList;
                     for (var i = 0; i < list.length; i++) this.postList.push(list[i]);
@@ -87,10 +88,12 @@ export default {
                 .catch(() => alert('!!!!!!!!!!!!!!!'));
         },
         moveRecipeDetail(post_id) {
-            this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
+            // this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
+            moveUserRecipeDetail(post_id);
         },
         goRecipeCreate() {
-            this.$router.push({ name: 'RecipeCreate' });
+            // this.$router.push({ name: 'RecipeCreate' });
+            moveRecipeCreate();
         },
         changeSubscribePage() {
             this.subscribeflag = !this.subscribeflag;

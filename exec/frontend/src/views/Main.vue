@@ -11,7 +11,7 @@
                             <img
                                 :src="fridgeImg[fridge.type]"
                                 alt="냉장고"
-                                style="width: 100%; height: 100%"
+                                style="width: 80px; height: 140px; margin: 10px auto"
                                 @click="goRefManage(fridge.id)"
                             />
                             <p
@@ -26,9 +26,7 @@
                                     text-align: center;
                                 "
                                 @click="deleteRefrigerator(fridge.id)"
-                            >
-                                X
-                            </p>
+                            ></p>
                         </v-card>
                         <p style="text-align: center">{{ fridge.name }}</p>
                     </div>
@@ -58,7 +56,8 @@
 </template>
 
 <script>
-import http from '../api/axios.js';
+import { getMyFridge, deleteMyFridge } from '../api/refrigerator.js';
+import { moveRefAdd, moveRefManage } from '@/api/move.js';
 export default {
     name: 'Main',
     data() {
@@ -80,13 +79,15 @@ export default {
     },
     methods: {
         goRefManage(rid) {
-            this.$router.push({ name: 'RefManage', params: { rid: rid } });
+            // this.$router.push({ name: 'RefManage', params: { rid: rid } });
+            moveRefManage(rid);
         },
         goRefAdd() {
-            this.$router.push({ name: 'RefAdd' });
+            // this.$router.push({ name: 'RefAdd' });
+            moveRefAdd();
         },
         getMyRefrigerator() {
-            http.get(`fridge/list`)
+            getMyFridge()
                 .then((response) => {
                     this.fridgeList = response.data.fridgeList;
                 })
@@ -95,9 +96,10 @@ export default {
                 });
         },
         deleteRefrigerator(fridgeid) {
-            http.delete(`fridge/list/${fridgeid}`)
+            deleteMyFridge(fridgeid)
                 .then(() => {
                     alert('삭제 성공');
+                    location.href = '/main';
                 })
                 .catch(() => {
                     alert('삭제 실패');

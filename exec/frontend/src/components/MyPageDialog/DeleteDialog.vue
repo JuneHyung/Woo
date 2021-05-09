@@ -13,7 +13,9 @@
 
 <script>
 import swal from 'sweetalert';
-import http from '@/api/axios.js';
+// import http from '@/api/axios.js';
+import { deleteUser } from '@/api/user.js';
+import { moveStart } from '@/api/move.js';
 
 export default {
     name: 'DeleteDialog',
@@ -27,7 +29,7 @@ export default {
             this.$emit('closeDelete');
         },
         deleteUser() {
-            http.delete(`user/delete`)
+            deleteUser()
                 .then(() => {
                     swal('삭제 성공했습니다!', {
                         icon: 'success',
@@ -35,7 +37,7 @@ export default {
                     this.$store
                         .dispatch('LOGOUT')
                         .then(() => {
-                            this.$router.push({ name: 'Start' });
+                            moveStart();
                         })
                         .catch((error) => alert(error));
                     this.closeDialogDelete();
