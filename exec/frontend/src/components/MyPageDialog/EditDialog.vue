@@ -68,7 +68,8 @@
 
 <script>
 import swal from 'sweetalert';
-import http from '@/api/axios.js';
+// import http from '@/api/axios.js';
+import { changePassword, updateUser, checkNickName } from '@/api/user.js';
 
 export default {
     name: 'EditDialog',
@@ -115,11 +116,7 @@ export default {
             } else if (this.NewPwdCheck != this.newPwd) {
                 swal('비밀번호가 일치하지 않습니다!', { icno: 'error' });
             } else {
-                http.put(`user/modify`, {
-                    email: this.Modifyuser.email,
-                    pwd: this.newPwd,
-                    nick: this.Modifyuser.nick,
-                })
+                changePassword(this.Modifyuser.email, this.newPwd, this.Modifyuser.nick)
                     .then(() => {
                         swal('수정이 성공되었습니다', { icon: 'success' });
                         this.closePasswordDialog();
@@ -149,12 +146,12 @@ export default {
                     icon: 'error',
                 });
             } else {
-                http.put(`user/modify`, {
-                    id: this.Modifyuser.id,
-                    email: this.Modifyuser.email,
-                    pwd: this.Modifyuser.pwd,
-                    nick: this.Modifyuser.nick,
-                })
+                updateUser(
+                    this.Modifyuser.id,
+                    this.Modifyuser.email,
+                    this.Modifyuser.pwd,
+                    this.Modifyuser.nick
+                )
                     .then(() => {
                         swal('수정이 성공되었습니다', { icon: 'success' });
                         this.CloseEditDialog();
@@ -167,7 +164,8 @@ export default {
             }
         },
         doubleCheck() {
-            http.get(`user/nickcheck/${this.Modifyuser.nick}`)
+            // http.get(`user/nickcheck/${this.Modifyuser.nick}`)
+            checkNickName(this.Modifyuser.nick)
                 .then((response) => {
                     console.log(response);
                     if (response.data.message == 'fail') {

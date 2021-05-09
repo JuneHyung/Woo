@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import http from '@/api/axios.js';
+// import http from '@/api/axios.js';
+import { getPostDetail } from '@/api/subscribe.js';
 
 export default {
     name: 'UserRecipeDetail',
@@ -31,22 +32,11 @@ export default {
     }),
     created() {
         this.post_id = this.$route.params.id;
-
-        http.get(`post/detail/${this.post_id}`)
-            .then((response) => {
-                if (response.data.message == 'success') {
-                    console.log(response);
-                    this.post = response.data.post;
-                    this.id = this.post.id;
-                } else {
-                    alert('조회실패');
-                }
-            })
-            .catch(() => {});
+        this.getDetailPost();
     },
     methods: {
-        init() {
-            http.get(`post/detail/${this.post_id}`)
+        getDetailPost() {
+            getPostDetail(this.post.id)
                 .then((response) => {
                     if (response.data.message == 'success') {
                         this.post = response.data.post;

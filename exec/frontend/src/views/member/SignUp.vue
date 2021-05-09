@@ -48,7 +48,9 @@
     </v-container>
 </template>
 <script>
-import http from '@/api/axios.js';
+// import http from '@/api/axios.js';
+import { joinUser, checkId, checkNickName } from '@/api/user.js';
+import { moveStart } from '@/api/move.js';
 import swal from 'sweetalert';
 import safe from 'safe-regex';
 
@@ -77,7 +79,7 @@ export default {
             this.imageName = file.name;
         },
         validPassword(password) {
-            const reg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*])([a-zA-Z0-9@#$%^&+=*.\-_]){3,}$/;
+            const reg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*])([a-zA-Z0-9!@#$%^&+=*.\-_]){9,15}$/;
             if (!safe(reg)) {
                 throw new Error(`unsafe regex - ${reg}`);
             }
@@ -128,13 +130,12 @@ export default {
                 });
             } else {
                 console.log(this.user);
-                http.post(`user/join`, this.user)
-
+                joinUser(this.user)
                     .then(() => {
                         swal('회원가입이 완료되었습니다', {
                             icon: 'success',
                             closeOnClickOutside: false, //알람창을 제외하고 다른 곳 클릭시 넘어가지 않음
-                        }).then(() => (location.href = '/'));
+                        }).then(() => moveStart());
                     })
                     .catch(() => {
                         swal('회원가입 실패', {
@@ -155,7 +156,7 @@ export default {
                 });
             } else {
                 // 중복체크시 id를 가지고 체크.
-                http.get(`user/idcheck/${this.user.email}`)
+                checkId(this.user.email)
                     .then((response) => {
                         console.log(response);
                         if (response.data.message == 'fail') {
@@ -181,7 +182,7 @@ export default {
                     icon: 'warning',
                 });
             } else {
-                http.get(`user/nickcheck/${this.user.nick}`)
+                checkNickName(this.user.nick)
                     .then((response) => {
                         console.log(response);
                         if (response.data.message == 'fail') {

@@ -45,7 +45,11 @@ export default {
     data() {
         return {
             alarm: require('@/assets/images/header/alarm.png'),
+            messageList: [],
         };
+    },
+    created() {
+        // setTimeout(this.getMessage(), 5000);
     },
     methods: {
         openAlertDialog() {
@@ -56,31 +60,27 @@ export default {
             var alarm = document.querySelector('.alarm');
             alarm.classList.toggle('alarmOpen');
         },
-        getMessage() {
-            // const kafka = new Kafka({
-            //     clientId: 'JuneHyung',
-            //     brokers:['k4d109.p.ssafy.io:9092']
-            // })
-            // const producer = kafka.producer();
-            // await producer.connect();
-            // await producer.send({
-            //     topic:'test-topic',
-            //     messages:[
-            //         {value: 'Hello KafkaJS user!'},
-            //     ],
-            // })
-            // await producer.disconnect()
-            // const consumer = kafka.consumer({groupId:'test-group'})
-            // await consumer.connect();
-            // await consumer.subscribe({topic:'test-topic', fromBeginning:true})
-            // await consumer.run({
-            //     eachMessage: async ({topic, partition, message}) => {
-            //         console.log({
-            //             value: message.value.toString(),
-            //         })
-            //     },
-            // })
-        },
+        // getMessage() {
+        //     const kafka = new Kafka({
+        //         clientId: 'my-app',
+        //         ssl: true,
+        //         brokers: ['k4d109.p.ssafy.io:9092'],
+        //     });
+
+        //     const consumer = kafka.consumer({ groupId: 'foo' });
+
+        //     const run = async () => {
+        //         await consumer.connect();
+        //         await consumer.subscribe({ topic: 'exam', fromBeginning: true });
+        //         await consumer.run({
+        //             eachMessage: async ({ topic, partition, message }) => {
+        //                 console.log(`${topic} ${partition} ${message.value}`);
+        //             },
+        //         });
+        //     };
+
+        //     run().catch((error) => alert(error));
+        // },
     },
 };
 </script>

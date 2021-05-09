@@ -43,6 +43,7 @@
     </header>
 </template>
 <script>
+import { moveStart, moveMain, moveRecipeList, moveSubscribe, moveMyPage } from '@/api/move.js';
 export default {
     name: 'MainHeader',
     data() {
@@ -58,22 +59,20 @@ export default {
     },
     methods: {
         goMain() {
-            this.$router.push({ name: 'Main' });
+            moveMain();
         },
         goShareRecipt() {
-            this.$router.push({ name: 'RecipeList', params: { ingredient_id: 0 } });
+            moveRecipeList(0);
         },
         goSubscribe() {
-            this.$router.push({ name: 'Subscribe' });
+            moveSubscribe();
         },
 
         goMyPage() {
-            this.$router.push({ name: 'MyPage' });
+            moveMyPage();
         },
         toggleMenu() {
-            console.log('찍');
             const menu = document.querySelector('.menu');
-            console.log(menu);
             menu.classList.toggle('openMenu');
         },
 
@@ -81,7 +80,7 @@ export default {
             this.$store
                 .dispatch('LOGOUT')
                 .then(() => {
-                    this.$router.push({ name: 'Start' });
+                    moveStart();
                 })
                 .catch((error) => alert(error));
         },

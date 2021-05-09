@@ -32,7 +32,8 @@
 
 <script>
 // import swal from 'sweetalert';
-import http from '@/api/axios.js';
+// import http from '@/api/axios.js';
+import { getMyInfo } from '@/api/user.js';
 import DeleteDialog from '../../components/MyPageDialog/DeleteDialog.vue';
 import EditDialog from '../../components/MyPageDialog/EditDialog.vue';
 
@@ -53,7 +54,7 @@ export default {
         };
     },
     mounted() {
-        http.get(`user/info/`)
+        getMyInfo()
             .then((response) => {
                 if (response.data.message == 'success') {
                     console.log(response);

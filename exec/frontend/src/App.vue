@@ -8,12 +8,10 @@
 
 <script>
 import Alarm from './components/Alarm';
+
 export default {
     name: 'App',
     components: { Alarm },
-    data: () => ({
-        //
-    }),
 };
 </script>
 <style>
