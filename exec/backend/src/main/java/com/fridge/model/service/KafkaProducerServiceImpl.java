@@ -9,17 +9,18 @@ import org.springframework.stereotype.Service;
 import com.fridge.model.dto.MessageDto;
 
 @Service
-public class KafkaProducerServiceImpl implements KafkaProducerService{
-    private static final String TOPIC = "exam";
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+public class KafkaProducerServiceImpl implements KafkaProducerService {
+	private static final String TOPIC = "exam";
+	private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    @Autowired
-    public KafkaProducerServiceImpl(KafkaTemplate kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+	@Autowired
+	public KafkaProducerServiceImpl(KafkaTemplate kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
 
-    public void sendMessage(MessageDto message) throws IOException{
-        System.out.println(String.format("Produce message : %s", message));
-        this.kafkaTemplate.send(TOPIC, message);
-    }
+	public void sendMessage(MessageDto message) throws IOException {
+		System.out.println(String.format("Produce message : %s", message));
+		this.kafkaTemplate.send(TOPIC, message);
+	}
+
 }

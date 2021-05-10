@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// 암호화에 필요한 PasswordEncoder를 Bean 등록
 	@Bean
-	public PasswordEncoder PasswordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 

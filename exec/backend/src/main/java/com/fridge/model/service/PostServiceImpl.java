@@ -2,6 +2,7 @@ package com.fridge.model.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,8 @@ import com.fridge.model.repository.UserRepository;
 public class PostServiceImpl implements PostService {
 	public static final Logger logger = LoggerFactory.getLogger(PostService.class);
 	public static final String POST_PATH = "fridge/post/";
+	public static final String DATE_FORMAT = "yyyy-MM-dd hh-mm-ss";
+
 	@Autowired
 	private KafkaProducerService kafkaProducerServiceImpl;
 	@Autowired
@@ -59,7 +63,7 @@ public class PostServiceImpl implements PostService {
 			try (FileOutputStream fout = new FileOutputStream(dest)) {
 				fout.write(images.get(i).getBytes());
 			} catch (Exception e) {
-				throw new Exception("파일 입출력 실패!!");
+				throw new IOException("파일 입출력 실패!!");
 			}
 		}
 	}
@@ -72,9 +76,9 @@ public class PostServiceImpl implements PostService {
 
 			if (deleteFile.exists()) {
 				if (!deleteFile.delete())
-					throw new Exception("파일 삭제 실패");
+					throw new IOException("파일 삭제 실패");
 			} else {
-				throw new Exception("파일이 존재하지 않습니다.");
+				throw new FileExistsException("파일이 존재하지 않습니다.");
 			}
 		}
 	}
@@ -97,13 +101,13 @@ public class PostServiceImpl implements PostService {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
 		List<Post> posts = postRepository.findAll(pageRequest).getContent();
 
-		List<PostDto> postList = new ArrayList<PostDto>();
+		List<PostDto> postList = new ArrayList<>();
 		for (Post post : posts) {
 			PostDto postDto = new PostDto();
 
 			postDto.setId(post.getId());
 			postDto.setTitle(post.getTitle());
-			postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
+			postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT)));
 			postDto.setImageCnt(post.getImagecnt());
 			postDto.setVisit(post.getVisit());
 			postDto.setGood(post.getGood());
@@ -122,17 +126,17 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getMyPosLlist(int page, int size, int user_id) throws Exception {
+	public List<PostDto> getMyPosLlist(int page, int size, int userId) throws Exception {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
-		List<Post> posts = postRepository.findByUser_id(user_id, pageRequest);
+		List<Post> posts = postRepository.findByUser_id(userId, pageRequest);
 
-		List<PostDto> postList = new ArrayList<PostDto>();
+		List<PostDto> postList = new ArrayList<>();
 		for (Post post : posts) {
 			PostDto postDto = new PostDto();
 
 			postDto.setId(post.getId());
 			postDto.setTitle(post.getTitle());
-			postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
+			postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT)));
 			postDto.setImageCnt(post.getImagecnt());
 			postDto.setVisit(post.getVisit());
 			postDto.setGood(post.getGood());
@@ -155,13 +159,13 @@ public class PostServiceImpl implements PostService {
 		Optional<Post> post = postRepository.findById(postId);
 
 		if (!post.isPresent())
-			throw new Exception("찾으시는 레시피가 없습니다.");
+			throw new SQLException("찾으시는 레시피가 없습니다.");
 
 		PostDto postDto = null;
 		postDto = new PostDto();
 		postDto.setId(postId);
 		postDto.setTitle(post.get().getTitle());
-		postDto.setDate(post.get().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
+		postDto.setDate(post.get().getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT)));
 		postDto.setImageCnt(post.get().getImagecnt());
 		postDto.setVisit(post.get().getVisit() + 1);
 		postDto.setGood(post.get().getGood());
@@ -201,7 +205,6 @@ public class PostServiceImpl implements PostService {
 		if (deletePost == null)
 			throw new Exception("찾으시는 포스트가 없습니다.");
 
-		System.out.println(deletePost);
 		int id = deletePost.getId();
 		int imgCnt = deletePost.getImagecnt();
 		postRepository.delete(deletePost);
@@ -214,12 +217,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void setLike(Principal user_id, int post_id, String good) throws Exception {
-		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(user_id.getName()),
-				post_id);
+	public void setLike(Principal userId, int postId, String good) throws Exception {
+		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(userId.getName()),
+				postId);
 		boolean interest = true;
 
-		Post post = postRepository.findById(post_id).get();
+		Post post = postRepository.findById(postId).get();
 		int goodCnt = post.getGood();
 		int hateCnt = post.getHate();
 
@@ -230,15 +233,15 @@ public class PostServiceImpl implements PostService {
 
 		// 좋아요나 싫어요를 표시한 적 없는 경우
 		if (userInterest == null) {
-			userInterestRepository.save(new UserInterest(Integer.parseInt(user_id.getName()), post_id, interest));
+			userInterestRepository.save(new UserInterest(Integer.parseInt(userId.getName()), postId, interest));
 			if (interest)
 				post = new Post(post, goodCnt + 1, hateCnt);
 			else
 				post = new Post(post, goodCnt, hateCnt + 1);
 			postRepository.save(post);
 		} else {
-			UserInterest updateInterest = new UserInterest(userInterest.getId(), Integer.parseInt(user_id.getName()),
-					post_id, interest);
+			UserInterest updateInterest = new UserInterest(userInterest.getId(), Integer.parseInt(userId.getName()),
+					postId, interest);
 
 			if (userInterest.isInterest()) { // 좋아요를 눌러 둔 경우
 				if (interest) { // 좋아요를 한번 더 누른 경우 컬럼 삭제

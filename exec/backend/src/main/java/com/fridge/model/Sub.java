@@ -16,7 +16,7 @@ public class Sub {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(title = "고유 ID - PK")
-	int id;
+	private int id;
 	@ManyToOne
 	@Schema(title = "만들 수 있는 레시피 - FK")
 	private Recipe recipe;

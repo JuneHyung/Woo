@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class DataController {
 	   private static final String SUCCESS = "success";
 	   private static final String FAIL = "fail";
+	   private static final String MESSAGE = "message";
 	   
 	   @Autowired
 	   private DataService dataService;
@@ -34,68 +35,68 @@ public class DataController {
 	   @PostMapping("/createRecipe")
 	   public ResponseEntity<Map<String, Object>> createRecipe(
 			   @RequestBody Recipe recipe){
-		   Map<String, Object> resultMap = new HashMap<String, Object>();
+		   Map<String, Object> resultMap = new HashMap<>();
 		   HttpStatus status = null;
 		   try {
 			   dataService.creteRecipe(recipe);
-			   resultMap.put("messgae", SUCCESS);
+			   resultMap.put(MESSAGE, SUCCESS);
 			   status = HttpStatus.ACCEPTED;
 		   } catch(Exception e) {
-			   resultMap.put("message", FAIL);
+			   resultMap.put(MESSAGE, FAIL);
 			   status = HttpStatus.INTERNAL_SERVER_ERROR;
 		   }
-		   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		   return new ResponseEntity<>(resultMap, status);
 	   }
 	   
 	   @Operation (summary = "Ingredientsdetail 추가", description = "Ingredientsdetail 추가")
 	   @PostMapping("/createIngredientsdetail")
 	   public ResponseEntity<Map<String, Object>> createIngredientsdetail(
 			   @RequestBody Ingredientsdetail ingredientsdetail){
-		   Map<String, Object> resultMap = new HashMap<String, Object>();
+		   Map<String, Object> resultMap = new HashMap<>();
 		   HttpStatus status = null;
 		   try {
 			   dataService.createIngredientsdetail(ingredientsdetail);
-			   resultMap.put("message", SUCCESS);
+			   resultMap.put(MESSAGE, SUCCESS);
 			   status = HttpStatus.ACCEPTED;
 		   }catch(Exception e) {
-			   resultMap.put("message", FAIL);
+			   resultMap.put(MESSAGE, FAIL);
 			   status = HttpStatus.INTERNAL_SERVER_ERROR;
 		   }
-		   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		   return new ResponseEntity<>(resultMap, status);
 	   }
 	   
 	   @Operation (summary = "Main 추가", description = "Main 주재료 추가")
 	   @PostMapping("/createMain")
 	   public ResponseEntity<Map<String, Object>> createMain(
 			   @RequestBody Main main){
-		   Map<String, Object> resultMap = new HashMap<String, Object>();
+		   Map<String, Object> resultMap = new HashMap<>();
 		   HttpStatus status = null;
 		   try {
 			   dataService.createMain(main);
-			   resultMap.put("message", SUCCESS);
+			   resultMap.put(MESSAGE, SUCCESS);
 			   status = HttpStatus.ACCEPTED;
 		   }catch(Exception e) {
-			   resultMap.put("message", FAIL);
+			   resultMap.put(MESSAGE, FAIL);
 			   status = HttpStatus.INTERNAL_SERVER_ERROR;
 		   }
-		   return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		   return new ResponseEntity<>(resultMap, status);
 	   }
 	   
 	   @Operation (summary = "Sub 추가", description = "Sub 부재료 추가")
 	   @PostMapping("/createSub")
 	   public ResponseEntity<Map<String, Object>> createSub(
 			   @RequestBody Sub sub){
-		   Map<String, Object> resultMap = new HashMap<String, Object>();
+		   Map<String, Object> resultMap = new HashMap<>();
 		   HttpStatus status = null;
 		   try {
 			   dataService.createSub(sub);
-			   resultMap.put("message", SUCCESS);
+			   resultMap.put(MESSAGE, SUCCESS);
 			   status = HttpStatus.ACCEPTED;
 		   }catch(Exception e) {
-			   resultMap.put("message", FAIL);
+			   resultMap.put(MESSAGE, FAIL);
 			   status = HttpStatus.INTERNAL_SERVER_ERROR;
 		   }
-		   return new ResponseEntity<Map<String, Object>> (resultMap, status);
+		   return new ResponseEntity<> (resultMap, status);
 	   }
 	   
 }

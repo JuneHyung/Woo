@@ -27,8 +27,8 @@ public class RecipesServiceImpl implements RecipesService {
 	}
 
 	@Override
-	public Optional<Recipe> recipeSelect(int recipe_id) throws Exception {
-		return recipesRepository.findById(recipe_id);
+	public Optional<Recipe> recipeSelect(int recipeId) throws Exception {
+		return recipesRepository.findById(recipeId);
 	}
 
 	@Override
@@ -40,20 +40,20 @@ public class RecipesServiceImpl implements RecipesService {
 	@Override
 	public List<Recipe> ingredientRecipes(int id, int page, int size) throws Exception {
 		PageRequest pageRequest = PageRequest.of(page, size);
-		
-		List<Main> mainList =  mainRepository.findByIngredientsdetail_id(id, pageRequest);
-		
-		List<Recipe> recipeList = new ArrayList<Recipe>();
-		
-		for(Main main : mainList)
+
+		List<Main> mainList = mainRepository.findByIngredientsdetail_id(id, pageRequest);
+
+		List<Recipe> recipeList = new ArrayList<>();
+
+		for (Main main : mainList)
 			recipeList.add(main.getRecipe());
-		
+
 		return recipeList;
 	}
 
 	@Override
-	public void upViews(int recipe_id) throws Exception {
-		Recipe r = recipesRepository.getOne(recipe_id);
+	public void upViews(int recipeId) throws Exception {
+		Recipe r = recipesRepository.getOne(recipeId);
 		Recipe updateRecipe = new Recipe(r, r.getViews() + 1);
 
 		recipesRepository.save(updateRecipe);
