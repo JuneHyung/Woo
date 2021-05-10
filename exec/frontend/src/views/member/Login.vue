@@ -74,7 +74,7 @@ export default {
 <style scoped>
 .loginFormBox {
     width: calc(100% - 100px);
-    margin: 0 auto;
+    margin: 20px auto;
 }
 .loginTitle {
     font-size: 24px;

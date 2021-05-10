@@ -5,9 +5,9 @@
                 <img :src="logo" alt="로고" />
             </div>
             <v-spacer></v-spacer>
-            <div class="menuBox" style="background-color: #e8ffff">
+            <div class="menuBox" style="background-color: #ffecf2">
                 <v-row class="menu">
-                    <div class="menuList" @click="toggleMenu" style="background-color: #e8ffff">
+                    <div class="menuList" @click="toggleMenu" style="background-color: #ffecf2">
                         <v-icon
                             style="
                                 width: 60px;
@@ -93,7 +93,7 @@ export default {
 <style scoped>
 header {
     height: 80px;
-    border-bottom: 1px solid #333;
+
     box-sizing: content-box;
 }
 .logo {
@@ -132,7 +132,7 @@ header {
     height: 80px;
     position: absolute;
     top: 0;
-    right: -222px;
+    right: -224px;
     padding: 0 !important;
     overflow: hidden;
 }

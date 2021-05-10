@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-row>
+        <v-row style="margin-bottom: 20px !important">
             <div style="width: 24px; height: 40px">
                 <img
                     src="../../assets/images/header/sharing.png"
@@ -8,8 +8,17 @@
                     style="width: 100%; height: 70%"
                 />
             </div>
-            <p style="font-size: 24px; line-height: 24px; margin-left: 15px !important">
-                레시피 목록
+            <p
+                style="
+                    font-size: 28px;
+                    line-height: 24px;
+                    margin-left: 15px !important;
+                    text-decoration: underline;
+                    text-decoration-style: wavy;
+                    text-underline-position: under;
+                "
+            >
+                레시피
             </p>
             <v-spacer></v-spacer>
         </v-row>
@@ -37,12 +46,15 @@
                     </p>
                     <div style="border: 1px solid white; height: 1px"></div>
                     <div style="font-size: 12px; font-weight: 900">
-                        <p>Main : {{ list.category }}</p>
                         <v-row>
-                            <p>Sub : {{ list.subcategory }}</p>
+                            <p>Main : {{ list.category }}</p>
                             <v-spacer></v-spacer>
-                            <p>조회수 : {{ list.views }}</p>
+                            <span style="color: #fff"
+                                ><v-icon style="color: #fff; font-size: 14px">mdi-eye</v-icon>
+                                {{ list.views }}</span
+                            >
                         </v-row>
+                        <p>Sub : {{ list.subcategory }}</p>
                     </div>
                 </div>
             </div>

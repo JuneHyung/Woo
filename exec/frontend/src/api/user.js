@@ -52,6 +52,7 @@ function deleteUser() {
 
 /* 구독리스트 가져오기 */
 function getMyList(page, size) {
+    console.log(`page : ${page}, size: ${size}`);
     return http.get(`post/mylist/${page}/${size}`);
 }
 export {

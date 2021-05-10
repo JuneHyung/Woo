@@ -4,31 +4,67 @@
             <div style="width: 24px; height: 40px">
                 <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
             </div>
-            <p style="font-size: 24px; line-height: 24px; margin-left: 15px !important">
+            <p
+                style="
+                    font-size: 28px;
+                    line-height: 22px;
+                    text-decoration: underline;
+                    text-decoration-style: wavy;
+                    text-underline-position: under;
+                    margin-left: 10px !important;
+                "
+            >
                 {{ title }}
             </p>
         </v-row>
-        <div style="margin-left: 260px; text-align: center">
-            <button style="margin-bottom: 5px" @click="changeSubscribePage()">
+        <v-row style="margin-bottom: 20px !important">
+            <v-spacer></v-spacer>
+            <button
+                style="
+                    font-size: 18px;
+                    border: 1px solid #d9418d;
+                    border-radius: 10px;
+                    padding: 5px;
+                    color: #d9418d;
+                    margin: 0 10px;
+                "
+                @click="changeSubscribePage()"
+            >
                 {{ btnTitle }}
             </button>
-            <v-spacer></v-spacer>
-            <button style="margin-bottom: 5px" @click="goRecipeCreate()">레시피 등록</button>
-        </div>
+
+            <button
+                style="
+                    font-size: 18px;
+                    border: 1px solid #d9418d;
+                    border-radius: 10px;
+                    padding: 5px;
+                    color: #d9418d;
+                    margin: 0;
+                "
+                @click="goRecipeCreate()"
+            >
+                레시피 등록
+            </button>
+        </v-row>
         <v-row>
             <div
                 v-for="(post, index) in postList"
                 :key="index"
-                style="width: 165px; height: 200px; margin: 0 auto"
+                style="width: 165px; margin: 0 auto; margin-bottom: 20px"
             >
-                <p>요리이름 : {{ post.title }}</p>
-                <p>작성자 : {{ post.user_name }}</p>
                 <img
                     @click="moveRecipeDetail(post.id)"
                     :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
                     alt="Customer_image"
                     style="width: 160px; height: 160px"
                 />
+                <p class="shorthand" style="font-size: 20px; padding-left: 8px !important">
+                    요리이름 : {{ post.title }}
+                </p>
+                <p style="font-size: 20px; padding-left: 8px !important">
+                    작성자 : {{ post.user_name }}
+                </p>
             </div>
             <v-spacer></v-spacer>
         </v-row>

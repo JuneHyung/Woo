@@ -1,28 +1,54 @@
 <template>
     <v-container>
         <div class="outBox listBox">
-            <p style="font-size: 20px">{{ ref_name }}</p>
-            <div class="divider"></div>
-            <v-row class="box">
+            <p
+                style="
+                    font-size: 28px;
+                    text-decoration: underline;
+                    text-decoration-style: wavy;
+                    text-underline-position: under;
+                "
+            >
+                {{ ref_name }}
+            </p>
+            <!-- <div class="divider"></div> -->
+            <v-row
+                class="box"
+                style="box-shadow: inset 0px 0px 5px 5px #ffecf2; margin-top: 10px !important"
+            >
                 <div>
                     <drop
-                        class="drop list listBox"
-                        style="width: 70px; height: 200px; border: 1px solid black"
+                        class="drop list listBox ingredList"
+                        style="
+                            width: 70px;
+                            height: 200px;
+                            border: 2px solid black;
+                            overflow: scroll;
+                        "
                     >
                         <drag
                             v-for="(ing, index) in addList"
                             :key="index"
                             :class="{ [ing]: true }"
                             :transfer-data="{ item: ing, list: addList, example: 'list' }"
+                            style="font-size: 18px"
                             >{{ ing.ingredientsdetail.name }}</drag
                         >
                     </drop>
-                    <v-row>
+                    <v-row style="width: 60px">
+                        <v-spacer></v-spacer>
                         <v-dialog v-model="addDialog">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-icon class="addBtn" style="color: #f00" v-bind="attrs" v-on="on"
+                                <!-- <v-icon class="addBtn" style="color: #f00" v-bind="attrs" v-on="on"
                                     >mdi-plus-circle-outline</v-icon
-                                >
+                                > -->
+                                <div v-bind="attrs" v-on="on" style="width: 24px; height: 24px">
+                                    <img
+                                        :src="plusBtn"
+                                        alt="추가버튼"
+                                        style="width: 100%; height: 100%; margin: 0 auto"
+                                    />
+                                </div>
                             </template>
                             <v-card>
                                 <v-card-title>재료를 추가해주세요!</v-card-title>
@@ -51,15 +77,16 @@
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>
+                        <v-spacer></v-spacer>
                         <v-dialog v-model="minusDialog">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-icon
-                                    class="minusBtn"
-                                    style="color: #00f"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    >mdi-minus-circle-outline</v-icon
-                                >
+                                <div v-bind="attrs" v-on="on" style="width: 24px; height: 24px">
+                                    <img
+                                        :src="minusBtn"
+                                        alt="추가버튼"
+                                        style="width: 100%; height: 100%; margin: 0 auto"
+                                    />
+                                </div>
                             </template>
                             <v-card>
                                 <v-card-title>재료를 빼주세요!</v-card-title>
@@ -82,14 +109,24 @@
                 </div>
                 <v-row>
                     <div v-for="(list, i) in lists" :key="i" class="drop">
-                        <p>{{ i + 1 }}번 문</p>
+                        <p
+                            style="
+                                border: 2px solid black;
+                                background-color: #f00;
+                                color: #fff;
+                                font-size: 20px;
+                                margin-top: 10px !important;
+                            "
+                        >
+                            FRIDGE
+                        </p>
                         <div
                             v-for="(inlist, ind) in list"
                             :key="ind"
                             style="border: 1px solid black; width: 115px; height: 50px"
                         >
                             <drop
-                                style="width: 120px; height: 50px; overflow: scroll"
+                                style="width: 115px; height: 50px; overflow: scroll"
                                 class="dropBox"
                                 @drop="handleDrop(inlist, ...arguments, ind, i, inlist)"
                             >
@@ -102,22 +139,61 @@
                                         example: 'list',
                                     }"
                                 >
-                                    <p>{{ ininlist.ingredientsdetail.name }}</p>
+                                    <v-row style="width: 100px; margin: 5px auto !important">
+                                        <v-spacer></v-spacer>
+                                        <img
+                                            :src="
+                                                require(`@/assets/images/ingredients/${ininlist.ingredientsdetail.image}`)
+                                            "
+                                            style="width: 34px; height: 34px"
+                                        />
+
+                                        <p
+                                            style="
+                                                line-height: 34px;
+                                                font-size: 18px;
+                                                padding-left: 5px !important;
+                                            "
+                                        >
+                                            {{ ininlist.ingredientsdetail.name }}
+                                        </p>
+                                        <v-spacer></v-spacer>
+                                    </v-row>
                                 </drag>
                             </drop>
                         </div>
                     </div>
                 </v-row>
+                <v-spacer></v-spacer>
             </v-row>
         </div>
         <div style="margin-top: 30px">
-            <p>유통기한 1주일 미만</p>
-            <v-slide-group center-active show-arrows>
+            <p
+                style="
+                    font-size: 28px;
+                    text-decoration: underline;
+                    text-decoration-style: wavy;
+                    text-underline-position: under;
+                "
+            >
+                유통기한 1주일 미만
+            </p>
+            <v-slide-group
+                center-active
+                show-arrows
+                style="
+                    margin-top: 20px;
+                    padding-left: 10px;
+                    box-shadow: inset 0px 0px 5px 5px #ffecf2;
+                    padding: 15px 0;
+                    box-sizing: border-box;
+                "
+            >
                 <v-slide-item v-for="(ingredient, index) in garbages" :key="index">
                     <v-card
                         class="ma-1"
-                        height="120"
-                        width="80"
+                        height="100"
+                        width="70"
                         @click="goRecipeList(ingredient.ingredientsdetail.id)"
                     >
                         <img
@@ -125,10 +201,17 @@
                                 require(`@/assets/images/ingredients/${ingredient.ingredientsdetail.image}`)
                             "
                             alt="재료이미지"
-                            style="width: 100%; height: 85%; padding: 5px"
+                            style="width: 100%; height: 85%; padding: 10px"
                         />
 
-                        <p style="text-align: center; height: 15%">
+                        <p
+                            style="
+                                text-align: center;
+                                height: 15%;
+                                line-height: 10px;
+                                font-size: 1.05rem;
+                            "
+                        >
                             {{ ingredient.ingredientsdetail.name }}
                         </p>
                     </v-card>
@@ -136,13 +219,31 @@
             </v-slide-group>
         </div>
         <div style="margin-top: 30px">
-            <p>내 재료 목록</p>
-            <v-slide-group center-active show-arrows>
+            <p
+                style="
+                    font-size: 28px;
+                    text-decoration: underline;
+                    text-decoration-style: wavy;
+                    text-underline-position: under;
+                "
+            >
+                내 재료 목록
+            </p>
+            <v-slide-group
+                center-active
+                show-arrows
+                style="
+                    margin-top: 20px;
+                    box-shadow: inset 0px 0px 5px 5px #ffecf2;
+                    padding: 15px 0;
+                    box-sizing: border-box;
+                "
+            >
                 <v-slide-item v-for="(ingredient, index) in ingredients" :key="index">
                     <v-card
                         class="ma-1"
-                        height="120"
-                        width="80"
+                        height="100"
+                        width="70"
                         @click="goRecipeList(ingredient.ingredientsdetail.id)"
                     >
                         <img
@@ -150,10 +251,17 @@
                                 require(`@/assets/images/ingredients/${ingredient.ingredientsdetail.image}`)
                             "
                             alt="재료이미지"
-                            style="width: 100%; height: 85%; padding: 5px"
+                            style="width: 100%; height: 85%; padding: 10px"
                         />
 
-                        <p style="text-align: center; height: 15%">
+                        <p
+                            style="
+                                text-align: center;
+                                height: 15%;
+                                line-height: 10px;
+                                font-size: 1.05rem;
+                            "
+                        >
                             {{ ingredient.ingredientsdetail.name }}
                         </p>
                     </v-card>
@@ -242,6 +350,8 @@ export default {
                 fridgeId: 0,
                 ingredientsDetailId: 0,
             },
+            plusBtn: require('@/assets/images/plusBtn.png'),
+            minusBtn: require('@/assets/images/minusBtn.png'),
         };
     },
 
@@ -480,9 +590,9 @@ export default {
 }
 .box {
     margin: 10px;
-    width: 610px;
-    height: 250px;
-
+    width: 630px;
+    height: 280px;
+    padding-left: 15px;
     text-align: center;
     font-size: 24px;
 }

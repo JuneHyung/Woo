@@ -2,34 +2,48 @@
     <v-container>
         <div>
             <div>
-                <p class="mainText" style="font-family: 'BinggraeSamanco-Bold', sans-serif">
+                <p class="mainText">
                     ㅇ
                     <span
                         class="mainText"
                         style="
-                            font-family: 'BinggraeSamanco-Bold', sans-serif;
                             display: inline-block;
-                            padding-right: 20px;
                             text-decoration: underline;
                             text-decoration-style: wavy;
                             text-underline-position: under;
                         "
-                        >냉장고 목록</span
+                        >냉장고 목록.</span
                     >
                 </p>
-                <div class="wavedivider"></div>
-                <div class="divider"></div>
             </div>
-            <v-slide-group center-active show-arrows>
+            <v-slide-group
+                center-active
+                show-arrows
+                style="
+                    border-radius: 30px;
+                    margin: 15px auto;
+                    box-shadow: inset 0px 0px 5px 5px #ffecf2;
+                "
+            >
                 <v-slide-item v-for="(fridge, index) in fridgeList" :key="index">
                     <div style="margin: 20px auto">
                         <p
                             class="shorthand"
-                            style="text-align: center; font-size: 14px; text-overflow: hidden"
+                            style="
+                                width: 100px;
+                                text-align: center;
+                                font-size: 22px;
+                                margin: 0 auto !important;
+                            "
                         >
                             {{ fridge.name }}
                         </p>
-                        <v-card class="ma-2" height="130" width="102">
+                        <v-card
+                            class="mx-2"
+                            height="130"
+                            width="102"
+                            style="border: 1px solid black"
+                        >
                             <img
                                 :src="fridgeImg[fridge.type]"
                                 alt="냉장고"
@@ -42,12 +56,12 @@
                                 @click="goRefManage(fridge.id)"
                             />
                         </v-card>
-                        <div>
+                        <div style="margin-top: 10px">
                             <v-icon
                                 style="
                                     width: 20px;
                                     height: 20px;
-                                    color: #f00;
+                                    color: #000;
                                     margin: 0 auto;
                                     pointer: cursor;
                                     display: flex;
@@ -56,7 +70,7 @@
                                 "
                                 @click="deletseRefrigerator(fridge.id)"
                             >
-                                mdi-delete-forever-outline
+                                mdi-delete-outline
                             </v-icon>
                         </div>
                     </div>
@@ -64,19 +78,37 @@
             </v-slide-group>
 
             <v-row style="border-top: 1px solid black; border-bottom: 1px solid black">
-                <p>클릭시 냉장고 관리가 가능합니다</p>
+                <p style="font-family: 'twayair', snas-serif; font-size: 14px">
+                    클릭시 냉장고 관리가 가능합니다
+                </p>
                 <v-spacer></v-spacer>
-                <span @click="goRefAdd()" class="addBtn">냉장고 추가</span>
+                <span @click="goRefAdd()" class="addBtn"
+                    ><v-icon>mdi-fridge-outline</v-icon><v-icon>mdi-plus</v-icon></span
+                >
             </v-row>
         </div>
         <div style="margin-top: 10px">
             <div>
-                <p class="mainText">구독</p>
+                <p class="mainText">
+                    ㅇ
+                    <span
+                        class="mainText"
+                        style="
+                            display: inline-block;
+                            text-decoration: underline;
+                            text-decoration-style: wavy;
+                            text-underline-position: under;
+                        "
+                        >구독</span
+                    >
+                </p>
             </div>
             <div style="width: 330px; height: 200px"></div>
             <div>
                 <hr />
-                <p>클릭시 구독한 작성자의 상세 내용에 대해 확인할 수 있습니다</p>
+                <p style="font-family: 'twayair', snas-serif; font-size: 12px">
+                    클릭시 구독한 작성자의 상세 내용에 대해 확인할 수 있습니다
+                </p>
                 <div>
                     <hr />
                 </div>
@@ -151,12 +183,12 @@ export default {
     width: 100px;
     height: 3px;
 }
-
 @font-face {
-    font-family: 'BinggraeSamanco-Bold';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/BinggraeSamanco-Bold.woff')
+    font-family: 'twayair';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twayair.woff')
         format('woff');
     font-weight: normal;
     font-style: normal;
+    color: black;
 }
 </style>
