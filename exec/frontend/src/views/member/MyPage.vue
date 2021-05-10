@@ -44,7 +44,7 @@
 <script>
 // import swal from 'sweetalert';
 // import http from '@/api/axios.js';
-import { getMyInfo } from '@/api/user.js';
+import { getMyInfo, getMyList } from '@/api/user.js';
 import DeleteDialog from '../../components/MyPageDialog/DeleteDialog.vue';
 import EditDialog from '../../components/MyPageDialog/EditDialog.vue';
 
@@ -79,7 +79,7 @@ export default {
                 }
             })
             .catch(() => {});
-        http.get(`post/mylist/0/${this.size}`)
+        getMyList(this.page, this.size)
             .then((response) => {
                 if (response.data.message == 'success') {
                     this.myPostList = response.data.myPostList;

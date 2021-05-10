@@ -49,6 +49,11 @@ function updateUser(id, email, pwd, nickname) {
 function deleteUser() {
     return http.delete(`user/delete`);
 }
+
+/* 구독리스트 가져오기 */
+function getMyList(page, size) {
+    return http.get(`post/mylist/${page}/${size}`);
+}
 export {
     login,
     findById,
@@ -59,4 +64,5 @@ export {
     changePassword,
     updateUser,
     deleteUser,
+    getMyList,
 }
