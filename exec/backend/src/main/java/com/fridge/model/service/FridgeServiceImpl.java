@@ -1,6 +1,7 @@
 package com.fridge.model.service;
 
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
 import com.fridge.model.Ingredientsdetail;
-import com.fridge.model.User;
 import com.fridge.model.dto.FridgeDto;
 import com.fridge.model.dto.IngredientsDto;
 import com.fridge.model.repository.FridgeRepository;
@@ -35,17 +35,21 @@ public class FridgeServiceImpl implements FridgeService {
 
 	@Override
 	public void addIngredients(IngredientsDto ingredientsDto) throws Exception {
-		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId(), ingredientsDto.getFridgeId());
+		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId(),
+				ingredientsDto.getFridgeId());
 		System.out.println(cnt);
-		if(cnt == 0) {
+		if (cnt == 0) {
 			Ingredients ingredients = new Ingredients(ingredientsDto);
 			ingredientsRepository.save(ingredients);
-		}else {
-			int id = ingredientsRepository.findByIngredientsdetailIdandFridgeId(ingredientsDto.getIngredientsDetailId(), ingredientsDto.getFridgeId());
-			System.out.println(id);
-			IngredientsDto ingredientsdto = new IngredientsDto(id, ingredientsDto.getExpired(), ingredientsDto.getLocx(), ingredientsDto.getLocy(), ingredientsDto.getFridgeId(), ingredientsDto.getIngredientsDetailId());
-			Ingredients ingredients_save = new Ingredients(ingredientsdto);
-			ingredientsRepository.save(ingredients_save);
+		} else {
+			int id = ingredientsRepository.findByIngredientsdetailIdandFridgeId(ingredientsDto.getIngredientsDetailId(),
+					ingredientsDto.getFridgeId());
+
+			IngredientsDto ingredientsdto = new IngredientsDto(id, ingredientsDto.getExpired(),
+					ingredientsDto.getLocx(), ingredientsDto.getLocy(), ingredientsDto.getFridgeId(),
+					ingredientsDto.getIngredientsDetailId());
+			Ingredients ingredientsSave = new Ingredients(ingredientsdto);
+			ingredientsRepository.save(ingredientsSave);
 		}
 	}
 
@@ -60,13 +64,13 @@ public class FridgeServiceImpl implements FridgeService {
 	}
 
 	@Override
-	public Optional<Fridge> fridgeDetail(int fridge_id) throws Exception {
-		return fridgeRepository.findById(fridge_id);
+	public Optional<Fridge> fridgeDetail(int fridgeId) throws Exception {
+		return fridgeRepository.findById(fridgeId);
 	}
 
 	@Override
-	public Ingredients[] ingrediantsList(int fridge_id) throws Exception {
-		return ingredientsRepository.findByFridge_Id(fridge_id);
+	public Ingredients[] ingrediantsList(int fridgeId) throws Exception {
+		return ingredientsRepository.findByFridge_Id(fridgeId);
 	}
 
 	@Override
@@ -80,24 +84,24 @@ public class FridgeServiceImpl implements FridgeService {
 	}
 
 	@Override
-	public void fridgeDel(Principal user, int fridge_id) throws Exception {
-		Optional<Fridge> fridge = fridgeRepository.findByIdAndUser_Id(fridge_id, Integer.parseInt(user.getName()));
+	public void fridgeDel(Principal user, int fridgeId) throws Exception {
+		Optional<Fridge> fridge = fridgeRepository.findByIdAndUser_Id(fridgeId, Integer.parseInt(user.getName()));
 		if (!fridge.isPresent())
-			throw new Exception("삭제 실패!!");
+			throw new SQLException("삭제 실패!!");
 
 		fridgeRepository.delete(fridge.get());
 	}
 
 	@Override
-	public void delIngredients(int ingredients_id) throws Exception {
-		ingredientsRepository.deleteById(ingredients_id);
+	public void delIngredients(int ingredientsId) throws Exception {
+		ingredientsRepository.deleteById(ingredientsId);
 
 	}
 
 	@Override
 	public void moveIngredients(IngredientsDto ingredientsDto) throws Exception {
 		Ingredients ingredients = new Ingredients(ingredientsDto);
-	
+
 		ingredientsRepository.save(ingredients);
 	}
 }

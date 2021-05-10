@@ -22,7 +22,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenProvider {
 	private String secretKey = "fridgeKey";
 	// 만료 시간
-	private final int EXPIRE_MINUTES = 60;
+	private static final int EXPIRE_MINUTES = 60;
 	
 	@Autowired
 	private UserDetailsService userDetailsService;

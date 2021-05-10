@@ -29,16 +29,16 @@ public class UserInterest {
 	protected UserInterest() {
 	}
 
-	public UserInterest(int user_id, int post_id, boolean interest) {
-		this.user = new User(user_id);
-		this.post = new Post(post_id);
+	public UserInterest(int userId, int postId, boolean interest) {
+		this.user = new User(userId);
+		this.post = new Post(postId);
 		this.interest = interest;
 	}
 
-	public UserInterest(int id, int user_id, int post_id, boolean interest) {
+	public UserInterest(int id, int userId, int postId, boolean interest) {
 		this.id = id;
-		this.user = new User(user_id);
-		this.post = new Post(post_id);
+		this.user = new User(userId);
+		this.post = new Post(postId);
 		this.interest = interest;
 	}
 

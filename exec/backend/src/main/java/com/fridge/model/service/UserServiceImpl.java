@@ -3,6 +3,7 @@ package com.fridge.model.service;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,11 +17,12 @@ import com.fridge.model.repository.UserRepository;
 public class UserServiceImpl implements UserService, UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
+
 	@Override
 	public User login(User user) throws Exception {
-		if(user.getEmail() == null || user.getPwd() == null)
+		if (user.getEmail() == null || user.getPwd() == null)
 			return null;
-		
+
 		return userRepository.findByEmailAndPwd(user.getEmail(), user.getPwd());
 	}
 
@@ -28,17 +30,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public void join(User user) throws Exception {
 		userRepository.save(user);
 	}
-	
+
 	@Override
-	public void checkEmail(String email) throws Exception {
-		if(userRepository.findByEmail(email).isPresent())
-			throw new Exception("이미 있는 가입되어 있는 이메일입니다.");
+	public void checkEmail(String email) throws DuplicateKeyException {
+		if (userRepository.findByEmail(email).isPresent())
+			throw new DuplicateKeyException("이미 있는 가입되어 있는 이메일입니다.");
 	}
-	
+
 	@Override
-	public void checkNick(String nick) throws Exception {
-		if(userRepository.findByNick(nick).isPresent())
-			throw new Exception("사용 중인 닉네임입니다.");
+	public void checkNick(String nick) throws DuplicateKeyException {
+		if (userRepository.findByNick(nick).isPresent())
+			throw new DuplicateKeyException("사용 중인 닉네임입니다.");
 	}
 
 	@Override
@@ -47,14 +49,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		if (user == null)
 			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
 		UserDetails userDetails = new CustomUserDetail(user);
-		
+
 		return userDetails;
 	}
 
 	@Override
 	public void modify(Principal loginId, User user) throws Exception {
 		User u = new User(Integer.parseInt(loginId.getName()), user.getEmail(), user.getPwd(), user.getNick());
-		
+
 		userRepository.save(u);
 	}
 
@@ -67,5 +69,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public User getUserInfo(String id) throws Exception {
 		return userRepository.findById(Integer.parseInt(id)).get();
 	}
-	
+
 }

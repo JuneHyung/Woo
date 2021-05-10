@@ -20,16 +20,15 @@ public interface FridgeService {
 
 	List<Ingredientsdetail> ingredientsDetailList() throws Exception;
 
-	Optional<Fridge> fridgeDetail(int fridge_id) throws Exception;
+	Optional<Fridge> fridgeDetail(int fridgeId) throws Exception;
 
-	Ingredients[] ingrediantsList(int fridge_id) throws Exception;
+	Ingredients[] ingrediantsList(int fridgeId) throws Exception;
 
 	String[] categoryList() throws Exception;
 
 	Ingredientsdetail[] categoryByingredientsList(String category) throws Exception;
 
-
-	void fridgeDel(Principal user, int fridge_id) throws Exception;
+	void fridgeDel(Principal user, int fridgeId) throws Exception;
 
 	void delIngredients(int ingredients_id) throws Exception;
 

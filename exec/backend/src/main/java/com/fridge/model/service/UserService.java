@@ -2,6 +2,8 @@ package com.fridge.model.service;
 
 import java.security.Principal;
 
+import org.springframework.dao.DuplicateKeyException;
+
 import com.fridge.model.User;
 
 public interface UserService {
@@ -15,7 +17,7 @@ public interface UserService {
 
 	public User getUserInfo(String id) throws Exception;
 
-	public void checkEmail(String email) throws Exception;
+	public void checkEmail(String email) throws DuplicateKeyException;
 
-	public void checkNick(String nick) throws Exception;
+	public void checkNick(String nick) throws DuplicateKeyException;
 }
