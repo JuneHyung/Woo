@@ -28,7 +28,7 @@
                         background-color: black;
                         padding: 5px 15px;
 
-                        font-family: 'MaruBuri-Regular' !important;
+                        font-family: 'MaruBuri-Regular', sans-serif !important;
                     "
                     class="infobox"
                 >
@@ -141,6 +141,6 @@ export default {
 <style scoped>
 .infobox p {
     color: #fff;
-    font-family: 'MaruBuri-Regular' !important;
+    font-family: 'MaruBuri-Regular', sans-serif !important;
 }
 </style>

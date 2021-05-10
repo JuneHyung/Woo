@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <div class="signFormBox" style="font-color: black">
+        <div class="signFormBox" style="color: black">
             <h1 class="signTitle">회 원 가 입</h1>
 
             <v-text-field

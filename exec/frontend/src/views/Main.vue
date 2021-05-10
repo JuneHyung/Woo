@@ -2,33 +2,63 @@
     <v-container>
         <div>
             <div>
-                <p class="mainText">내 냉장고 목록</p>
+                <p class="mainText" style="font-family: 'BinggraeSamanco-Bold', sans-serif">
+                    ㅇ
+                    <span
+                        class="mainText"
+                        style="
+                            font-family: 'BinggraeSamanco-Bold', sans-serif;
+                            display: inline-block;
+                            padding-right: 20px;
+                            text-decoration: underline;
+                            text-decoration-style: wavy;
+                            text-underline-position: under;
+                        "
+                        >냉장고 목록</span
+                    >
+                </p>
+                <div class="wavedivider"></div>
+                <div class="divider"></div>
             </div>
             <v-slide-group center-active show-arrows>
                 <v-slide-item v-for="(fridge, index) in fridgeList" :key="index">
-                    <div>
-                        <v-card class="ma-2" height="150" width="100" style="position: relative">
+                    <div style="margin: 20px auto">
+                        <p
+                            class="shorthand"
+                            style="text-align: center; font-size: 14px; text-overflow: hidden"
+                        >
+                            {{ fridge.name }}
+                        </p>
+                        <v-card class="ma-2" height="130" width="102">
                             <img
                                 :src="fridgeImg[fridge.type]"
                                 alt="냉장고"
-                                style="width: 80px; height: 140px; margin: 10px auto"
+                                style="
+                                    width: 90px;
+                                    height: 110px;
+                                    padding-top: 14px;
+                                    margin: 0 auto;
+                                "
                                 @click="goRefManage(fridge.id)"
                             />
-                            <p
+                        </v-card>
+                        <div>
+                            <v-icon
                                 style="
                                     width: 20px;
                                     height: 20px;
-                                    position: absolute;
-                                    top: 0;
-                                    right: 0;
-                                    border: 1px solid #f00;
                                     color: #f00;
-                                    text-align: center;
+                                    margin: 0 auto;
+                                    pointer: cursor;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
                                 "
-                                @click="deleteRefrigerator(fridge.id)"
-                            ></p>
-                        </v-card>
-                        <p style="text-align: center">{{ fridge.name }}</p>
+                                @click="deletseRefrigerator(fridge.id)"
+                            >
+                                mdi-delete-forever-outline
+                            </v-icon>
+                        </div>
                     </div>
                 </v-slide-item>
             </v-slide-group>
@@ -115,6 +145,18 @@ export default {
     margin-bottom: 20px;
 }
 .mainText {
-    font-size: 24px;
+    font-size: 28px;
+}
+.wavedivider {
+    width: 100px;
+    height: 3px;
+}
+
+@font-face {
+    font-family: 'BinggraeSamanco-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/BinggraeSamanco-Bold.woff')
+        format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 </style>

@@ -37,9 +37,9 @@ export default new Vuex.Store({
                         console.log('유저 정보 없음!!');
                     }
                 },
-                (error) => {
-                    console.log(error);
-                }
+                // (error) => {
+                //     console.log(error);
+                // }
             );
         },
     LOGOUT({ commit }) {

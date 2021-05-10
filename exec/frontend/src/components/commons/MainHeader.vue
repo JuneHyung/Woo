@@ -1,20 +1,23 @@
 <template>
     <header>
         <v-row class="headerBox">
-            <div @click="goMain" class="logo"><img :src="logo" alt="로고" /></div>
+            <div @click="goMain" class="logo">
+                <img :src="logo" alt="로고" />
+            </div>
             <v-spacer></v-spacer>
-            <div class="menuBox">
+            <div class="menuBox" style="background-color: #e8ffff">
                 <v-row class="menu">
-                    <div class="menuList" @click="toggleMenu">
+                    <div class="menuList" @click="toggleMenu" style="background-color: #e8ffff">
                         <v-icon
                             style="
                                 width: 60px;
                                 line-height: 60px;
                                 text-align: center;
                                 margin: 10px auto;
+                                border-radius: 0px 40px 40px 0px;
                             "
                             class="openImg"
-                            >mdi-arrow-collapse-left</v-icon
+                            >mdi-menu</v-icon
                         >
                     </div>
 
@@ -94,9 +97,10 @@ header {
     box-sizing: content-box;
 }
 .logo {
-    width: 60px;
-    height: 60px;
-    margin: 10px auto;
+    width: 70px;
+    height: 70px;
+    margin: 0px auto;
+    margin-left: 10px;
 }
 .logo img {
     width: 100%;
@@ -111,6 +115,9 @@ header {
 .openMenu .openImg {
     transition: all 0.7s;
     transform: rotate(180deg);
+    background-color: #fff;
+    height: 100%;
+    margin: 0 !important;
 }
 .menu .openImg {
     transition: all 0.7s;
@@ -125,7 +132,7 @@ header {
     height: 80px;
     position: absolute;
     top: 0;
-    right: -220px;
+    right: -222px;
     padding: 0 !important;
     overflow: hidden;
 }
@@ -136,6 +143,7 @@ header {
     right: 0;
     height: 80px;
     overflow: hidden;
+    border-radius: 40px 0px 0px 40px;
 }
 .menuList {
     width: 20%;
