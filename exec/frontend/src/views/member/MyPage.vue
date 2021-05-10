@@ -2,17 +2,50 @@
     <v-container>
         <v-row style="margin: auto 0">
             <img :src="myPage" alt="마이페이지" class="myPageImg" />
-            <p class="myPageTitle" style="margin-left: 10px !important">
-                {{ user.nick }}님의 정보 수정
+            <p
+                class="myPageTitle"
+                style="
+                    margin-left: 10px !important;
+                    font-size: 28px;
+                    text-decoration: underline;
+                    text-decoration-style: wavy;
+                    text-underline-position: under;
+                "
+            >
+                {{ user.nick }}님의 정보
             </p>
             <v-spacer></v-spacer>
         </v-row>
-        <div>
+        <div style="margin-top: 20px">
             <v-row>
                 <v-spacer></v-spacer>
-                <button style="margin-right: 10px" @click="ModifyUser">회원정보 수정</button>
+                <button
+                    style="
+                        margin-right: 20px;
+                        font-size: 18px;
+                        border: 1px solid #d9418d;
+                        border-radius: 10px;
+                        padding: 5px;
+                        color: #d9418d;
+                    "
+                    @click="ModifyUser"
+                >
+                    회원정보 수정
+                </button>
 
-                <button @click="deleteUser">탈퇴하기</button>
+                <button
+                    @click="deleteUser"
+                    style="
+                        font-size: 18px;
+                        border: 1px solid #d9418d;
+                        border-radius: 10px;
+                        padding: 5px;
+                        color: #d9418d;
+                    "
+                >
+                    탈퇴하기
+                </button>
+                <v-spacer></v-spacer>
             </v-row>
         </div>
         <EditDialog :dialogEdit="dialogEdit" :user="user" @closeEdit="closeEdit"></EditDialog>
@@ -21,15 +54,23 @@
             :user="user"
             @closeDelete="closeDelete"
         ></DeleteDialog>
-        <div>
-            <p style="font-size: 18px"></p>
-        </div>
-        <div style="padding-top: 5px; margin-bottom: 3px">
-            <p style="font-size: 18px">내가 올린 레시피</p>
+
+        <div style="padding-top: 5px; margin-top: 20px">
+            <p
+                style="
+                    font-size: 28px;
+                    text-decoration: underline;
+                    text-decoration-style: wavy;
+                    text-underline-position: under;
+                    margin-bottom: 20px !important;
+                "
+            >
+                ㅇ내가 올린 레시피
+            </p>
         </div>
         <v-row>
-            <div v-for="(post, index) in myPostList" :key="index" style="margin: 0 auto">
-                <p class="font-14">{{ post.title }}</p>
+            <div v-for="(post, index) in myPostList" :key="index" style="margin: 5px auto">
+                <p class="font-18">{{ post.title }}</p>
                 <img
                     @click="moveRecipeDetail(post.id)"
                     :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"

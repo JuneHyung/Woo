@@ -2,8 +2,8 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: 'twayair', sans-serif;
-    font-size: 12px;
+    font-family: 'BinggraeSamanco-Bold', sans-serif;
+    font-size: 14px;
 }
 *[type='password'] {
     font-family: 'arial', sans-serif;
@@ -48,7 +48,13 @@ p {
     font-style: normal;
     color: black;
 }
-
+@font-face {
+    font-family: 'BinggraeSamanco-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/BinggraeSamanco-Bold.woff')
+        format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 @font-face {
     font-family: 'MaruBuri-Regular';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/MaruBuri-Regular.woff')

@@ -52,7 +52,8 @@
 import { joinUser, checkId, checkNickName } from '@/api/user.js';
 import { moveStart } from '@/api/move.js';
 import swal from 'sweetalert';
-import safe from 'safe-regex';
+// import safe from 'safe-regex';
+import { checkPasswordValid, checkEmailValid } from '@/api/validcheck.js';
 
 export default {
     data() {
@@ -79,18 +80,20 @@ export default {
             this.imageName = file.name;
         },
         validPassword(password) {
-            const reg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*])([a-zA-Z0-9!@#$%^&+=*.\-_]){9,15}$/;
-            if (!safe(reg)) {
-                throw new Error(`unsafe regex - ${reg}`);
-            }
-            return reg.test(password);
+            // const reg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*])([a-zA-Z0-9!@#$%^&+=*.\-_]){9,15}$/;
+            // if (!safe(reg)) {
+            //     throw new Error(`unsafe regex - ${reg}`);
+            // }
+
+            return checkPasswordValid(password);
+            // return reg.test(password);
         },
         validEmail(email) {
-            const reg = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i;
-            if (!safe(reg)) {
-                throw new Error(`unsafe regex - ${reg}`);
-            }
-            return reg.test(email);
+            // const reg = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i;
+            // if (!safe(reg)) {
+            //     throw new Error(`unsafe regex - ${reg}`);
+            // }
+            return checkEmailValid(email);
         },
         signUp() {
             console.log('회원가입');
