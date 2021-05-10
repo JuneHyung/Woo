@@ -11,7 +11,7 @@ import com.fridge.model.repository.SubscribeRepository;
 import com.fridge.model.repository.UserRepository;
 
 @Service
-public class SubscribeServiceImlp implements SubscribeService {
+public class SubscribeServiceImpl implements SubscribeService {
 	@Autowired
 	SubscribeRepository subscribeRepository;
 	@Autowired

@@ -1,11 +1,12 @@
 package com.fridge.model.dto;
 
-import java.io.Serializable;
-
-public class MessageDto implements Serializable {
+public class MessageDto {
 	int userId;
 	int postId;
 	String name;
+	
+	public MessageDto() {
+	}
 	
 	public MessageDto(int userId, int postId, String name) {
 		super();
