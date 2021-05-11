@@ -49,7 +49,7 @@ public class PostServiceImpl implements PostService {
 		return POST_PATH + id + "_" + num + ".png";
 	}
 
-	public void createFile(int id, int imageCnt, List<MultipartFile> images) throws Exception {
+	public void createFile(int id, int imageCnt, List<MultipartFile> images) throws IOException {
 		// 이미지 저장
 		for (int i = 0; i < imageCnt; i++) {
 			String filePath = makePath(id, i);
@@ -58,7 +58,7 @@ public class PostServiceImpl implements PostService {
 			File dest = new File(filePath);
 
 			if (!dest.createNewFile())
-				throw new Exception("파일 생성 실패");
+				throw new IOException("파일 생성 실패");
 
 			try (FileOutputStream fout = new FileOutputStream(dest)) {
 				fout.write(images.get(i).getBytes());

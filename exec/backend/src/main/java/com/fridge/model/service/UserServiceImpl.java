@@ -48,9 +48,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		User user = userRepository.findById(Integer.parseInt(username)).get();
 		if (user == null)
 			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
-		UserDetails userDetails = new CustomUserDetail(user);
-
-		return userDetails;
+		
+		return new CustomUserDetail(user);
 	}
 
 	@Override

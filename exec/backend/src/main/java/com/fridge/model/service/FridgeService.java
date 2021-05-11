@@ -1,6 +1,7 @@
 package com.fridge.model.service;
 
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +29,10 @@ public interface FridgeService {
 
 	Ingredientsdetail[] categoryByingredientsList(String category) throws Exception;
 
-	void fridgeDel(Principal user, int fridgeId) throws Exception;
+	void fridgeDel(Principal user, int fridgeId) throws IllegalArgumentException, SQLException;
 
-	void delIngredients(int ingredients_id) throws Exception;
+	void delIngredients(int ingredients_id) throws IllegalArgumentException;
 
-	void moveIngredients(IngredientsDto ingredientsDto) throws Exception;
+	void moveIngredients(IngredientsDto ingredientsDto) throws IllegalArgumentException;
 
 }

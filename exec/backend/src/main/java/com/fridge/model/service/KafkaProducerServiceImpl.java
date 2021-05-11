@@ -15,7 +15,6 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
 	private KafkaTemplate<String, MessageDto> kafkaTemplate;
 
 	public void sendMessage(MessageDto message) throws IOException {
-		System.out.println(String.format("Produce message : %s", message));
 		this.kafkaTemplate.send(TOPIC, message);
 	}
 
