@@ -48,15 +48,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		User user = userRepository.findById(Integer.parseInt(username)).get();
 		if (user == null)
 			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
-		
+
 		return new CustomUserDetail(user);
 	}
 
 	@Override
-	public void modify(Principal loginId, User user) throws Exception {
-		User u = new User(Integer.parseInt(loginId.getName()), user.getEmail(), user.getPwd(), user.getNick());
+	public void changPwd(Principal userId, String legacyPwd, String newPwd) throws Exception {
+		User user = userRepository.findByIdAndPwd(Integer.parseInt(userId.getName()), legacyPwd);
 
-		userRepository.save(u);
+		if (user == null)
+			throw new Exception("비밀번호가 잘 못 되었습니다");
+
+		userRepository.save(new User(user.getId(), user.getEmail(), newPwd, user.getNick()));
+	}
+
+	@Override
+	public void modify(Principal loginId, User modifyUser) throws Exception {
+		User user = userRepository.findByIdAndPwd(Integer.parseInt(loginId.getName()), modifyUser.getPwd());
+
+		if (user == null)
+			throw new Exception("비밀번호가 잘 못 되었습니다");
+
+		userRepository.save(new User(Integer.parseInt(loginId.getName()), user.getEmail(), user.getPwd(), user.getNick()));
 	}
 
 	@Override

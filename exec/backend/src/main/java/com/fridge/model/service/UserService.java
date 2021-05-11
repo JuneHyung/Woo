@@ -20,4 +20,6 @@ public interface UserService {
 	public void checkEmail(String email) throws DuplicateKeyException;
 
 	public void checkNick(String nick) throws DuplicateKeyException;
+
+	public void changPwd(Principal userId, String legacyPwd, String newPwd) throws Exception;
 }
