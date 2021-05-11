@@ -1,17 +1,17 @@
 package com.fridge.model.service;
 
+import java.security.Principal;
 import java.util.List;
 
-import com.fridge.model.Subscribe;
-import com.fridge.model.User;
+import com.fridge.model.dto.UserDto;
 
 public interface SubscribeService {
 
-	void insertscribe(Subscribe subscribe) throws Exception;
+	void insertScribe(Principal userId, int subscribeId) throws Exception;
 
-	List<User> getscribe(int id) throws Exception;
+	List<UserDto> getScribe(Principal userId) throws Exception;
 
-	void deletescribe(int id) throws Exception;
+	void deleteScribe(Principal userId, int subscribeId) throws Exception;
 
 
 }

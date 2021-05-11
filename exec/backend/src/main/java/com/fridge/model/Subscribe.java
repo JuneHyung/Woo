@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
 @Table(name = "subscribe")
 @Entity
 @Schema(name = "구독 Table", description = "사용자가 누른 구독 정보를 담은 Entity")
@@ -18,37 +19,43 @@ public class Subscribe {
 	@Schema(title = "PK")
 	int id;
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	@Schema(title = "자기 자신 - FK")
 	private User user;
+	@ManyToOne
+	@JoinColumn(name = "subscribe_id", referencedColumnName = "id")
 	@Schema(title = "구독한 사람 ID - FK")
-	int subscribe_id;
+	private User subscribe_user;
 
-	public Subscribe(User user, int subscribe_id) {
+	protected Subscribe() {
+	}
+
+	public Subscribe(int userId, int subscribeId) {
+		this.user = new User(userId);
+		this.subscribe_user = new User(subscribeId);
+	}
+
+	public Subscribe(User user, User subscribe_user) {
 		super();
 		this.user = user;
-		this.subscribe_id = subscribe_id;
+		this.subscribe_user = subscribe_user;
 	}
 
-	public Subscribe() {
-		super();
+	public int getId() {
+		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public void setSubscribe_id(int subscribe_id) {
-		this.subscribe_id = subscribe_id;
+	public User getSubscribe_user() {
+		return subscribe_user;
 	}
 
 	@Override
 	public String toString() {
-		return "Subscribe [id=" + id + ", user=" + user + ", subscribe_id=" + subscribe_id + "]";
+		return "Subscribe [id=" + id + ", user=" + user + ", subscribe_user=" + subscribe_user + "]";
 	}
-	
+
 }
