@@ -19,7 +19,7 @@ public class ConsumerConfiguration {
 	private String groupId = "foo";
 
 	@Bean
-	public KafkaConsumer<String, String> kafkaConsumer() {
+	public KafkaConsumer<String, String> kafkasConsumer() {
 		Properties properties = new Properties();
 		properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -30,8 +30,6 @@ public class ConsumerConfiguration {
 		properties.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 		properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-		KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
-
-		return consumer;
+		return new KafkaConsumer<>(properties);
 	}
 }

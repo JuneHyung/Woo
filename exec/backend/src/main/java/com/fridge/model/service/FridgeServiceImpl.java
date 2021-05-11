@@ -37,7 +37,7 @@ public class FridgeServiceImpl implements FridgeService {
 	public void addIngredients(IngredientsDto ingredientsDto) throws Exception {
 		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId(),
 				ingredientsDto.getFridgeId());
-		System.out.println(cnt);
+
 		if (cnt == 0) {
 			Ingredients ingredients = new Ingredients(ingredientsDto);
 			ingredientsRepository.save(ingredients);
@@ -84,7 +84,7 @@ public class FridgeServiceImpl implements FridgeService {
 	}
 
 	@Override
-	public void fridgeDel(Principal user, int fridgeId) throws Exception {
+	public void fridgeDel(Principal user, int fridgeId) throws IllegalArgumentException, SQLException {
 		Optional<Fridge> fridge = fridgeRepository.findByIdAndUser_Id(fridgeId, Integer.parseInt(user.getName()));
 		if (!fridge.isPresent())
 			throw new SQLException("삭제 실패!!");
@@ -93,13 +93,12 @@ public class FridgeServiceImpl implements FridgeService {
 	}
 
 	@Override
-	public void delIngredients(int ingredientsId) throws Exception {
+	public void delIngredients(int ingredientsId) throws IllegalArgumentException {
 		ingredientsRepository.deleteById(ingredientsId);
-
 	}
 
 	@Override
-	public void moveIngredients(IngredientsDto ingredientsDto) throws Exception {
+	public void moveIngredients(IngredientsDto ingredientsDto) throws IllegalArgumentException {
 		Ingredients ingredients = new Ingredients(ingredientsDto);
 
 		ingredientsRepository.save(ingredients);

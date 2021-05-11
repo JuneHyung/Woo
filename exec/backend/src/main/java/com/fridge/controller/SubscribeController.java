@@ -2,7 +2,6 @@ package com.fridge.controller;
 
 //dummy
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +43,7 @@ public class SubscribeController {
 			@RequestParam("subscribeId") int subscribeId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
+
 		try {
 			User user = new User(userId);
 			Subscribe subscribe = new Subscribe(user, subscribeId);
@@ -64,13 +63,11 @@ public class SubscribeController {
 	@Operation(summary = "구독 확인", description = "편재 유저가 구독한 목록")
 	@GetMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> getscribe(@PathVariable("id") int id) {
-		System.out.println(id);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
+
 		try {
-			List<User> userlist = new LinkedList<User>();
-			userlist = subscribeservice.getscribe(id);
+			List<User> userlist = subscribeservice.getscribe(id);
 
 			resultMap.put("userlist", userlist);
 			resultMap.put(MESSAGE, SUCCESS);
@@ -88,10 +85,10 @@ public class SubscribeController {
 	public ResponseEntity<Map<String, Object>> deletescribe(@RequestParam("id") int id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
+
 		try {
 			subscribeservice.deletescribe(id);
-			
+
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
