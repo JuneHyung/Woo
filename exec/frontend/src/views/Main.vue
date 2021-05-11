@@ -12,7 +12,7 @@
                             text-decoration-style: wavy;
                             text-underline-position: under;
                         "
-                        >냉장고 목록.</span
+                        >내 냉장고</span
                     >
                 </p>
             </div>
@@ -53,6 +53,7 @@
                                     padding-top: 14px;
                                     margin: 0 auto;
                                 "
+                                :type="fridge.type"
                                 @click="goRefManage(fridge.id)"
                             />
                         </v-card>
@@ -63,7 +64,7 @@
                                     height: 20px;
                                     color: #000;
                                     margin: 0 auto;
-                                    pointer: cursor;
+                                    cursor: pointer;
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
@@ -78,13 +79,19 @@
             </v-slide-group>
 
             <v-row style="border-top: 1px solid black; border-bottom: 1px solid black">
-                <p style="font-family: 'twayair', snas-serif; font-size: 14px">
+                <p style="font-family: 'twayair', sans-serif; font-size: 14px">
                     클릭시 냉장고 관리가 가능합니다
                 </p>
                 <v-spacer></v-spacer>
-                <span @click="goRefAdd()" class="addBtn"
-                    ><v-icon>mdi-fridge-outline</v-icon><v-icon>mdi-plus</v-icon></span
+                <p
+                    @click="goRefAdd()"
+                    style="width: 40px; height: 40px; margin: 0px 10px 10px 10px !important"
                 >
+                    <img
+                        :src="require('@/assets/images/refadd.png')"
+                        style="width: 100%; height: 100%"
+                    />
+                </p>
             </v-row>
         </div>
         <div style="margin-top: 10px">
@@ -103,15 +110,71 @@
                     >
                 </p>
             </div>
-            <div style="width: 330px; height: 200px"></div>
-            <div>
-                <hr />
-                <p style="font-family: 'twayair', snas-serif; font-size: 12px">
-                    클릭시 구독한 작성자의 상세 내용에 대해 확인할 수 있습니다
-                </p>
-                <div>
-                    <hr />
-                </div>
+            <div style="width: 330px; height: 200px">
+                <v-slide-group
+                    center-active
+                    show-arrows
+                    style="
+                        border-radius: 30px;
+                        margin: 15px auto;
+                        box-shadow: inset 0px 0px 5px 5px #ffecf2;
+                    "
+                >
+                    <v-slide-item v-for="(sub, index) in subscribeList" :key="index">
+                        <div style="margin: 30px auto 20px">
+                            <v-card
+                                class="mx-2"
+                                height="130"
+                                width="101"
+                                style="border: 1px solid black"
+                                @click="goSubscribe()"
+                            >
+                                <img
+                                    :src="`data:image/jpg;base64,${sub.imageStrArr[0]}`"
+                                    alt="대표이미지"
+                                    style="width: 100%; height: 80%"
+                                />
+
+                                <p
+                                    class="shorthand"
+                                    style="
+                                        width: 100px;
+                                        height: 20%;
+                                        text-align: center;
+                                        font-size: 22px;
+                                        margin: 0 auto !important;
+                                    "
+                                >
+                                    {{ sub.title }}
+                                </p>
+                            </v-card>
+
+                            <p
+                                style="
+                                    font-size: 16px;
+                                    height: 16x;
+                                    line-height: 16px;
+                                    padding-left: 10px !important;
+                                "
+                            >
+                                작성자 : {{ sub.user_name }}
+                            </p>
+
+                            <p
+                                style="
+                                    text-align: right;
+                                    font-size: 16px;
+                                    height: 16x;
+                                    line-height: 16px;
+                                    padding-right: 20px !important;
+                                "
+                            >
+                                <v-icon style="font-size: 14px">mdi-eye</v-icon> :
+                                {{ sub.visit }}
+                            </p>
+                        </div>
+                    </v-slide-item>
+                </v-slide-group>
             </div>
         </div>
     </v-container>
@@ -119,25 +182,33 @@
 
 <script>
 import { getMyFridge, deleteMyFridge } from '../api/refrigerator.js';
-import { moveRefAdd, moveRefManage } from '@/api/move.js';
+import { moveRefAdd, moveRefManage, moveSubscribe } from '@/api/move.js';
+import { getMySubscribe } from '@/api/subscribe.js';
+import jwt_decode from 'jwt-decode';
 export default {
     name: 'Main',
     data() {
         return {
-            id: 6,
+            id: '',
             fridgeList: [],
             fridgeImg: {
-                22: require('@/assets/images/refrigerator/ref_44.png'),
-                33: require('@/assets/images/refrigerator/ref_55.png'),
-                44: require('@/assets/images/refrigerator/ref_66.png'),
-                55: require('@/assets/images/refrigerator/ref_4444.png'),
-                66: require('@/assets/images/refrigerator/ref_5555.png'),
-                1: require('@/assets/images/refrigerator/ref_4444.png'),
+                44: require('@/assets/images/refrigerator/ref_44.png'),
+                55: require('@/assets/images/refrigerator/ref_55.png'),
+                66: require('@/assets/images/refrigerator/ref_66.png'),
+                4444: require('@/assets/images/refrigerator/ref_4444.png'),
+                5555: require('@/assets/images/refrigerator/ref_5555.png'),
             },
+            subscribeList: [],
+            page: 0,
+            size: 6,
         };
     },
     created() {
+        let token = localStorage.getItem('X-AUTH-TOKEN');
+        let decode = jwt_decode(token); // 가져온 token을 decode함.
+        this.id = decode.sub;
         this.getMyRefrigerator();
+        this.getSubscribeInfo();
     },
     methods: {
         goRefManage(rid) {
@@ -145,8 +216,10 @@ export default {
             moveRefManage(rid);
         },
         goRefAdd() {
-            // this.$router.push({ name: 'RefAdd' });
             moveRefAdd();
+        },
+        goSubscribe() {
+            moveSubscribe();
         },
         getMyRefrigerator() {
             getMyFridge()
@@ -166,6 +239,13 @@ export default {
                 .catch(() => {
                     alert('삭제 실패');
                 });
+        },
+        getSubscribeInfo() {
+            getMySubscribe(this.page, this.size, this.id)
+                .then((response) => {
+                    this.subscribeList = response.data.post;
+                })
+                .catch((error) => console.log(error));
         },
     },
 };

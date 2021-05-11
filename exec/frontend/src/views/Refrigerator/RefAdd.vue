@@ -2,14 +2,19 @@
     <v-container class="addBox">
         <p>냉장고 추가</p>
         <v-text-field label="냉장고이름" type="text" v-model="fridge.name"></v-text-field>
-        <div class="col-5">
+        <!-- <div class="col-5">
             <v-select :items="selectItem" label="선택해 주세여" dense solo></v-select>
-        </div>
+        </div> -->
         <div>
             <p>단문형(인기순)</p>
             <v-slide-group center-active show-arrows>
                 <v-slide-item v-for="(dan, index) in danItem" :key="index">
-                    <v-card class="ma-2" height="150" width="100" @click="setDanFridgeType(index)">
+                    <v-card
+                        class="ma-2 refDCard"
+                        height="150"
+                        width="100"
+                        @click="setDanFridgeType(index)"
+                    >
                         <img :src="dan" alt="냉장고이미지" style="width: 100%; height: 100%" />
                     </v-card>
                 </v-slide-item>
@@ -20,7 +25,7 @@
             <v-slide-group center-active show-arrows>
                 <v-slide-item v-for="(yang, index) in yangItem" :key="index">
                     <v-card
-                        class="ma-2"
+                        class="ma-2 refYCard"
                         height="150"
                         width="100"
                         v-model="fridge.index"
@@ -33,7 +38,9 @@
         </div>
         <v-row>
             <v-spacer></v-spacer>
-            <div class="addBtn" @click="RegisterFridge()" style="margin: 10px 40px 0 0">등록</div>
+            <div class="registBtn" @click="RegisterFridge()" style="margin: 10px 60px 0 0">
+                등록
+            </div>
         </v-row>
     </v-container>
 </template>
@@ -80,28 +87,39 @@ export default {
                 });
         },
         setDanFridgeType(index) {
+            let refDCard = document.querySelectorAll('.refDCard');
+            let refYCard = document.querySelectorAll('.refYCard');
+            refDCard.forEach((refDCard) => refDCard.classList.remove('checked'));
+            refYCard.forEach((refYCard) => refYCard.classList.remove('checked'));
+            refDCard[index].classList.toggle('checked');
+
             switch (index) {
                 case 0:
-                    this.fridge.type = 22;
+                    this.fridge.type = 44;
                     break;
                 case 1:
-                    this.fridge.type = 33;
+                    this.fridge.type = 55;
                     break;
                 case 2:
-                    this.fridge.type = 44;
+                    this.fridge.type = 66;
                     break;
             }
         },
         setYangFridgeType(index) {
+            let refDCard = document.querySelectorAll('.refDCard');
+            let refYCard = document.querySelectorAll('.refYCard');
+            refDCard.forEach((refDCard) => refDCard.classList.remove('checked'));
+            refYCard.forEach((refYCard) => refYCard.classList.remove('checked'));
+            refYCard[index].classList.toggle('checked');
             switch (index) {
                 case 0:
-                    this.fridge.type = 55;
+                    this.fridge.type = 4444;
                     break;
                 case 1:
-                    this.fridge.type = 66;
+                    this.fridge.type = 5555;
                     break;
                 case 2:
-                    this.fridge.type = 1;
+                    this.fridge.type = 4444;
                     break;
             }
         },
@@ -114,5 +132,18 @@ export default {
 }
 .selectBox {
     height: 30px;
+}
+.checked {
+    border: 2px solid red;
+}
+.registBtn {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #d9418d;
+    border-radius: 10px;
+    padding: 5px;
+    color: #d9418d;
 }
 </style>

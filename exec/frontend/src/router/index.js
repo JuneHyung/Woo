@@ -11,9 +11,9 @@ import Login from "../views/member/Login.vue";
 import MyPage from "../views/member/MyPage.vue";
 
 import ShareRecipe from "../views/ShareRecipe.vue";
-import Subscribe from "../views/Subscribe.vue";
+import Subscribe from "../views/Subscribe/Subscribe.vue";
 import FoodDetail from "../views/FoodDetail.vue";
-import UserRecipeDetail from "../views/UserRecipeDetail.vue"; 
+import UserRecipeDetail from "../views/Subscribe/UserRecipeDetail.vue"; 
 
 
 import RefAdd from "../views/Refrigerator/RefAdd.vue";

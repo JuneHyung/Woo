@@ -72,7 +72,8 @@
 </template>
 <script>
 // import http from '@/api/axios.js';
-import { getPostList } from '@/api/subscribe.js';
+// getMySubscribe
+import { getPostList, getCheckSubscribe, getMySubscribe } from '@/api/subscribe.js';
 import { moveUserRecipeDetail, moveRecipeCreate } from '@/api/move.js';
 export default {
     name: 'Subscribe',
@@ -83,22 +84,13 @@ export default {
             title: '전체 레시피',
             btnTitle: '구독자 레시피',
             postList: [],
+            temp: [],
+            userList: [{ id: '' }],
             page: 0,
             size: 6,
             imgUrl: '',
         };
     },
-    // mounted() {
-    //     http.get(`post/list/0/${this.size}`)
-    //         .then((response) => {
-    //             if (response.data.message == 'success') {
-    //                 this.postList = response.data.postList;
-    //             } else {
-    //                 alert('정보 조회 실패');
-    //             }
-    //         })
-    //         .catch(() => {});
-    // },
     created() {
         this.append_list();
         window.addEventListener('scroll', this.scroll);
@@ -136,9 +128,30 @@ export default {
             if (this.subscribeflag == false) {
                 this.title = '전체 레시피';
                 this.btnTitle = '구독자 레시피';
+                this.page = 0;
+                this.append_list();
             } else {
                 this.title = '구독자 레시피';
                 this.btnTitle = '전체 레시피';
+                this.page = 0;
+
+                getCheckSubscribe()
+                    .then((response) => {
+                        this.userList.splice(0);
+                        this.userList = response.data.userlist;
+                        console.log('옴?');
+                        this.postList.splice(0);
+                        this.userList.forEach((el) => {
+                            getMySubscribe(this.page, this.size, el.id)
+                                .then((response) => {
+                                    this.postList = response.data.post;
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    })
+                    .catch((error) => console.log(error));
             }
         },
     },
