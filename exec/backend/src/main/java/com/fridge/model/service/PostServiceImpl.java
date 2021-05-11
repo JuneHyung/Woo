@@ -23,8 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fridge.model.Post;
 import com.fridge.model.User;
-import com.fridge.model.dto.MessageDto;
 import com.fridge.model.UserInterest;
+import com.fridge.model.dto.MessageDto;
 import com.fridge.model.dto.PostDto;
 import com.fridge.model.repository.PostRepository;
 import com.fridge.model.repository.UserInterestRepository;
@@ -263,6 +263,34 @@ public class PostServiceImpl implements PostService {
 
 			postRepository.save(post);
 		}
+	}
+
+	@Override
+	public List<PostDto> subscriberContents(int size, int page, int userId) throws Exception {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
+		List<Post> posts = postRepository.findByUser_id(userId, pageRequest);
+		List<PostDto> postList = new ArrayList<>();
+		for (Post post : posts) {
+			PostDto postDto = new PostDto();
+
+			postDto.setId(post.getId());
+			postDto.setTitle(post.getTitle());
+			postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT)));
+			postDto.setImageCnt(post.getImagecnt());
+			postDto.setVisit(post.getVisit());
+			postDto.setGood(post.getGood());
+			postDto.setHate(post.getHate());
+			postDto.setUser_name(post.getUser_name());
+
+			String filePath = makePath(post.getId(), 0);
+
+			byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath));
+			postDto.setImageStrArr(new String[] { Base64.getEncoder().encodeToString(fileContent) });
+
+			postList.add(postDto);
+		}
+
+		return postList;
 	}
 
 }
