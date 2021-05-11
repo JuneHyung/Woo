@@ -266,7 +266,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> subscriberContents(int size, int page, int userId) throws Exception {
+	public List<PostDto> subscriberContents(int page, int size, int userId) throws Exception {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
 		List<Post> posts = postRepository.findByUser_id(userId, pageRequest);
 		List<PostDto> postList = new ArrayList<>();
@@ -292,5 +292,6 @@ public class PostServiceImpl implements PostService {
 
 		return postList;
 	}
+	
 
 }

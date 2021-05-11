@@ -202,12 +202,12 @@ public class PostController {
 	
 	@Operation(summary = "구독한 사람의 컨텐츠를 불러오기", description = "내가 구독한 사람의 컨텐츠를 최신순으로 반환합니다.", security = {
 			@SecurityRequirement(name =" X-AUTH-TOKEN")})
-	@GetMapping(path = "/subscriberContents/{page}/{size}/{user_id}")
-	public ResponseEntity<Map<String, Object>> subscriberContents(@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("user_id") int user_id){
+	@GetMapping(path = "/subscriberContents/{page}/{size}/{userId}")
+	public ResponseEntity<Map<String, Object>> subscriberContents(@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("userId") int userId){
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			List <PostDto> post = postService.subscriberContents(page, size, user_id);
+			List <PostDto> post = postService.subscriberContents(page, size, userId);
 			resultMap.put(MESSAGE, SUCCESS);
 			resultMap.put("post", post);
 			status = HttpStatus.OK;

@@ -24,5 +24,5 @@ public interface PostService {
 
 	void setLike(Principal userId, int postId, String good) throws Exception;
 
-	List <PostDto> subscriberContents(int page, int size, int id) throws Exception;
+	List <PostDto> subscriberContents(int page, int size, int userId) throws Exception;
 }
