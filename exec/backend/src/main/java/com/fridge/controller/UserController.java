@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fridge.config.security.JwtTokenProvider;
 import com.fridge.model.User;
+import com.fridge.model.dto.UserDto;
 import com.fridge.model.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,12 +53,11 @@ public class UserController {
 			@RequestBody @Parameter(name = "로그인 시 필요한 회원정보(이메일, 비밀번호)", required = true) User user) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		User loginMember = null;
 
 		try {
-			loginMember = userService.login(user);
+			int loginId = userService.login(user);
 
-			resultMap.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(Integer.toString(loginMember.getId())));
+			resultMap.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(Integer.toString(loginId)));
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -132,14 +133,37 @@ public class UserController {
 	@Operation(summary = "로그인 회원 정보 제공", description = "로그인한 회원의 정보를 제공", security = {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@GetMapping("/info")
-	public ResponseEntity<Map<String, Object>> getUserInfo(@Parameter(name = "로그인 회원") Principal user) {
+	public ResponseEntity<Map<String, Object>> getUserInfo(@Parameter(name = "로그인 회원") Principal userId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-			User userInfo = userService.getUserInfo(user.getName());
+			UserDto userInfo = userService.getUserInfo(userId.getName());
 
 			resultMap.put("user", userInfo);
+			resultMap.put(MESSAGE, SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put(MESSAGE, FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<>(resultMap, status);
+	}
+
+	@Operation(summary = "비밀번호 수정", description = "기존 비밀번호와 새로운 비밀번호를 받아 비밀번호 수정", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	@PutMapping("/password")
+	public ResponseEntity<Map<String, Object>> changePwd(@Parameter(name = "로그인 회원 ID") Principal userId,
+			@Parameter(description = "수정 전 비밀번호") @RequestParam("legacyPwd") String legacyPwd,
+			@Parameter(description = "수정 후 비밀번호") @RequestParam("newPwd") String newPwd) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			userService.changPwd(userId, legacyPwd, newPwd);
+
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
