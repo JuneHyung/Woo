@@ -123,7 +123,7 @@
                         <div
                             v-for="(inlist, ind) in list"
                             :key="ind"
-                            style="border: 1px solid black; width: 115px; height: 50px"
+                            style="border: 1px solid black; width: 100px; height: 50px"
                         >
                             <drop
                                 style="width: 115px; height: 50px; overflow: scroll"
@@ -146,6 +146,7 @@
                                                 require(`@/assets/images/ingredients/${ininlist.ingredientsdetail.image}`)
                                             "
                                             style="width: 34px; height: 34px"
+                                            alt="재료이미지"
                                         />
 
                                         <p
@@ -183,7 +184,6 @@
                 show-arrows
                 style="
                     margin-top: 20px;
-                    padding-left: 10px;
                     box-shadow: inset 0px 0px 5px 5px #ffecf2;
                     padding: 15px 0;
                     box-sizing: border-box;
@@ -286,6 +286,7 @@ import { Drag, Drop } from 'vue-drag-drop';
 export default {
     components: { Drag, Drop },
     name: 'RefManage',
+
     data() {
         return {
             addDialog: false,
@@ -318,12 +319,7 @@ export default {
 
             ingredientsName: [],
             ingredientsId: [],
-            lists: [
-                [[], [], [], []],
-                [[], [], [], []],
-                [[], [], [], []],
-                [[], [], [], []],
-            ],
+            lists: [],
             addList: [
                 {
                     id: 0,
@@ -354,10 +350,13 @@ export default {
             minusBtn: require('@/assets/images/minusBtn.png'),
         };
     },
-
+    props: {
+        type: Number,
+    },
     created() {
         this.ref_id = this.$route.params.rid;
         this.addIngredients.fridge.id = this.ref_id;
+
         this.getIngredients();
         this.getAllCategories();
     },
@@ -403,13 +402,15 @@ export default {
                 .then((response) => {
                     this.ingredients = response.data.ingredients;
                     this.ref_name = this.ingredients[0].fridge.name;
-
+                    this.ref_type = this.ingredients[0].fridge.type;
+                    this.setRefType();
+                    console.table(this.lists);
                     this.ingredients.forEach((el) => {
                         let x = el.locx;
                         let y = el.locy;
                         if (x == 10 || y == 10) {
-                            console.log(el);
-                            console.log('옴?');
+                            // console.log(el);
+                            // console.log('옴?');
                             let temp = {
                                 id: el.id,
                                 expired: el.expired,
@@ -427,7 +428,7 @@ export default {
                             };
                             this.addList.push(temp);
 
-                            console.log('끝?');
+                            // console.log('끝?');
                         } else {
                             this.lists[y][x].push(el);
                         }
@@ -439,7 +440,44 @@ export default {
                     alert('정보받기 실패!');
                 });
         },
-
+        setRefType() {
+            switch (this.ref_type) {
+                case 44:
+                    this.lists = [
+                        [[], [], [], []],
+                        [[], [], [], []],
+                    ];
+                    break;
+                case 55:
+                    this.lists = [
+                        [[], [], [], [], []],
+                        [[], [], [], [], []],
+                    ];
+                    break;
+                case 66:
+                    this.lists = [
+                        [[], [], [], [], [], []],
+                        [[], [], [], [], [], []],
+                    ];
+                    break;
+                case 4444:
+                    this.lists = [
+                        [[], [], [], []],
+                        [[], [], [], []],
+                        [[], [], [], []],
+                        [[], [], [], []],
+                    ];
+                    break;
+                case 5555:
+                    this.list = [
+                        [[], [], [], [], []],
+                        [[], [], [], [], []],
+                        [[], [], [], [], []],
+                        [[], [], [], [], []],
+                    ];
+                    break;
+            }
+        },
         checkShelfLife() {
             var current = new Date();
 
@@ -590,7 +628,7 @@ export default {
 }
 .box {
     margin: 10px;
-    width: 630px;
+
     height: 280px;
     padding-left: 15px;
     text-align: center;

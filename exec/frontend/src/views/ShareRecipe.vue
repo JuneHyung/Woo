@@ -4,11 +4,11 @@
         <div class="box" style="padding-top: 10px">
             <v-row>
                 <div class="margin: 0 auto;">
-                    <img
+                    <!-- <img
                         src="../assets/images/된장찌개.jpg"
                         alt="된장찌개"
                         style="width: 160px; height: 160px"
-                    />
+                    /> -->
                     <!-- <p style="text-aligin: center; width: 160px; height: 160px">된장찌개</p> -->
                 </div>
                 <v-spacer></v-spacer>
@@ -44,11 +44,11 @@
         <div class="box" style="padding-top: 30px">
             <v-row>
                 <div class="margin: 0 auto;">
-                    <img
+                    <!-- <img
                         src="../assets/images/계란말이.jpg"
                         alt="계란말이"
                         style="width: 160px; height: 160px"
-                    />
+                    /> -->
                     <!-- <p style="text-aligin: center; width: 160px; height: 160px">된장찌개</p> -->
                 </div>
                 <v-spacer></v-spacer>

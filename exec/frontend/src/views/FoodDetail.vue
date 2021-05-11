@@ -6,7 +6,7 @@
             <v-row>
                 <v-spacer></v-spacer>
                 <div>
-                    <img src="../assets/images/된장찌개.jpg" alt="" class="foodImg" />
+                    <!-- <img src="../assets/images/된장찌개.jpg" alt="" class="foodImg" /> -->
                 </div>
                 <v-spacer></v-spacer>
                 <div style="width: 140px">
@@ -32,10 +32,10 @@
         </div>
         <div>
             <p>영상보기</p>
-            <v-img
+            <!-- <v-img
                 src="../assets/images/다운로드.png"
                 style="width: 250px; height: 150px; margin: 15px auto"
-            ></v-img>
+            ></v-img> -->
         </div>
     </v-container>
 </template>

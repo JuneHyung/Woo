@@ -41,6 +41,7 @@
 
 <script>
 // import { Kafka } from 'kafkajs';
+import { getSubscribeMessage } from '@/api/subscribe.js';
 export default {
     data() {
         return {
@@ -49,7 +50,7 @@ export default {
         };
     },
     created() {
-        // setTimeout(this.getMessage(), 5000);
+        setInterval(this.getMessage(), 5000);
     },
     methods: {
         openAlertDialog() {
@@ -60,27 +61,18 @@ export default {
             var alarm = document.querySelector('.alarm');
             alarm.classList.toggle('alarmOpen');
         },
-        // getMessage() {
-        //     const kafka = new Kafka({
-        //         clientId: 'my-app',
-        //         ssl: true,
-        //         brokers: ['k4d109.p.ssafy.io:9092'],
-        //     });
-
-        //     const consumer = kafka.consumer({ groupId: 'foo' });
-
-        //     const run = async () => {
-        //         await consumer.connect();
-        //         await consumer.subscribe({ topic: 'exam', fromBeginning: true });
-        //         await consumer.run({
-        //             eachMessage: async ({ topic, partition, message }) => {
-        //                 console.log(`${topic} ${partition} ${message.value}`);
-        //             },
-        //         });
-        //     };
-
-        //     run().catch((error) => alert(error));
-        // },
+        getMessage() {
+            let token = localStorage.getItem('X-AUTH-TOKEN');
+            if (token) {
+                getSubscribeMessage()
+                    .then((response) => {
+                        this.messageList = response.data.messageList;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        },
     },
 };
 </script>

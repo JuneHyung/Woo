@@ -70,13 +70,13 @@
         </div>
         <v-row>
             <div v-for="(post, index) in myPostList" :key="index" style="margin: 5px auto">
-                <p class="font-18">{{ post.title }}</p>
                 <img
                     @click="moveRecipeDetail(post.id)"
                     :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
                     alt="Recipeimage"
                     style="width: 150px; height: 160px"
                 />
+                <p class="font-18" style="text-align: center">{{ post.title }}</p>
             </div>
         </v-row>
     </v-container>

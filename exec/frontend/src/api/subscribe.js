@@ -9,4 +9,19 @@ function getPostList(page, size){
 function getPostDetail(id) {
     return http.get(`post/detail/${id}`);
 }
-export { getPostList, getPostDetail}
+
+/*구독 확인 */
+function getCheckSubscribe() {
+    return http.get(`subscribe`);
+}
+
+/*쓴글 확인*/
+function getMySubscribe(page, size, id) {
+    return http.get(`post/subscriberContents/${page}/${size}/${id}`);
+}
+
+/*메시지 받기 */
+function getSubscribeMessage() {
+    return http.get(`/kafka`);
+}
+export { getPostList, getPostDetail, getCheckSubscribe,getMySubscribe,getSubscribeMessage}
