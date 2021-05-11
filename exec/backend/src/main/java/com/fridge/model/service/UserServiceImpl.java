@@ -1,6 +1,7 @@
 package com.fridge.model.service;
 
 import java.security.Principal;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.fridge.model.CustomUserDetail;
 import com.fridge.model.User;
+import com.fridge.model.dto.UserDto;
 import com.fridge.model.repository.UserRepository;
 
 @Service
@@ -19,11 +21,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private UserRepository userRepository;
 
 	@Override
-	public User login(User user) throws Exception {
+	public Integer login(User user) throws Exception {
 		if (user.getEmail() == null || user.getPwd() == null)
 			return null;
 
-		return userRepository.findByEmailAndPwd(user.getEmail(), user.getPwd());
+		return userRepository.findByEmailAndPwd(user.getEmail(), user.getPwd()).getId();
 	}
 
 	@Override
@@ -69,7 +71,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		if (user == null)
 			throw new Exception("비밀번호가 잘 못 되었습니다");
 
-		userRepository.save(new User(Integer.parseInt(loginId.getName()), user.getEmail(), user.getPwd(), user.getNick()));
+		userRepository
+				.save(new User(Integer.parseInt(loginId.getName()), user.getEmail(), user.getPwd(), user.getNick()));
 	}
 
 	@Override
@@ -78,8 +81,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public User getUserInfo(String id) throws Exception {
-		return userRepository.findById(Integer.parseInt(id)).get();
+	public UserDto getUserInfo(String id) throws Exception {
+		Optional<User> user = userRepository.findById(Integer.parseInt(id));
+		if (!user.isPresent())
+			throw new Exception("잘못 된 아이디 입니다.");
+
+		UserDto userDto = new UserDto();
+		userDto.setId(user.get().getId());
+		userDto.setEmail(user.get().getEmail());
+		userDto.setNick(user.get().getNick());
+
+		return userDto;
 	}
 
 }

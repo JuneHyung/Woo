@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fridge.config.security.JwtTokenProvider;
 import com.fridge.model.User;
+import com.fridge.model.dto.UserDto;
 import com.fridge.model.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,12 +53,11 @@ public class UserController {
 			@RequestBody @Parameter(name = "로그인 시 필요한 회원정보(이메일, 비밀번호)", required = true) User user) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		User loginMember = null;
 
 		try {
-			loginMember = userService.login(user);
+			int loginId = userService.login(user);
 
-			resultMap.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(Integer.toString(loginMember.getId())));
+			resultMap.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(Integer.toString(loginId)));
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -138,7 +138,7 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
-			User userInfo = userService.getUserInfo(userId.getName());
+			UserDto userInfo = userService.getUserInfo(userId.getName());
 
 			resultMap.put("user", userInfo);
 			resultMap.put(MESSAGE, SUCCESS);
@@ -160,10 +160,10 @@ public class UserController {
 			@Parameter(description = "수정 후 비밀번호") @RequestParam("newPwd") String newPwd) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
+
 		try {
 			userService.changPwd(userId, legacyPwd, newPwd);
-			
+
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
