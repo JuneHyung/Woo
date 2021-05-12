@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fridge.model.Post;
 import com.fridge.model.dto.PostDto;
 import com.fridge.model.service.PostService;
 
@@ -199,19 +197,20 @@ public class PostController {
 
 		return new ResponseEntity<>(resultMap, status);
 	}
-	
+
 	@Operation(summary = "구독한 사람의 컨텐츠를 불러오기", description = "내가 구독한 사람의 컨텐츠를 최신순으로 반환합니다.", security = {
-			@SecurityRequirement(name =" X-AUTH-TOKEN")})
+			@SecurityRequirement(name = " X-AUTH-TOKEN") })
 	@GetMapping(path = "/subscriberContents/{page}/{size}/{userId}")
-	public ResponseEntity<Map<String, Object>> subscriberContents(@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("userId") int userId){
+	public ResponseEntity<Map<String, Object>> subscriberContents(@PathVariable("page") int page,
+			@PathVariable("size") int size, @PathVariable("userId") int userId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			List <PostDto> post = postService.subscriberContents(page, size, userId);
+			List<PostDto> post = postService.subscriberContents(page, size, userId);
 			resultMap.put(MESSAGE, SUCCESS);
 			resultMap.put("post", post);
 			status = HttpStatus.OK;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			resultMap.put(MESSAGE, FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

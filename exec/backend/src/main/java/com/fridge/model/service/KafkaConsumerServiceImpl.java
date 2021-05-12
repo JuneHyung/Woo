@@ -1,5 +1,6 @@
 package com.fridge.model.service;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 	private KafkaConsumer<String, String> kafkaConsumer;
 
 	@Override
-	public List<MessageDto> getMessage() throws Exception {
+	public List<MessageDto> getMessage() throws IOException {
 		List<MessageDto> messageList = new ArrayList<>();
 
 		List<TopicPartition> partitions = kafkaConsumer.partitionsFor("exam").stream()
