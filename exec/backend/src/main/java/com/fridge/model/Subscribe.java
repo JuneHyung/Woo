@@ -21,11 +21,11 @@ public class Subscribe {
 	@Column(nullable = false)
 	int id;
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id" , nullable = false)
 	@Schema(title = "자기 자신 - FK")
 	private User user;
 	@ManyToOne
-	@JoinColumn(name = "subscribe_id", referencedColumnName = "id")
+	@JoinColumn(name = "subscribe_id", referencedColumnName = "id" , nullable = false)
 	@Schema(title = "구독한 사람 ID - FK")
 	private User subscribe_user;
 

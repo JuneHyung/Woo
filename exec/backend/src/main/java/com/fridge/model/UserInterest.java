@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,6 +24,7 @@ public class UserInterest {
 	@Schema(title = "유저 ID - FK")
 	private User user;
 	@ManyToOne
+	@JoinColumn(nullable = false , name = "post_id" )
 	@Schema(title = "글 번호 - FK")
 	private Post post;
 	@Schema(title = "좋아요 또는 싫어요 여부", description = "true : 좋아요  false : 싫어요")

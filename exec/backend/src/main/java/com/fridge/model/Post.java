@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -47,6 +48,7 @@ public class Post {
 	String user_name;
 	@ManyToOne
 	@Schema(title = "user table과의 FK")
+	@JoinColumn(nullable = false , name = "user_id")
 	private User user;
 
 	protected Post() {

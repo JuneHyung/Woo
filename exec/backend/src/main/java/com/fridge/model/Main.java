@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -21,9 +22,11 @@ public class Main {
 	private int id;
 	@ManyToOne
 	@Schema(title = "레시피 정보 - FK")
+	@JoinColumn(nullable = false , name = "recipe_id")
 	private Recipe recipe;
 	@ManyToOne
 	@Schema(title = "메인 재료 상세 정보 - FK")
+	@JoinColumn(nullable = false , name = "ingredientsdetail_id")
 	private Ingredientsdetail ingredientsdetail;
 
 	public int getId() {
