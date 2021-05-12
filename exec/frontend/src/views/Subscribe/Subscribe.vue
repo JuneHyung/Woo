@@ -51,22 +51,23 @@
             <div
                 v-for="(post, index) in postList"
                 :key="index"
-                style="width: 165px; margin: 0 auto; margin-bottom: 20px"
+                style="width: 155px; margin: 10px auto"
             >
                 <img
                     @click="moveRecipeDetail(post.id)"
                     :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
                     alt="Customer_image"
-                    style="width: 160px; height: 160px"
+                    style="width: 100%; height: 160px; margin: 0 auto; border: 1px solid black"
                 />
-                <p class="shorthand" style="font-size: 20px; padding-left: 8px !important">
-                    요리이름 : {{ post.title }}
-                </p>
-                <p style="font-size: 20px; padding-left: 8px !important">
-                    작성자 : {{ post.user_name }}
-                </p>
+                <div style="border: 1px solid black">
+                    <p class="shorthand" style="font-size: 20px; padding-left: 8px !important">
+                        요리이름 : {{ post.title }}
+                    </p>
+                    <p style="font-size: 20px; padding-left: 8px !important">
+                        작성자 : {{ post.user_name }}
+                    </p>
+                </div>
             </div>
-            <v-spacer></v-spacer>
         </v-row>
     </v-container>
 </template>

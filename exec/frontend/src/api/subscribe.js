@@ -24,4 +24,23 @@ function getMySubscribe(page, size, id) {
 function getSubscribeMessage() {
     return http.get(`/kafka`);
 }
-export { getPostList, getPostDetail, getCheckSubscribe,getMySubscribe,getSubscribeMessage}
+
+/*구독하기*/
+function subscribe(subscribeId) {
+    return http.post(`subscribe/${subscribeId}`);
+}
+
+function subscribeCancel(subscribeId) {
+    return http.delete(`subscribe/${subscribeId}`);
+}
+
+/*구독취소*/
+export {
+    getPostList,
+    getPostDetail,
+    getCheckSubscribe,
+    getMySubscribe,
+    getSubscribeMessage,
+    subscribe,
+    subscribeCancel
+}

@@ -49,6 +49,11 @@ function deleteIngredients(id) {
 function moveIngredients(moveItem) {
     return http.put(`fridge/moveIngredients`, moveItem);
 }
+
+/* 냉장고 정보가져오기 */
+function getFridgeDetail(rid) {
+    return http.get(`fridge/detail/${rid}`);
+}
 export {
     getMyFridge,
     deleteMyFridge,
@@ -59,5 +64,6 @@ export {
     getIngredients,
     addIngredients,
     deleteIngredients,
-    moveIngredients
+    moveIngredients,
+    getFridgeDetail
 }

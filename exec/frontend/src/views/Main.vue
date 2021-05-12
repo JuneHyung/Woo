@@ -53,8 +53,7 @@
                                     padding-top: 14px;
                                     margin: 0 auto;
                                 "
-                                :type="fridge.type"
-                                @click="goRefManage(fridge.id)"
+                                @click="goRefManage(fridge.id, fridge.type)"
                             />
                         </v-card>
                         <div style="margin-top: 10px">
@@ -69,7 +68,7 @@
                                     justify-content: center;
                                     align-items: center;
                                 "
-                                @click="deletseRefrigerator(fridge.id)"
+                                @click="deleteRefrigerator(fridge.id)"
                             >
                                 mdi-delete-outline
                             </v-icon>
@@ -110,7 +109,7 @@
                     >
                 </p>
             </div>
-            <div style="width: 330px; height: 200px">
+            <div style="width: 100%; height: 200px; margin-bottom: 20px">
                 <v-slide-group
                     center-active
                     show-arrows
@@ -140,38 +139,41 @@
                                     style="
                                         width: 100px;
                                         height: 20%;
+                                        line-height: 24px;
                                         text-align: center;
-                                        font-size: 22px;
+                                        font-size: 14px;
                                         margin: 0 auto !important;
+                                        font-family: 'twayair', sans-serif;
                                     "
                                 >
                                     {{ sub.title }}
                                 </p>
                             </v-card>
+                            <div style="width: calc(100% - 20px); margin: 5px auto 0px">
+                                <p
+                                    style="
+                                        font-size: 14px;
+                                        height: 16x;
+                                        line-height: 16px;
+                                        font-family: 'twayair', sans-serif;
+                                    "
+                                >
+                                    작성자 : {{ sub.user_name }}
+                                </p>
 
-                            <p
-                                style="
-                                    font-size: 16px;
-                                    height: 16x;
-                                    line-height: 16px;
-                                    padding-left: 10px !important;
-                                "
-                            >
-                                작성자 : {{ sub.user_name }}
-                            </p>
-
-                            <p
-                                style="
-                                    text-align: right;
-                                    font-size: 16px;
-                                    height: 16x;
-                                    line-height: 16px;
-                                    padding-right: 20px !important;
-                                "
-                            >
-                                <v-icon style="font-size: 14px">mdi-eye</v-icon> :
-                                {{ sub.visit }}
-                            </p>
+                                <p
+                                    style="
+                                        text-align: right;
+                                        font-size: 14px;
+                                        height: 16x;
+                                        line-height: 16px;
+                                        font-family: 'twayair', sans-serif;
+                                    "
+                                >
+                                    <v-icon style="font-size: 14px">mdi-eye</v-icon> :
+                                    {{ sub.visit }}
+                                </p>
+                            </div>
                         </div>
                     </v-slide-item>
                 </v-slide-group>
@@ -183,7 +185,7 @@
 <script>
 import { getMyFridge, deleteMyFridge } from '../api/refrigerator.js';
 import { moveRefAdd, moveRefManage, moveSubscribe } from '@/api/move.js';
-import { getMySubscribe } from '@/api/subscribe.js';
+import { getCheckSubscribe, getMySubscribe } from '@/api/subscribe.js';
 import jwt_decode from 'jwt-decode';
 export default {
     name: 'Main',
@@ -199,6 +201,7 @@ export default {
                 5555: require('@/assets/images/refrigerator/ref_5555.png'),
             },
             subscribeList: [],
+            userList: [],
             page: 0,
             size: 6,
         };
@@ -212,7 +215,6 @@ export default {
     },
     methods: {
         goRefManage(rid) {
-            // this.$router.push({ name: 'RefManage', params: { rid: rid } });
             moveRefManage(rid);
         },
         goRefAdd() {
@@ -241,9 +243,20 @@ export default {
                 });
         },
         getSubscribeInfo() {
-            getMySubscribe(this.page, this.size, this.id)
+            getCheckSubscribe()
                 .then((response) => {
-                    this.subscribeList = response.data.post;
+                    this.userList.splice(0);
+                    this.userList = response.data.userlist;
+                    this.subscribeList.splice(0);
+                    this.userList.forEach((el) => {
+                        getMySubscribe(this.page, this.size, el.id)
+                            .then((response) => {
+                                this.subscribeList = response.data.post;
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    });
                 })
                 .catch((error) => console.log(error));
         },
