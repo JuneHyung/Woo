@@ -3,18 +3,19 @@ package com.fridge.model.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.fridge.common.error.WrongFormException;
 import com.fridge.model.Recipe;
 
 public interface RecipesService {
 
-	public void recipeInsert(Recipe recipe) throws Exception;
+	public void recipeInsert(Recipe recipe) throws WrongFormException;
 
-	public Optional<Recipe> recipeSelect(int recipeId) throws Exception;
+	public Optional<Recipe> recipeSelect(int recipeId) throws WrongFormException;
 
-	public List<Recipe> recipeList(int start, int limit) throws Exception;
+	public List<Recipe> recipeList(int start, int limit);
 
-	public List<Recipe> ingredientRecipes(int id, int page, int size) throws Exception;
+	public List<Recipe> ingredientRecipes(int id, int page, int size);
 
-	public void upViews(int recipeId) throws Exception;
+	public void upViews(int recipeId);
 
 }

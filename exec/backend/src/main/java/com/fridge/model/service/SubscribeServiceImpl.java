@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fridge.common.error.WrongFormException;
 import com.fridge.model.Subscribe;
 import com.fridge.model.dto.UserDto;
 import com.fridge.model.repository.SubscribeRepository;
@@ -21,18 +22,17 @@ public class SubscribeServiceImpl implements SubscribeService {
 	UserRepository userRepository;
 
 	@Override
-	public void insertScribe(Principal userId, int subscribeId) throws Exception {
-		List<Subscribe> list = subscribeRepository.findByUser_id(Integer.parseInt(userId.getName()));
-		for (Subscribe subscribe : list) {
-			if (subscribe.getSubscribe_user().getId() == subscribeId)
-				throw new Exception("이미 구독한 사람입니다");
-		}
+	public void insertScribe(Principal userId, int subscribeId) throws WrongFormException {
+		Optional<Integer> optSubscribe = subscribeRepository
+				.findByUserIdAndSubscribeId(Integer.parseInt(userId.getName()), subscribeId);
+		if (optSubscribe.isPresent())
+			throw new WrongFormException("이미 구독한 사람입니다");
 
 		subscribeRepository.save(new Subscribe(Integer.parseInt(userId.getName()), subscribeId));
 	}
 
 	@Override
-	public List<UserDto> getScribe(Principal userId) throws Exception {
+	public List<UserDto> getScribe(Principal userId) {
 		List<Subscribe> list = subscribeRepository.findByUser_id(Integer.parseInt(userId.getName()));
 
 		List<UserDto> subList = new LinkedList<>();
@@ -49,13 +49,13 @@ public class SubscribeServiceImpl implements SubscribeService {
 	}
 
 	@Override
-	public void deleteScribe(Principal userId, int subscribeId) throws Exception {
-		Optional<Integer> subscribe = subscribeRepository.findByUserIdAndSubscribeId(Integer.parseInt(userId.getName()),
-				subscribeId);
-		if (!subscribe.isPresent())
-			throw new Exception("구독하지 않은 사용자를 삭제 시도하였습니다");
+	public void deleteScribe(Principal userId, int subscribeId) throws WrongFormException {
+		Optional<Integer> optSubscribe = subscribeRepository
+				.findByUserIdAndSubscribeId(Integer.parseInt(userId.getName()), subscribeId);
+		if (!optSubscribe.isPresent())
+			throw new WrongFormException("구독하지 않은 사용자를 삭제 시도하였습니다");
 
-		subscribeRepository.deleteById(subscribe.get());
+		subscribeRepository.deleteById(optSubscribe.get());
 	}
 
 }
