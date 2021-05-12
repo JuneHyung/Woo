@@ -13,10 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fridge.model.dto.UserDto;
@@ -42,9 +42,9 @@ public class SubscribeController {
 
 	@Operation(summary = "구독 하기", description = "받은 아이디를 기준으로 구독한다", security = {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
-	@PostMapping
+	@PostMapping("/{subscribeId}")
 	public ResponseEntity<Map<String, Object>> insertScribe(@Parameter(name = "로그인한 유저") Principal userId,
-			@RequestBody int subscribeId) {
+		@PathVariable("subscribeId") int subscribeId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
@@ -85,9 +85,9 @@ public class SubscribeController {
 
 	@Operation(summary = "구독 취소", description = "현재 유저가 구독한 유저를 취소한다.", security = {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
-	@DeleteMapping
+	@DeleteMapping("/{subscribeId}")
 	public ResponseEntity<Map<String, Object>> deleteScribe(@Parameter(name = "로그인한 유저") Principal userId,
-			@Parameter(description = "구독 취소할 유저 id") @RequestBody int subscribeId) {
+			@PathVariable("subscribeId") int subscribeId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
