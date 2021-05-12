@@ -172,6 +172,7 @@ public class PostServiceImpl implements PostService {
 		postDto.setVisit(post.get().getVisit() + 1);
 		postDto.setGood(post.get().getGood());
 		postDto.setHate(post.get().getHate());
+		postDto.setUser_id(post.get().getUser().getId());
 		postDto.setUser_name(post.get().getUser_name());
 
 		String[] imageStrArr = new String[postDto.getImageCnt()];
