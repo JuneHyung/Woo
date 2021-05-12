@@ -1,5 +1,6 @@
 package com.fridge.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,10 +19,13 @@ public class Fridge {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(title = "fridge pk")
+	@Column(nullable = false)
 	int id;
 	@Schema(title = "fridge name")
+	@Column(nullable = false, length = 10)
 	String name;
 	@Schema(title = "fridge type")
+	@Column(nullable = false)
 	int type;
 	@ManyToOne
 	@Schema(title = "fridge fk")

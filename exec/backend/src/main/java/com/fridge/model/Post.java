@@ -2,6 +2,7 @@ package com.fridge.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,22 +19,31 @@ public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(title = "게시글 번호 (PK)")
+	@Column(nullable = false)
 	int id;
 	@Schema(title = "게시글 제목")
+	@Column(nullable = false,length = 45)
 	String title;
 	@Schema(title = "게시글 내용")
+	@Column(nullable = true , length = 256)
 	String contents;
 	@Schema(title = "게시글 작성일")
+	@Column(nullable = true)
 	LocalDateTime date;
 	@Schema(title = "게시글 이미지 개수")
+	@Column(nullable = true)
 	int imagecnt;
+	@Column(nullable = true)
 	@Schema(title = "게시글 조회수")
 	int visit;
 	@Schema(title = "게시글 좋아요 수")
+	@Column(nullable = true)
 	int good;
 	@Schema(title = "개시글 싫어요 수")
+	@Column(nullable = true)
 	int hate;
 	@Schema(title = "게시글 작성자(nickname)")
+	@Column(nullable = false , length = 45)
 	String user_name;
 	@ManyToOne
 	@Schema(title = "user table과의 FK")

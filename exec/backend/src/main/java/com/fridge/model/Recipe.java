@@ -1,5 +1,6 @@
 package com.fridge.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,16 +16,22 @@ public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(title = "user pk")
+	@Column(nullable = false)
 	int id;
 	@Schema(title = "레시피 이름")
+	@Column(nullable = false , length = 45)
 	String name;
 	@Schema(title = "레시피 메인 카테고리")
+	@Column(nullable = false , length = 45)
 	String category;
 	@Schema(title = "레시피 서브 카테고리")
+	@Column(nullable = false , length = 45)
 	String subcategory;
 	@Schema(title = "레시피 주소")
+	@Column(nullable = false , length = 256)
 	String url;
 	@Schema(title = "레시피 조회수")
+	@Column(nullable = true)
 	int views;
 
 	public Recipe(int id, String name, String category, String subcategory, String url, int views) {

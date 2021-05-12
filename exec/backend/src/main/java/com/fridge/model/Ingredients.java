@@ -1,5 +1,6 @@
 package com.fridge.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,12 +19,16 @@ public class Ingredients {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(title = "고유 ID - PK")
+	@Column(nullable = false)
 	int id;
 	@Schema(title = "유통 기한")
+	@Column(nullable = true)
 	String expired;
 	@Schema(title = "냉장고 X 좌표")
+	@Column(nullable = false)
 	int locx;
 	@Schema(title = "냉장고 Y 좌표")
+	@Column(nullable = false)
 	int locy;
 	@ManyToOne
 	@Schema(title = "냉장고 정보 - FK")
