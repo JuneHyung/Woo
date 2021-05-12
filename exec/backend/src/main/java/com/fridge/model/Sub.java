@@ -1,5 +1,6 @@
 package com.fridge.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class Sub {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(title = "고유 ID - PK")
+	@Column(nullable = true)
 	private int id;
 	@ManyToOne
 	@Schema(title = "만들 수 있는 레시피 - FK")

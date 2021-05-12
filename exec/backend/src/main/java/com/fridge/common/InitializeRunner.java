@@ -20,7 +20,7 @@ public class InitializeRunner implements CommandLineRunner {
 		if (!folder.exists()) {
 			try {
 				folder.mkdir();
-				logger.info("make a fridge foler");
+				logger.info("make a fridge folder");
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}
@@ -31,7 +31,7 @@ public class InitializeRunner implements CommandLineRunner {
 		if (!folder.exists()) {
 			try {
 				folder.mkdir(); // 폴더 생성합니다.
-				logger.info("make a fridge/post foler");
+				logger.info("make a fridge/post folder");
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}

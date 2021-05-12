@@ -1,5 +1,6 @@
 package com.fridge.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,12 +16,16 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(title = "user pk")
+	@Column(nullable = false)
 	int id;
 	@Schema(title = "이메일")
+	@Column(nullable = false , length = 45)
 	String email;
 	@Schema(title = "비밀번호")
+	@Column(nullable = false , length = 45)
 	String pwd;
 	@Schema(title = "닉네임")
+	@Column(nullable = false , length = 10)
 	String nick;
 	
 	public User() {

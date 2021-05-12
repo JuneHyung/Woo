@@ -1,5 +1,6 @@
 package com.fridge.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class UserInterest {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(title = "좋아요 정보 저장 테이블 식별 키 - PK")
+	@Column(nullable = false)
 	private int id;
 	@ManyToOne
 	@Schema(title = "유저 ID - FK")
@@ -24,6 +26,7 @@ public class UserInterest {
 	@Schema(title = "글 번호 - FK")
 	private Post post;
 	@Schema(title = "좋아요 또는 싫어요 여부", description = "true : 좋아요  false : 싫어요")
+	@Column(nullable = false)
 	private boolean interest;
 
 	protected UserInterest() {
