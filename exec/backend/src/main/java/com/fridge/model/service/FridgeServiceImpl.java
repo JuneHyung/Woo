@@ -1,13 +1,13 @@
 package com.fridge.model.service;
 
 import java.security.Principal;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fridge.common.error.WrongFormException;
 import com.fridge.model.Fridge;
 import com.fridge.model.Ingredients;
 import com.fridge.model.Ingredientsdetail;
@@ -27,14 +27,18 @@ public class FridgeServiceImpl implements FridgeService {
 	private IngredientsdetailRepository ingredientsdetailRepository;
 
 	@Override
-	public void create(Principal user, FridgeDto fridgeDto) throws Exception {
+	public void create(Principal user, FridgeDto fridgeDto) throws WrongFormException {
+		Optional<FridgeDto> optFridgeDto = Optional.ofNullable(fridgeDto);
+		optFridgeDto.map(FridgeDto::getName).orElseThrow(() -> new WrongFormException("냉장고 이름 입력은 필수입니다"));
+		optFridgeDto.map(FridgeDto::getType).orElseThrow(() -> new WrongFormException("냉장고 타입 입력은 필수입니다"));
+
 		Fridge fridge = new Fridge(fridgeDto, Integer.parseInt(user.getName()));
 
 		fridgeRepository.save(fridge);
 	}
 
 	@Override
-	public void addIngredients(IngredientsDto ingredientsDto) throws Exception {
+	public void addIngredients(IngredientsDto ingredientsDto) {
 		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId(),
 				ingredientsDto.getFridgeId());
 
@@ -54,53 +58,60 @@ public class FridgeServiceImpl implements FridgeService {
 	}
 
 	@Override
-	public Fridge[] fridgeList(int id) throws Exception {
+	public Fridge[] fridgeList(int id) {
 		return fridgeRepository.findByUser_Id(id);
 	}
 
 	@Override
-	public List<Ingredientsdetail> ingredientsDetailList() throws Exception {
+	public List<Ingredientsdetail> ingredientsDetailList() {
 		return ingredientsdetailRepository.findAll();
 	}
 
 	@Override
-	public Optional<Fridge> fridgeDetail(int fridgeId) throws Exception {
-		return fridgeRepository.findById(fridgeId);
+	public Optional<Fridge> fridgeDetail(int fridgeId) throws WrongFormException {
+		return Optional.ofNullable(
+				fridgeRepository.findById(fridgeId).orElseThrow(() -> new WrongFormException("존재 하지 않는 냉장고 입니다")));
 	}
 
 	@Override
-	public Ingredients[] ingrediantsList(int fridgeId) throws Exception {
+	public Ingredients[] ingrediantsList(int fridgeId) {
 		return ingredientsRepository.findByFridge_Id(fridgeId);
 	}
 
 	@Override
-	public String[] categoryList() throws Exception {
+	public String[] categoryList() {
 		return ingredientsdetailRepository.findDistinctCategory();
 	}
 
 	@Override
-	public Ingredientsdetail[] categoryByingredientsList(String category) throws Exception {
+	public Ingredientsdetail[] categoryByingredientsList(String category) {
 		return ingredientsdetailRepository.findByCategory(category);
 	}
 
 	@Override
-	public void fridgeDel(Principal user, int fridgeId) throws IllegalArgumentException, SQLException {
+	public void fridgeDel(Principal user, int fridgeId) throws WrongFormException {
 		Optional<Fridge> fridge = fridgeRepository.findByIdAndUser_Id(fridgeId, Integer.parseInt(user.getName()));
-		if (!fridge.isPresent())
-			throw new SQLException("삭제 실패!!");
+		fridge.orElseThrow(() -> new WrongFormException("존재하지 않는 냉장고 입니다"));
 
 		fridgeRepository.delete(fridge.get());
 	}
 
 	@Override
-	public void delIngredients(int ingredientsId) throws IllegalArgumentException {
+	public void delIngredients(int ingredientsId) throws WrongFormException {
+		Optional<Ingredients> ingredients = ingredientsRepository.findById(ingredientsId);
+		ingredients.orElseThrow(() -> new WrongFormException("재료 번호 확인 필요"));
+		
 		ingredientsRepository.deleteById(ingredientsId);
 	}
 
 	@Override
-	public void moveIngredients(IngredientsDto ingredientsDto) throws IllegalArgumentException {
-		Ingredients ingredients = new Ingredients(ingredientsDto);
+	public void moveIngredients(IngredientsDto ingredientsDto) throws WrongFormException {
+		Optional<Ingredients> ingredients = Optional.ofNullable(new Ingredients(ingredientsDto));
+		ingredients.map(Ingredients::getLocx).orElseThrow(() -> new WrongFormException("재료의 x좌표 필수"));
+		ingredients.map(Ingredients::getLocy).orElseThrow(() -> new WrongFormException("재료의 y좌표 필수"));
+		ingredients.map(Ingredients::getFridge).orElseThrow(() -> new WrongFormException("재료를 저장할 냉장고 번호는 필수"));
+		ingredients.map(Ingredients::getIngredientsdetail).orElseThrow(() -> new WrongFormException("재료의 디테일 정보는 필수"));
 
-		ingredientsRepository.save(ingredients);
+		ingredientsRepository.save(ingredients.get());
 	}
 }

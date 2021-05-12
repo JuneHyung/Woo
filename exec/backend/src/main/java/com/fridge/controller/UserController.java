@@ -61,7 +61,7 @@ public class UserController {
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("Login Fail : ", e);
 			resultMap.put(MESSAGE, FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

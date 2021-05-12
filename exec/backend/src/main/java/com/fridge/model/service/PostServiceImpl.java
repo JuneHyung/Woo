@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,7 +69,7 @@ public class PostServiceImpl implements PostService {
 		}
 	}
 
-	public void deleteFile(int id, int imageCnt) throws Exception {
+	public void deleteFile(int id, int imageCnt) throws IOException {
 		for (int i = 0; i < imageCnt; i++) {
 			String filePath = makePath(id, i);
 
@@ -84,20 +85,21 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void upload(String title, List<MultipartFile> images, Principal id) throws Exception {
+	public void upload(String title, List<MultipartFile> images, Principal id) throws IOException, SQLException {
 		Optional<User> user = userRepository.findById(Integer.parseInt(id.getName()));
+		user.orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
 
-		Post now = postRepository.save(new Post(title, images.size(), user.get().getNick(), user.get()));
-		if (now == null) {
-			throw new SQLException("DB insert Error!!!!");
-		}
-		kafkaProducerServiceImpl
-				.sendMessage(new MessageDto(now.getUser().getId(), now.getId(), now.getUser().getNick()));
-		createFile(now.getId(), now.getImagecnt(), images);
+		Optional<Post> now = Optional
+				.ofNullable(postRepository.save(new Post(title, images.size(), user.get().getNick(), user.get())));
+		now.orElseThrow(() -> new SQLException("DB insert Error!!!!"));
+
+		kafkaProducerServiceImpl.sendMessage(
+				new MessageDto(now.get().getUser().getId(), now.get().getId(), now.get().getUser().getNick()));
+		createFile(now.get().getId(), now.get().getImagecnt(), images);
 	}
 
 	@Override
-	public List<PostDto> getPostList(int page, int size) throws Exception {
+	public List<PostDto> getPostList(int page, int size) throws IOException {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
 		List<Post> posts = postRepository.findAll(pageRequest).getContent();
 
@@ -126,7 +128,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getMyPosLlist(int page, int size, int userId) throws Exception {
+	public List<PostDto> getMyPosLlist(int page, int size, int userId) throws IOException {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
 		List<Post> posts = postRepository.findByUser_id(userId, pageRequest);
 
@@ -155,7 +157,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostDto getPostDetail(int postId) throws Exception {
+	public PostDto getPostDetail(int postId) throws SQLException, IOException {
 		Optional<Post> post = postRepository.findById(postId);
 
 		if (!post.isPresent())
@@ -187,7 +189,20 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images) throws Exception {
+	public void deletePost(Principal userId, int postId) throws IOException, SQLException  {
+		Post deletePost = postRepository.findByIdAndUser_id(postId, Integer.parseInt(userId.getName()));
+
+		Optional.ofNullable(deletePost).orElseThrow(() -> new SQLException("삭제하려는 글이 없습니다"));
+
+		int id = deletePost.getId();
+		int imgCnt = deletePost.getImagecnt();
+		postRepository.delete(deletePost);
+
+		deleteFile(id, imgCnt);
+	}
+
+	@Override
+	public void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images) throws IOException {
 		Post post = postRepository.findByIdAndUser_id(postId, Integer.parseInt(userId.getName()));
 		int deleteCnt = post.getImagecnt();
 
@@ -199,33 +214,17 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void deletePost(Principal userId, int postId) throws Exception {
-		Post deletePost = postRepository.findByIdAndUser_id(postId, Integer.parseInt(userId.getName()));
-
-		if (deletePost == null)
-			throw new Exception("찾으시는 포스트가 없습니다.");
-
-		int id = deletePost.getId();
-		int imgCnt = deletePost.getImagecnt();
-		postRepository.delete(deletePost);
-
-		try {
-			deleteFile(id, imgCnt);
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-	}
-
-	@Override
-	public void setLike(Principal userId, int postId, String good) throws Exception {
+	public void setLike(Principal userId, int postId, String good) {
 		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(userId.getName()),
 				postId);
-		boolean interest = true;
+		
+		Optional.ofNullable(userInterest).orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다"));
 
 		Post post = postRepository.findById(postId).get();
 		int goodCnt = post.getGood();
 		int hateCnt = post.getHate();
 
+		boolean interest = true;
 		if ("good".equals(good))
 			interest = true;
 		else
@@ -266,10 +265,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> subscriberContents(int page, int size, int userId) throws Exception {
+	public List<PostDto> subscriberContents(int page, int size, int userId) throws IOException {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
 		List<Post> posts = postRepository.findByUser_id(userId, pageRequest);
+		
 		List<PostDto> postList = new ArrayList<>();
+		
 		for (Post post : posts) {
 			PostDto postDto = new PostDto();
 
@@ -292,6 +293,5 @@ public class PostServiceImpl implements PostService {
 
 		return postList;
 	}
-	
 
 }
