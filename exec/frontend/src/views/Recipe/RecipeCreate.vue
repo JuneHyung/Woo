@@ -29,7 +29,7 @@
             <input @change="onChangeImages" multiple type="file" ref="images" />
         </div>
         <div>
-            <v-btn @click="resetRecipeCreate">초기화</v-btn>
+            <v-btn @click="resetRecipeCreate" z>초기화</v-btn>
             <v-btn @click="recipeCreate">레시피 등록하기</v-btn>
         </div>
     </v-container>

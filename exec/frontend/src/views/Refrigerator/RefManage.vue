@@ -280,6 +280,7 @@ import {
     addIngredients,
     deleteIngredients,
     moveIngredients,
+    getFridgeDetail,
 } from '../../api/refrigerator.js';
 import { moveRecipeList } from '@/api/move.js';
 import { Drag, Drop } from 'vue-drag-drop';
@@ -293,9 +294,10 @@ export default {
             minusDialog: false,
             ref_id: 0,
             ref_name: '',
+            ref_type: '',
             garbages: [],
             category: ['All'],
-            ingredients: [],
+            ingredients: Array,
             addIngredients: {
                 expired: 'string',
                 locx: 0,
@@ -346,18 +348,17 @@ export default {
                 fridgeId: 0,
                 ingredientsDetailId: 0,
             },
+            fridgeInfo: [],
             plusBtn: require('@/assets/images/plusBtn.png'),
             minusBtn: require('@/assets/images/minusBtn.png'),
         };
     },
-    props: {
-        type: Number,
-    },
+
     created() {
         this.ref_id = this.$route.params.rid;
         this.addIngredients.fridge.id = this.ref_id;
+        this.getFridgeDetail();
 
-        this.getIngredients();
         this.getAllCategories();
     },
     methods: {
@@ -397,20 +398,26 @@ export default {
                     });
             }
         },
+        getFridgeDetail() {
+            getFridgeDetail(this.ref_id)
+                .then((response) => {
+                    this.fridgeInfo = response.data.fridge;
+                    this.ref_name = response.data.fridge.name;
+                    this.ref_type = response.data.fridge.type;
+                    this.setRefType();
+                })
+                .catch((error) => console.log(error));
+        },
         getIngredients() {
             getIngredients(this.ref_id)
                 .then((response) => {
                     this.ingredients = response.data.ingredients;
-                    this.ref_name = this.ingredients[0].fridge.name;
-                    this.ref_type = this.ingredients[0].fridge.type;
-                    this.setRefType();
-                    console.table(this.lists);
+                    console.log(`ref_type : ${this.ref_type}`);
+
                     this.ingredients.forEach((el) => {
                         let x = el.locx;
                         let y = el.locy;
                         if (x == 10 || y == 10) {
-                            // console.log(el);
-                            // console.log('옴?');
                             let temp = {
                                 id: el.id,
                                 expired: el.expired,
@@ -436,11 +443,12 @@ export default {
                     this.checkShelfLife();
                     console.log('정보받기 성공');
                 })
-                .catch(() => {
-                    alert('정보받기 실패!');
+                .catch((error) => {
+                    console.log(error);
                 });
         },
         setRefType() {
+            console.log(`ref_type : ${this.ref_type}`);
             switch (this.ref_type) {
                 case 44:
                     this.lists = [
@@ -469,13 +477,20 @@ export default {
                     ];
                     break;
                 case 5555:
-                    this.list = [
+                    this.lists = [
                         [[], [], [], [], []],
                         [[], [], [], [], []],
                         [[], [], [], [], []],
                         [[], [], [], [], []],
                     ];
                     break;
+            }
+            if (this.ref_type) {
+                if (this.ref_type == 4444 || this.ref_type == 5555) {
+                    let box = document.querySelector('.box');
+                    box.classList.add('fourBox');
+                }
+                this.getIngredients();
             }
         },
         checkShelfLife() {
@@ -627,16 +642,16 @@ export default {
     height: auto;
 }
 .box {
+    width: 100%;
     margin: 10px;
-
-    height: 280px;
     padding-left: 15px;
     text-align: center;
     font-size: 24px;
 }
+.fourBox {
+    width: 580px;
+}
 .outBox {
-    width: 330px;
-    height: 330px;
     overflow-x: scroll;
 }
 .dropBox::-webkit-scrollbar {

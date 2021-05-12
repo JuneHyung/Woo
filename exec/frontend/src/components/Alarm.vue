@@ -1,9 +1,44 @@
 <template>
     <div class="alramMenu" @click="openAlarmList">
         <div class="alarmImg">
-            <img :src="alarm" alt="알림 이미지" />
+            <img :src="alarmN" alt="알림 이미지" v-if="messageDialog" />
+            <img :src="alarmY" alt="알림 이미지" v-else />
         </div>
         <div class="alarm">
+            <v-card>
+                <div
+                    style="
+                        height: 80%;
+                        width: 100%;
+                        font-size: 22px;
+                        text-align: center;
+                        border-bottom: 2px solid #ffecf2;
+                    "
+                    dark
+                >
+                    <v-spacer></v-spacer>
+                    알림
+                    <v-spacer></v-spacer>
+                </div>
+
+                <div
+                    v-for="(message, index) in messageList"
+                    :key="index"
+                    style="border-bottom: 2px solid #ffecf2; box-sizing: border-box"
+                >
+                    <p style="font-size: 18px; padding-left: 15px !important">
+                        이름 : {{ message.name }}
+                    </p>
+                </div>
+
+                <div>
+                    <div style="margin: 0 auto; font-size: 18px; text-align: center">
+                        전부 읽음 표시
+                    </div>
+                </div>
+            </v-card>
+        </div>
+        <!-- <div class="alarm" v-else>
             <v-card>
                 <v-card-title
                     style="height: 80%; width: 100%; font-size: 18px; text-align: center"
@@ -14,28 +49,10 @@
                 </v-card-title>
 
                 <v-card-text>
-                    <button style="word-break: break-all; padding-bottom: 7px">
-                        - 구독하신 00님의 새 영상
-                    </button>
-                    <button style="word-break: break-all; padding-bottom: 7px">
-                        - 구독하신 00님의 새 영상
-                    </button>
-                    <button style="word-break: break-all; padding-bottom: 7px">
-                        - 구독하신 00님의 새로운 레시피
-                    </button>
+                    <p>로그인 후 확인 할 수 있습니다.</p>
                 </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn>전부 읽음 표시</v-btn>
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn>창 닫기</v-btn>
-                    <v-spacer></v-spacer>
-                </v-card-actions>
             </v-card>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -45,12 +62,19 @@ import { getSubscribeMessage } from '@/api/subscribe.js';
 export default {
     data() {
         return {
-            alarm: require('@/assets/images/header/alarm.png'),
+            alarmY: require('@/assets/images/header/alarmY.png'),
+            alarmN: require('@/assets/images/header/alarmN.png'),
             messageList: [],
+            token: '',
+            alarmDialog: false,
+            messageDialog: false,
         };
     },
+    // watch: {
+    //     messageList: 'getSubscribeMessage',
+    // },
     created() {
-        setInterval(this.getMessage(), 5000);
+        this.getMessage();
     },
     methods: {
         openAlertDialog() {
@@ -58,20 +82,24 @@ export default {
         },
         openAlarmList() {
             this.alarmDialog = true;
+            this.messageDialog = true;
             var alarm = document.querySelector('.alarm');
             alarm.classList.toggle('alarmOpen');
         },
         getMessage() {
             let token = localStorage.getItem('X-AUTH-TOKEN');
             if (token) {
-                getSubscribeMessage()
-                    .then((response) => {
-                        this.messageList = response.data.messageList;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                setInterval(this.getInfo(), 1000);
             }
+        },
+        getInfo() {
+            getSubscribeMessage()
+                .then((response) => {
+                    this.messageList = response.data.messageList;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
     },
 };
@@ -89,12 +117,12 @@ export default {
 .alarm {
     position: fixed;
     bottom: 70px;
-    opacity: 0.88 !important;
+    opacity: 0.95 !important;
     right: 25px;
     width: 180px;
     display: none;
     transition: all 0.4s;
-    border: solid #494949 3px;
+    border: solid #ffecf2 3px;
 }
 
 .alarmImg img {

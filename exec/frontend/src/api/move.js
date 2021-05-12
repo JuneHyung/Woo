@@ -39,8 +39,8 @@ function moveRecipeDetail(id) {
     return ROUTER.push({ name: 'RecipeDetail', params: {recipe_id: id} });
 }
 
-function moveRefManage(rid) {
-    return ROUTER.push({ name: 'RefManage', params: { rid: rid } });
+function moveRefManage(rid, rtype) {
+    return ROUTER.push({ name: 'RefManage', params: { rid: rid,rtype:rtype } });
 }
 
 function moveRefAdd() {
@@ -48,7 +48,7 @@ function moveRefAdd() {
 }
 
 function moveUserRecipeDetail(post_id) {
-    return ROUTER.push({ name: 'UserRecipeDetail', params: { id: post_id } });
+    return ROUTER.push({ name: 'UserRecipeDetail', params: { post_id: post_id } });
 }
 
 

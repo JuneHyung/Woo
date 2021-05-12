@@ -23,9 +23,9 @@
         <div style="margin-top: 10px; margin-bottom: 10px">
             <v-row>
                 <v-spacer></v-spacer>
-                <img :src="login" alt="로그인  " class="startIcon" @click="moveLogin()" />
-                <v-spacer></v-spacer>
                 <img :src="signup" alt="" class="startIcon" @click="moveSignUp()" />
+                <v-spacer></v-spacer>
+                <img :src="login" alt="로그인  " class="startIcon" @click="moveLogin()" />
                 <v-spacer></v-spacer>
             </v-row>
         </div>
