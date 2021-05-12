@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +44,7 @@ public class SubscribeController {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> insertScribe(@Parameter(name = "로그인한 유저") Principal userId,
-			@RequestParam("subscribeId") int subscribeId) {
+			@RequestBody int subscribeId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
@@ -83,9 +85,9 @@ public class SubscribeController {
 
 	@Operation(summary = "구독 취소", description = "현재 유저가 구독한 유저를 취소한다.", security = {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
-	@PostMapping("/delete")
+	@DeleteMapping
 	public ResponseEntity<Map<String, Object>> deleteScribe(@Parameter(name = "로그인한 유저") Principal userId,
-			@Parameter(description = "구독 취소할 유저 id") @RequestParam("subscribeId") int subscribeId) {
+			@Parameter(description = "구독 취소할 유저 id") @RequestBody int subscribeId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
