@@ -127,5 +127,24 @@ public class RecipesController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
+	@Operation(summary = "레시피 번호로 주재료를 조회하여", description = "레시피 번호로 주재료를 조회하여 이름을 list 반환한다.") 
+	@GetMapping("/recipeMain/{recipeId}")
+	public ResponseEntity<Map<String, Object>> recipeMain(@PathVariable("recipeId") int recipeId){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		try {
+			String [] recipeMain = recipesService.recipeMain(recipeId);
+			resultMap.put(MESSAGE, SUCCESS);
+			resultMap.put("recipeMain", recipeMain);
+			status = HttpStatus.OK;
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+			resultMap.put(MESSAGE, FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(resultMap, status);
+	}
+	
 
 }

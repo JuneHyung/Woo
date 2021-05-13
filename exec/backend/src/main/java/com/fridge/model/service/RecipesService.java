@@ -18,4 +18,6 @@ public interface RecipesService {
 
 	public void upViews(int recipeId);
 
+	public String [] recipeMain(int recipeId);
+
 }

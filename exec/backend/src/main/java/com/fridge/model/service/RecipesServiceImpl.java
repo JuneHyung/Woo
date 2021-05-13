@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.fridge.common.error.WrongFormException;
 import com.fridge.model.Main;
 import com.fridge.model.Recipe;
+import com.fridge.model.repository.IngredientsdetailRepository;
 import com.fridge.model.repository.MainRepository;
 import com.fridge.model.repository.RecipesRepository;
 
@@ -21,6 +22,9 @@ public class RecipesServiceImpl implements RecipesService {
 
 	@Autowired
 	private MainRepository mainRepository;
+	
+	@Autowired
+	private IngredientsdetailRepository ingredientsdetailRepository;
 
 	@Override
 	public void recipeInsert(Recipe recipe) throws WrongFormException {
@@ -65,6 +69,17 @@ public class RecipesServiceImpl implements RecipesService {
 		Recipe updateRecipe = new Recipe(r, r.getViews() + 1);
 
 		recipesRepository.save(updateRecipe);
+	}
+
+	@Override
+	public String [] recipeMain(int recipeId) {
+		int [] ingredientsId = mainRepository.findIngredientsdetail_idByRecipe_id(recipeId);
+		String [] mainName = new String[ingredientsId.length];
+		for(int i = 0; i < ingredientsId.length; i++) {
+			mainName[i] = ingredientsdetailRepository.findIngredientsdetail_nameByIngredientsdetail_id(ingredientsId[i]);
+			
+		}
+		return mainName;
 	}
 
 }
