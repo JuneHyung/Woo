@@ -119,6 +119,7 @@
                         margin: 15px auto;
                         box-shadow: inset 0px 0px 5px 5px #ffecf2;
                     "
+                    v-if="subscribeList.length != 0"
                 >
                     <v-slide-item v-for="(sub, index) in subscribeList" :key="index">
                         <div style="margin: 30px auto 20px">
@@ -178,6 +179,9 @@
                         </div>
                     </v-slide-item>
                 </v-slide-group>
+                <div v-else style="margin-top: 50px; text-align: center">
+                    <p style="font-size: 24px">구독 중인 사람이 없습니다.</p>
+                </div>
             </div>
         </div>
     </v-container>

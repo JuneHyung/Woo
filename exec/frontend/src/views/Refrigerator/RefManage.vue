@@ -164,7 +164,29 @@
                 <v-spacer></v-spacer>
             </v-row>
         </div>
-        <div style="margin-top: 30px">
+        <v-row
+            style="
+                border-top: 1px solid black;
+                border-bottom: 1px solid black;
+                margin: 30px auto !important;
+                padding: 10px !important;
+            "
+        >
+            <v-spacer></v-spacer>
+            <p style="font-family: 'twayair', sans-serif; font-size: 14px">
+                빨간색으로 표시된 재료들은 <br />
+                <span style="color: #f00; font-family: 'twayair', sans-serif; font-size: 14px"
+                    >"유통기한이 지난"</span
+                >
+                식품입니다.
+            </p>
+            <v-spacer></v-spacer>
+            <v-icon style="color: #f00; font-size: 48px; margin-top: -3px"
+                >mdi-arrow-down-bold-box-outline</v-icon
+            >
+            <v-spacer></v-spacer>
+        </v-row>
+        <div>
             <p
                 style="
                     font-size: 28px;
@@ -185,7 +207,7 @@
                     box-sizing: border-box;
                 "
             >
-                <v-slide-item v-for="(ingredient, index) in garbages" :key="index">
+                <v-slide-item v-for="(ingredient, index) in garbages" :key="index" class="itemBox">
                     <v-card
                         class="ma-1"
                         height="100"
@@ -201,6 +223,7 @@
                         />
 
                         <p
+                            class="itemText"
                             style="
                                 text-align: center;
                                 height: 15%;
@@ -251,6 +274,7 @@
                         />
 
                         <p
+                            class="itemText"
                             style="
                                 text-align: center;
                                 height: 15%;
@@ -347,6 +371,7 @@ export default {
             fridgeInfo: [],
             plusBtn: require('@/assets/images/plusBtn.png'),
             minusBtn: require('@/assets/images/minusBtn.png'),
+            tempList: [],
         };
     },
 
@@ -354,7 +379,6 @@ export default {
         this.ref_id = this.$route.params.rid;
         this.addIngredients.fridge.id = this.ref_id;
         this.getFridgeDetail();
-
         this.getAllCategories();
     },
     methods: {
@@ -436,7 +460,7 @@ export default {
                             this.lists[y][x].push(el);
                         }
                     });
-                    this.checkShelfLife();
+                    setTimeout(this.checkShelfLife, 100);
                     console.log('정보받기 성공');
                 })
                 .catch((error) => {
@@ -490,26 +514,56 @@ export default {
             }
         },
         checkShelfLife() {
-            var current = new Date();
+            let current = new Date();
 
             let year = current.getFullYear();
             let month = current.getMonth() + 1;
-            let date = current.getDate() + 7;
-            let today = `${year}-${month}-${date}`;
-            let todayO = new Date(today);
+            let date7 = current.getDate() + 7;
+            let today7 = `${year}-${month}-${date7}`;
+            let today7O = new Date(today7);
 
             for (var i = 0; i < this.ingredients.length; i++) {
                 var ingre = new Date(this.ingredients[i].expired);
 
-                if (ingre.getTime() <= todayO.getTime()) {
+                if (ingre.getTime() <= today7O.getTime()) {
                     this.garbages.push(this.ingredients[i]);
+                    console.log(1);
+                }
+            }
+            console.log('끝?');
+            setTimeout(this.checkDeadItem, 100);
+        },
+        checkDeadItem() {
+            console.log('다시시작');
+            let current = new Date();
+
+            let year = current.getFullYear();
+            let month = current.getMonth() + 1;
+            let date = current.getDate() + 1;
+            let today = `${year}-${month}-${date}`;
+            let todayO = new Date(today);
+
+            let itemBox = document.querySelectorAll('.itemText');
+            itemBox.forEach((el) => {
+                this.tempList.push(el.innerText);
+            });
+
+            for (var i = 0; i < this.ingredients.length; i++) {
+                let life = new Date(this.ingredients[i].expired);
+                console.log(`life = ${life.getTime()}, todayO = ${todayO.getTime()}`);
+                if (life.getTime() <= todayO.getTime()) {
+                    itemBox.forEach((el) => {
+                        let text = el.innerText;
+
+                        if (text == this.ingredients[i].ingredientsdetail.name) {
+                            el.classList.add('deadItem');
+                        }
+                    });
                 }
             }
         },
         selectId(name) {
-            console.log('왔니?');
             let idx = this.ingredientsName.indexOf(name);
-            console.log('idx : ' + idx);
             this.addIngredients.ingredientsdetail.id = this.ingredientsId[idx];
         },
         addIngred() {
@@ -562,10 +616,6 @@ export default {
         },
         goRecipeList(id) {
             moveRecipeList(id);
-            // this.$router.push({
-            //     name: 'RecipeList',
-            //     params: { ingredient_id: id },
-            // });
         },
         handleDrop(toList, data, event, x, y) {
             // console.log(`event : ${event}`);
@@ -668,5 +718,8 @@ export default {
     height: 2px;
     border: 1px solid black;
     margin: 10px auto;
+}
+.deadItem {
+    border: 2px solid red !important;
 }
 </style>

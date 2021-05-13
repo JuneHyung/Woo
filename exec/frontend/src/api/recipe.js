@@ -26,11 +26,21 @@ function getRecipeDetail(id) {
 function createRecipe(formData) {
     return http.post(`post/upload/`, formData);
 }
+/*레시피 주재료 조회 */
+function getRecipeMain(recipeId) {
+    return http.get(`recipes/recipeMain/${recipeId}`);
+}
 
+/*레시피 부재료 조회 */
+function getRecipeSub(recipeId) {
+    return http.get(`recipes/recipeSub/${recipeId}`);
+}
 export {
     getRecipeListByMenu,
     getRecipeListByIngredients,
     viewsUp,
     getRecipeDetail,
-    createRecipe
+    createRecipe,
+    getRecipeMain,
+    getRecipeSub
 }
