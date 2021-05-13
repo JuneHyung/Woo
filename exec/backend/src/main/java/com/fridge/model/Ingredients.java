@@ -37,7 +37,7 @@ public class Ingredients {
 	private Fridge fridge;
 	@ManyToOne
 	@Schema(title = "재료 상세 정보 - FK")
-	@JoinColumn(nullable = false , name = "ingredientsdetail")
+	@JoinColumn(nullable = false , name = "ingredientsdetail_id")
 	private Ingredientsdetail ingredientsdetail;
 
 	protected Ingredients() {
