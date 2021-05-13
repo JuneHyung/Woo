@@ -14,6 +14,7 @@ import com.fridge.model.Recipe;
 import com.fridge.model.repository.IngredientsdetailRepository;
 import com.fridge.model.repository.MainRepository;
 import com.fridge.model.repository.RecipesRepository;
+import com.fridge.model.repository.SubRepository;
 
 @Service
 public class RecipesServiceImpl implements RecipesService {
@@ -25,6 +26,9 @@ public class RecipesServiceImpl implements RecipesService {
 	
 	@Autowired
 	private IngredientsdetailRepository ingredientsdetailRepository;
+	
+	@Autowired
+	private SubRepository subRepository;
 
 	@Override
 	public void recipeInsert(Recipe recipe) throws WrongFormException {
@@ -80,6 +84,17 @@ public class RecipesServiceImpl implements RecipesService {
 			
 		}
 		return mainName;
+	}
+
+	@Override
+	public String[] recipeSub(int recipeId) {
+		int [] ingredientsId = subRepository.findIngredientsdetail_idByRecipe_id(recipeId);
+		String [] subName = new String[ingredientsId.length];
+		for(int i = 0; i < ingredientsId.length; i++) {
+			subName[i] = ingredientsdetailRepository.findIngredientsdetail_nameByIngredientsdetail_id(ingredientsId[i]);
+			
+		}
+		return subName;
 	}
 
 }

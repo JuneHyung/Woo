@@ -20,4 +20,6 @@ public interface RecipesService {
 
 	public String [] recipeMain(int recipeId);
 
+	public String[] recipeSub(int recipeId);
+
 }
