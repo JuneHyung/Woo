@@ -44,8 +44,8 @@ public class Post {
 	@Column(nullable = true)
 	int hate;
 	@Schema(title = "게시글 작성자(nickname)")
-	@Column(nullable = false , length = 45)
-	String user_name;
+	@Column(name= "user_name", nullable = false , length = 45)
+	String writer;
 	@ManyToOne
 	@Schema(title = "user table과의 FK")
 	@JoinColumn(nullable = false , name = "user_id")
@@ -70,7 +70,7 @@ public class Post {
 
 		this.good = post.getGood();
 		this.hate = post.getHate();
-		this.user_name = post.getUser_name();
+		this.writer = post.getWriter();
 		this.user = post.getUser();
 
 	}
@@ -82,28 +82,28 @@ public class Post {
 		this.date = post.getDate();
 		this.imagecnt = post.getImagecnt();
 		this.visit = post.getVisit();
-		this.user_name = post.getUser_name();
+		this.writer = post.getWriter();
 		this.user = post.getUser();
 		this.good = good;
 		this.hate = hate;
 	}
 
-	public Post(String title, int imageCnt, String user_name, User user) {
+	public Post(String title, int imageCnt, String writer, User user) {
 		this.title = title;
 		this.contents = "";
 		this.date = LocalDateTime.now();
 		this.imagecnt = imageCnt;
-		this.user_name = user_name;
+		this.writer = writer;
 		this.user = user;
 	}
 
-	public Post(int id, String title, int imageCnt, String user_name, User user) {
+	public Post(int id, String title, int imageCnt, String writer, User user) {
 		this.id = id;
 		this.title = title;
 		this.contents = "";
 		this.date = LocalDateTime.now();
 		this.imagecnt = imageCnt;
-		this.user_name = user_name;
+		this.writer = writer;
 		this.user = user;
 	}
 
@@ -139,8 +139,8 @@ public class Post {
 		return hate;
 	}
 
-	public String getUser_name() {
-		return user_name;
+	public String getWriter() {
+		return writer;
 	}
 
 	public User getUser() {
@@ -150,7 +150,7 @@ public class Post {
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", contents=" + contents + ", date=" + date + ", imagecnt="
-				+ imagecnt + ", visit=" + visit + ", good=" + good + ", hate=" + hate + ", user_name=" + user_name
+				+ imagecnt + ", visit=" + visit + ", good=" + good + ", hate=" + hate + ", writer=" + writer
 				+ ", user=" + user + "]";
 	}
 

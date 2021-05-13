@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.fridge.model.Ingredients;
 
 public interface IngredientsRepository extends JpaRepository<Ingredients, Integer> {
-	Ingredients[] findByFridge_Id(int fridgeId);
+	Ingredients[] findByFridgeId(int fridgeId);
 
 	@Query(value = "SELECT COUNT(id) FROM Ingredients WHERE ingredientsdetail_id = :#{#ingredientsDetailId} and fridge_id = :#{#fridgeId}")
 	int findCntByIngredientsdetailId(int ingredientsDetailId, int fridgeId);

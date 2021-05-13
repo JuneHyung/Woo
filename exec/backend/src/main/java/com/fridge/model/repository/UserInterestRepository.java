@@ -6,6 +6,6 @@ import com.fridge.model.UserInterest;
 
 public interface UserInterestRepository extends JpaRepository<UserInterest, Integer> {
 
-	UserInterest findByUser_idAndPost_id(int userId, int postId);
+	UserInterest findByUserIdAndPostId(int userId, int postId);
 
 }

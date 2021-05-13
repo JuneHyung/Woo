@@ -48,7 +48,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 			ObjectMapper objectMapper = new ObjectMapper();
 			MessageDto message = objectMapper.readValue(record.value(), MessageDto.class);
 
-			if (subscribeIdSet.contains(message.getUser_id()))
+			if (subscribeIdSet.contains(message.getUserId()))
 				messageList.add(message);
 			// 구독한 사람의 게시글 중 최신 10개만 제공
 			if (messageList.size() == 10)
