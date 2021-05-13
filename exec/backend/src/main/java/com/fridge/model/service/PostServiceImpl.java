@@ -190,7 +190,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void deletePost(Principal userId, int postId) throws IOException, SQLException  {
+	public void deletePost(Principal userId, int postId) throws IOException, SQLException {
 		Post deletePost = postRepository.findByIdAndUser_id(postId, Integer.parseInt(userId.getName()));
 
 		Optional.ofNullable(deletePost).orElseThrow(() -> new SQLException("삭제하려는 글이 없습니다"));
@@ -218,18 +218,16 @@ public class PostServiceImpl implements PostService {
 	public void setLike(Principal userId, int postId, String good) {
 		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(userId.getName()),
 				postId);
-		
+
 		Optional.ofNullable(userInterest).orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다"));
 
 		Post post = postRepository.findById(postId).get();
 		int goodCnt = post.getGood();
 		int hateCnt = post.getHate();
 
-		boolean interest = true;
+		boolean interest = false;
 		if ("good".equals(good))
 			interest = true;
-		else
-			interest = false;
 
 		// 좋아요나 싫어요를 표시한 적 없는 경우
 		if (userInterest == null) {
@@ -269,9 +267,9 @@ public class PostServiceImpl implements PostService {
 	public List<PostDto> subscriberContents(int page, int size, int userId) throws IOException {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
 		List<Post> posts = postRepository.findByUser_id(userId, pageRequest);
-		
+
 		List<PostDto> postList = new ArrayList<>();
-		
+
 		for (Post post : posts) {
 			PostDto postDto = new PostDto();
 

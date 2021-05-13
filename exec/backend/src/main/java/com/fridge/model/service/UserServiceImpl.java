@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<User> user = userRepository.findById(Integer.parseInt(username));
-		
+
 		user.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
 		return new CustomUserDetail(user.get());
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Transactional(readOnly = true)
 	public UserDto getUserInfo(String id) throws WrongFormException {
 		Optional<User> user = userRepository.findById(Integer.parseInt(id));
-		
+
 		user.orElseThrow(() -> new WrongFormException("잘못 된 아이디 입니다."));
 
 		UserDto userDto = new UserDto();
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	@Transactional(readOnly = true)
 	public void checkEmail(String email) throws DuplicateKeyException {
-		userRepository.findByEmail(email).ifPresent((user) -> {
+		userRepository.findByEmail(email).ifPresent(user -> {
 			throw new DuplicateKeyException(user.getEmail() + "는 이미 존재하는 이메일입니다.");
 		});
 	}
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	@Transactional(readOnly = true)
 	public void checkNick(String nick) throws DuplicateKeyException {
-		userRepository.findByNick(nick).ifPresent((user) -> {
+		userRepository.findByNick(nick).ifPresent(user -> {
 			throw new DuplicateKeyException("사용 중인 닉네임입니다.");
 		});
 	}
