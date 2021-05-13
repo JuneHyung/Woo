@@ -76,7 +76,9 @@
                     alt="Recipeimage"
                     style="width: 150px; height: 160px"
                 />
-                <p class="font-18" style="text-align: center">{{ post.title }}</p>
+                <p class="shorthand" style="width: 150px; text-align: center; font-size: 18px">
+                    {{ post.title }}
+                </p>
             </div>
         </v-row>
     </v-container>
@@ -102,35 +104,28 @@ export default {
             dialogDelete: false,
             subscribeDialog: false,
             user_id: '',
-            user: '',
+            user: {},
             myPostList: [],
             page: 0,
-            size: 4,
+            size: 6,
+            isLoading: true,
         };
     },
-    mounted() {
-        getMyInfo()
-            .then((response) => {
-                if (response.data.message == 'success') {
-                    console.log(response);
-                    this.user = response.data.user;
-                    this.id = this.user.id;
-                } else {
-                    alert('조회실패');
-                }
-            })
-            .catch(() => {});
-        getMyList(this.page, this.size)
-            .then((response) => {
-                if (response.data.message == 'success') {
-                    this.myPostList = response.data.myPostList;
-                } else {
-                    alert('정보 조회 실패');
-                }
-            })
-            .catch(() => {});
+    created() {
+        this.getMyInformation();
+        this.getMyList();
+        window.addEventListener('scroll', this.scroll);
     },
     methods: {
+        scroll() {
+            let scrolledToBottom =
+                document.documentElement.scrollTop + window.innerHeight ===
+                document.documentElement.offsetHeight;
+
+            if (scrolledToBottom && this.isLoading) {
+                setTimeout(this.getMyList, 500);
+            }
+        },
         deleteUser() {
             this.dialogDelete = true;
         },
@@ -145,6 +140,41 @@ export default {
         },
         moveRecipeDetail(post_id) {
             this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
+        },
+        getMyInformation() {
+            getMyInfo()
+                .then((response) => {
+                    if (response.data.message == 'success') {
+                        this.user = response.data.user;
+                        this.id = this.user.id;
+                    } else {
+                        alert('조회실패');
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        getMyList() {
+            getMyList(this.page, this.size)
+                .then((response) => {
+                    let postList = response.data.myPostList;
+                    if (postList.length < this.size) {
+                        this.isLoading = false;
+                        postList.forEach((el) => {
+                            this.myPostList.push(el);
+                        });
+                    } else {
+                        this.isLoading = true;
+                        postList.forEach((el) => {
+                            this.myPostList.push(el);
+                        });
+                        this.page++;
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
     },
 };

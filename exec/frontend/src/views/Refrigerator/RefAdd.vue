@@ -2,9 +2,6 @@
     <v-container class="addBox">
         <p>냉장고 추가</p>
         <v-text-field label="냉장고이름" type="text" v-model="fridge.name"></v-text-field>
-        <!-- <div class="col-5">
-            <v-select :items="selectItem" label="선택해 주세여" dense solo></v-select>
-        </div> -->
         <div>
             <p>단문형(인기순)</p>
             <v-slide-group center-active show-arrows>

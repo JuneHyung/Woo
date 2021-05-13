@@ -11,7 +11,6 @@
             >
                 {{ ref_name }}
             </p>
-            <!-- <div class="divider"></div> -->
             <v-row
                 class="box"
                 style="box-shadow: inset 0px 0px 5px 5px #ffecf2; margin-top: 10px !important"
@@ -39,9 +38,6 @@
                         <v-spacer></v-spacer>
                         <v-dialog v-model="addDialog">
                             <template v-slot:activator="{ on, attrs }">
-                                <!-- <v-icon class="addBtn" style="color: #f00" v-bind="attrs" v-on="on"
-                                    >mdi-plus-circle-outline</v-icon
-                                > -->
                                 <div v-bind="attrs" v-on="on" style="width: 24px; height: 24px">
                                     <img
                                         :src="plusBtn"

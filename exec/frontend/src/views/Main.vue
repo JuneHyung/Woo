@@ -89,6 +89,7 @@
                     <img
                         :src="require('@/assets/images/refadd.png')"
                         style="width: 100%; height: 100%"
+                        alt="냉장고추가버튼"
                     />
                 </p>
             </v-row>

@@ -23,7 +23,6 @@
                 <div class="col-4" v-for="(item, idx) in items" :key="idx">
                     <img :src="item" alt="" style="width: 100%; height: 100%" />
                 </div>
-                <!-- <img :src="imageUrl" alt="" /> -->
             </v-row>
 
             <input @change="onChangeImages" multiple type="file" ref="images" />

@@ -83,12 +83,14 @@ export default {
             ingredient_id: 0,
             page: 0,
             size: 6,
+            isLoading: true,
         };
     },
 
     created() {
         this.ingredient_id = this.$route.params.ingredient_id;
         this.getRecipeList();
+        window.addEventListener('scroll', this.scroll);
     },
     watch: {
         $route() {
@@ -103,8 +105,16 @@ export default {
         },
         goRecipeDetail(recipe_id) {
             this.upViews(recipe_id);
-            // this.$router.push({ name: 'RecipeDetail', params: { recipe_id: recipe_id } });
             moveRecipeDetail(recipe_id);
+        },
+        scroll() {
+            let scrolledToBottom =
+                document.documentElement.scrollTop + window.innerHeight ===
+                document.documentElement.offsetHeight;
+
+            if (scrolledToBottom && this.isLoading) {
+                setTimeout(this.getRecipeList, 500);
+            }
         },
         upViews(recipe_id) {
             viewsUp(recipe_id)
@@ -115,17 +125,27 @@ export default {
         },
         getRecipeList() {
             if (this.ingredient_id == 0) {
-                console.log('다시왔니?');
                 getRecipeListByMenu(this.page, this.size)
                     .then(({ data }) => {
                         this.ingredient_id = this.$route.params.ingredient_id;
                         this.listItem = data.recipelist;
-                        for (var i = 0; i < this.listItem.length; i++) {
-                            let temp = this.listItem[i].url;
-                            let urlId = temp.substr(17);
-                            let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
-                            this.listItem[i].thumbnail = thumbnail;
-                            console.log(this.listItem[i].thumbnail);
+                        if (this.listItem.length < this.size) {
+                            this.isLoading = false;
+                            for (var i = 0; i < this.listItem.length; i++) {
+                                let temp = this.listItem[i].url;
+                                let urlId = temp.substr(17);
+                                let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
+                                this.listItem[i].thumbnail = thumbnail;
+                            }
+                        } else {
+                            this.isLoading = false;
+                            for (i = 0; i < this.listItem.length; i++) {
+                                let temp = this.listItem[i].url;
+                                let urlId = temp.substr(17);
+                                let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
+                                this.listItem[i].thumbnail = thumbnail;
+                                this.page++;
+                            }
                         }
                     })
                     .catch((error) => console.log(error));
@@ -140,7 +160,7 @@ export default {
                             let urlId = temp.substr(17);
                             let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
                             this.listItem[i].thumbnail = thumbnail;
-                            console.log(this.listItem[i].thumbnail);
+                            this.page++;
                         }
                     })
                     .catch((error) => console.log(error));
