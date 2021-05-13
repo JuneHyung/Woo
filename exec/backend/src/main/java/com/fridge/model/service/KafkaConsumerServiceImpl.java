@@ -1,9 +1,12 @@
 package com.fridge.model.service;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fridge.model.dto.MessageDto;
+import com.fridge.model.repository.SubscribeRepository;
 
 @Service
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {
@@ -22,8 +26,11 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 	@Autowired
 	private KafkaConsumer<String, String> kafkaConsumer;
 
+	@Autowired
+	private SubscribeRepository subscribeRepository;
+
 	@Override
-	public List<MessageDto> getMessage() throws IOException {
+	public List<MessageDto> getMessage(Principal userId) throws IOException {
 		List<MessageDto> messageList = new ArrayList<>();
 
 		List<TopicPartition> partitions = kafkaConsumer.partitionsFor("exam").stream()
@@ -33,15 +40,22 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 		kafkaConsumer.assign(partitions);
 		kafkaConsumer.seek(partitions.get(0), 0);
 
-		ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
+		ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(1000));
+		System.out.println(userId.getName());
+		Set<Integer> subscribeIdSet = subscribeRepository.findSubscribeIdByUserId(Integer.parseInt(userId.getName()));
 
 		for (ConsumerRecord<String, String> record : records) {
 			ObjectMapper objectMapper = new ObjectMapper();
 			MessageDto message = objectMapper.readValue(record.value(), MessageDto.class);
 
-			messageList.add(message);
+			if (subscribeIdSet.contains(message.getUser_id()))
+				messageList.add(message);
+			// 구독한 사람의 게시글 중 최신 10개만 제공
+			if (messageList.size() == 10)
+				break;
 		}
-
+		// 최근글이 위로 가기 위해 reverse
+		Collections.reverse(messageList);
 		return messageList;
 	}
 

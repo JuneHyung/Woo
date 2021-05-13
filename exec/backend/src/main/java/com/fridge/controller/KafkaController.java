@@ -1,5 +1,6 @@
 package com.fridge.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ import com.fridge.model.dto.MessageDto;
 import com.fridge.model.service.KafkaConsumerService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/kafka")
@@ -31,13 +34,14 @@ public class KafkaController {
 	private KafkaConsumerService consumer;
 
 	@GetMapping
-	@Operation(summary = "게시글 업로드 알람", description = "등록된 게시글을 Kafka Message Queue에서 가져온다.")
-	public ResponseEntity<Map<String, Object>> getAlarm() {
+	@Operation(summary = "게시글 업로드 알람", description = "등록된 게시글을 Kafka Message Queue에서 가져온다.", security = {
+			@SecurityRequirement(name = "X-AUTH-TOKEN") })
+	public ResponseEntity<Map<String, Object>> getAlarm(@Parameter(name = "로그인한 유저") Principal userId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-			List<MessageDto> messageList = consumer.getMessage();
+			List<MessageDto> messageList = consumer.getMessage(userId);
 
 			status = HttpStatus.OK;
 			resultMap.put("messageList", messageList);

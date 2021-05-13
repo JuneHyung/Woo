@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private String[] securityURL = { "/user/info", "/user/modify", "/user/delete", "/fridge/**", "/post/upload",
-			"/post/modify", "/post/like", "/post/mylist", "/post/delete", "/subscribe/**" };
+			"/post/modify", "/post/like", "/post/mylist", "/post/delete", "/subscribe/**", "/kafka/**" };
 
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
