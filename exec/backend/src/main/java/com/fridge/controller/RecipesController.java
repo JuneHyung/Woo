@@ -153,9 +153,9 @@ public class RecipesController {
 		HttpStatus status = null;
 		
 		try {
-			String [] recipeMain = recipesService.recipeSub(recipeId);
+			String [] recipeSub = recipesService.recipeSub(recipeId);
 			resultMap.put(MESSAGE, SUCCESS);
-			resultMap.put("recipeMain", recipeMain);
+			resultMap.put("recipeSub", recipeSub);
 			status = HttpStatus.OK;
 		}catch (Exception e) {
 			logger.error(e.getMessage());
