@@ -17,7 +17,7 @@ public interface FridgeService {
 
 	void addIngredients(IngredientsDto ingredientsDto);
 
-	Fridge[] fridgeList(int id) throws Exception;
+	Fridge[] fridgeList(int id);
 
 	List<Ingredientsdetail> ingredientsDetailList();
 
@@ -31,7 +31,7 @@ public interface FridgeService {
 
 	void fridgeDel(Principal user, int fridgeId) throws WrongFormException;
 
-	void delIngredients(int ingredients_id) throws WrongFormException;
+	void delIngredients(int ingredientsId) throws WrongFormException;
 
 	void moveIngredients(IngredientsDto ingredientsDto) throws WrongFormException;
 

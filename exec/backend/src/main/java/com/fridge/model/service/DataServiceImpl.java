@@ -22,24 +22,24 @@ public class DataServiceImpl implements DataService {
 	private MainRepository mainRepository;
 	@Autowired
 	private SubRepository subRepository;
-	
+
 	@Override
-	public void creteRecipe(Recipe recipe) throws Exception {
+	public void creteRecipe(Recipe recipe) {
 		recipeRepository.save(recipe);
 	}
 
 	@Override
-	public void createIngredientsdetail(Ingredientsdetail ingredientsdetail) throws Exception {
+	public void createIngredientsdetail(Ingredientsdetail ingredientsdetail) {
 		ingredientsdetailRepository.save(ingredientsdetail);
 	}
 
 	@Override
-	public void createMain(Main main) throws Exception {
+	public void createMain(Main main) {
 		mainRepository.save(main);
 	}
 
 	@Override
-	public void createSub(Sub sub) throws Exception {
+	public void createSub(Sub sub) {
 		subRepository.save(sub);
 	}
 

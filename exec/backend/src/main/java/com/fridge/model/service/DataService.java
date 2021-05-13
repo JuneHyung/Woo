@@ -7,12 +7,12 @@ import com.fridge.model.Sub;
 
 public interface DataService {
 
-	void creteRecipe(Recipe recipe) throws Exception;
+	void creteRecipe(Recipe recipe);
 
-	void createIngredientsdetail(Ingredientsdetail ingredientsdetail) throws Exception;
+	void createIngredientsdetail(Ingredientsdetail ingredientsdetail);
 
-	void createMain(Main main) throws Exception;
+	void createMain(Main main);
 
-	void createSub(Sub sub) throws Exception;
+	void createSub(Sub sub);
 
 }
