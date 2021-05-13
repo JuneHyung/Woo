@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h1 style="text-align: center">{{ item.title }}</h1>
+        <h1 style="font-size: 32px">ㅇ{{ item.name }}</h1>
         <div style="width: 100%; height: 300px; margin: 20px auto">
             <iframe
                 id="mainVideo"
@@ -10,16 +10,17 @@
                 title="YouTube video player"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
+                style="border-radius: 20px; border: 1px solid black"
             ></iframe>
         </div>
         <div>
             <v-row>
-                <p>이름 : {{ item.name }}</p>
+                <p class="font-18">이름 : {{ item.name }}</p>
                 <v-spacer></v-spacer>
-                <p>조회수 : {{ item.views }}</p>
+                <p class="font-18">조회수 : {{ item.views }}</p>
             </v-row>
             <v-row>
-                <p>분류 : {{ item.category }} | {{ item.subcategory }}</p>
+                <p class="font-18">분류 : {{ item.category }} | {{ item.subcategory }}</p>
             </v-row>
         </div>
     </v-container>

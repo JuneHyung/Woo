@@ -96,7 +96,8 @@ export default {
         $route() {
             console.log('확인!');
             this.ingredient_id = this.$route.params.ingredient_id;
-            this.getRecipeList();
+            // this.isLoading = true;
+            // this.getRecipeList();
         },
     },
     methods: {
@@ -128,9 +129,12 @@ export default {
                 getRecipeListByMenu(this.page, this.size)
                     .then(({ data }) => {
                         this.ingredient_id = this.$route.params.ingredient_id;
-                        this.listItem = data.recipelist;
-                        if (this.listItem.length < this.size) {
+                        let recipeList = data.recipelist;
+                        if (recipeList.length < this.size) {
                             this.isLoading = false;
+                            recipeList.forEach((el) => {
+                                this.listItem.push(el);
+                            });
                             for (var i = 0; i < this.listItem.length; i++) {
                                 let temp = this.listItem[i].url;
                                 let urlId = temp.substr(17);
@@ -138,28 +142,49 @@ export default {
                                 this.listItem[i].thumbnail = thumbnail;
                             }
                         } else {
-                            this.isLoading = false;
+                            this.isLoading = true;
+                            recipeList.forEach((el) => {
+                                this.listItem.push(el);
+                            });
                             for (i = 0; i < this.listItem.length; i++) {
                                 let temp = this.listItem[i].url;
                                 let urlId = temp.substr(17);
                                 let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
                                 this.listItem[i].thumbnail = thumbnail;
-                                this.page++;
                             }
+
+                            this.page++;
                         }
                     })
                     .catch((error) => console.log(error));
             } else {
-                console.log(`${this.ingredient_id}`);
                 getRecipeListByIngredients(this.ingredient_id, this.page, this.size)
                     .then(({ data }) => {
-                        console.log('여기?');
-                        this.listItem = data.recipelist;
-                        for (var i = 0; i < this.listItem.length; i++) {
-                            let temp = this.listItem[i].url;
-                            let urlId = temp.substr(17);
-                            let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
-                            this.listItem[i].thumbnail = thumbnail;
+                        this.ingredient_id = this.$route.params.ingredient_id;
+                        let recipeList = data.recipelist;
+                        if (recipeList.length < this.size) {
+                            this.isLoading = false;
+                            recipeList.forEach((el) => {
+                                this.listItem.push(el);
+                            });
+                            for (var i = 0; i < this.listItem.length; i++) {
+                                let temp = this.listItem[i].url;
+                                let urlId = temp.substr(17);
+                                let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
+                                this.listItem[i].thumbnail = thumbnail;
+                            }
+                        } else {
+                            this.isLoading = true;
+                            recipeList.forEach((el) => {
+                                this.listItem.push(el);
+                            });
+                            for (i = 0; i < this.listItem.length; i++) {
+                                let temp = this.listItem[i].url;
+                                let urlId = temp.substr(17);
+                                let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
+                                this.listItem[i].thumbnail = thumbnail;
+                            }
+
                             this.page++;
                         }
                     })

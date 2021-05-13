@@ -27,9 +27,31 @@
 
             <input @change="onChangeImages" multiple type="file" ref="images" />
         </div>
-        <div>
-            <v-btn @click="resetRecipeCreate" z>초기화</v-btn>
-            <v-btn @click="recipeCreate">레시피 등록하기</v-btn>
+        <div style="margin-top: 20px">
+            <v-btn
+                @click="resetRecipeCreate"
+                style="
+                    font-size: 18px;
+                    border: 1px solid #d9418d;
+                    border-radius: 10px;
+                    padding: 5px;
+                    color: #d9418d;
+                    margin-right: 10px;
+                "
+                >초기화</v-btn
+            >
+            <v-btn
+                @click="recipeCreate"
+                style="
+                    font-size: 18px;
+                    border: 1px solid #d9418d;
+                    border-radius: 10px;
+                    padding: 5px;
+                    color: #d9418d;
+                    background-color: #fff;
+                "
+                >레시피 등록하기</v-btn
+            >
         </div>
     </v-container>
 </template>
@@ -65,6 +87,7 @@ export default {
             }
         },
         resetRecipeCreate() {
+            this.title = '';
             this.recipe.name = '';
             this.items = '';
         },

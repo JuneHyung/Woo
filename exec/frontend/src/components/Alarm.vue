@@ -77,14 +77,17 @@ export default {
         getInfo() {
             getSubscribeMessage()
                 .then((response) => {
-                    let before = this.messageList.length;
-                    this.messageList = response.data.messageList;
-                    let after = this.messageList.length;
+                    // let before = this.messageList.length;
+                    this.messageList = response.data;
+                    console.log(response);
+                    console.log('om');
 
-                    console.log(`before : ${before}, after: ${after}`);
-                    if (before < after) {
-                        this.messageDialog = false;
-                    }
+                    // let after = this.messageList.length;
+
+                    // console.log(`before : ${before}, after: ${after}`);
+                    // if (before < after) {
+                    //     this.messageDialog = false;
+                    // }
                 })
                 .catch((error) => {
                     console.log(error);
