@@ -73,7 +73,6 @@
 </template>
 <script>
 // import http from '@/api/axios.js';
-// getMySubscribe
 import { getPostList, getCheckSubscribe, getMySubscribe } from '@/api/subscribe.js';
 import { moveUserRecipeDetail, moveRecipeCreate } from '@/api/move.js';
 export default {
@@ -90,6 +89,7 @@ export default {
             page: 0,
             size: 6,
             imgUrl: '',
+            isLoading: true,
         };
     },
     created() {
@@ -102,19 +102,25 @@ export default {
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight;
 
-            if (scrolledToBottom) {
+            if (scrolledToBottom && this.isLoading && !this.subscribeflag) {
                 setTimeout(this.append_list, 500);
+            }
+            if (scrolledToBottom && this.isLoading && this.subscribeflag) {
+                setTimeout(this.getMySubscribeList, 500);
             }
         },
         append_list() {
             getPostList(this.page, this.size)
                 .then((response) => {
                     var list = response.data.postList;
-                    for (var i = 0; i < list.length; i++) this.postList.push(list[i]);
-
-                    this.page++;
+                    if (list < this.size) {
+                        for (var i = 0; i < list.length; i++) this.postList.push(list[i]);
+                    } else {
+                        for (i = 0; i < list.length; i++) this.postList.push(list[i]);
+                        this.page++;
+                    }
                 })
-                .catch(() => alert('!!!!!!!!!!!!!!!'));
+                .catch((error) => alert(error));
         },
         moveRecipeDetail(post_id) {
             // this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
@@ -130,18 +136,23 @@ export default {
                 this.title = '전체 레시피';
                 this.btnTitle = '구독자 레시피';
                 this.page = 0;
+                this.postList.splice(0);
                 this.append_list();
             } else {
                 this.title = '구독자 레시피';
                 this.btnTitle = '전체 레시피';
                 this.page = 0;
-
-                getCheckSubscribe()
-                    .then((response) => {
-                        this.userList.splice(0);
-                        this.userList = response.data.userlist;
-                        console.log('옴?');
-                        this.postList.splice(0);
+                this.postList.splice(0);
+                this.getMySubscribeList();
+            }
+        },
+        getMySubscribeList() {
+            getCheckSubscribe()
+                .then((response) => {
+                    this.userList.splice(0);
+                    this.userList = response.data.userlist;
+                    // console.log('옴?');
+                    if (this.userList < this.size) {
                         this.userList.forEach((el) => {
                             getMySubscribe(this.page, this.size, el.id)
                                 .then((response) => {
@@ -151,9 +162,20 @@ export default {
                                     console.log(error);
                                 });
                         });
-                    })
-                    .catch((error) => console.log(error));
-            }
+                    } else {
+                        this.userList.forEach((el) => {
+                            getMySubscribe(this.page, this.size, el.id)
+                                .then((response) => {
+                                    this.page++;
+                                    this.postList = response.data.post;
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    } // else
+                })
+                .catch((error) => console.log(error));
         },
     },
 };

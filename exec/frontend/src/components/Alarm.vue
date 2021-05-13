@@ -26,8 +26,8 @@
                     :key="index"
                     style="border-bottom: 2px solid #ffecf2; box-sizing: border-box"
                 >
-                    <p style="font-size: 18px; padding-left: 15px !important">
-                        이름 : {{ message.name }}
+                    <p style="font-size: 14px; padding-left: 15px !important">
+                        {{ message.name }}님이 새 글을 등록하였습니다.
                     </p>
                 </div>
 
@@ -38,21 +38,6 @@
                 </div>
             </v-card>
         </div>
-        <!-- <div class="alarm" v-else>
-            <v-card>
-                <v-card-title
-                    style="height: 80%; width: 100%; font-size: 18px; text-align: center"
-                    dark
-                    ><v-spacer></v-spacer>
-                    알림
-                    <v-spacer></v-spacer>
-                </v-card-title>
-
-                <v-card-text>
-                    <p>로그인 후 확인 할 수 있습니다.</p>
-                </v-card-text>
-            </v-card>
-        </div> -->
     </div>
 </template>
 
@@ -66,14 +51,12 @@ export default {
             alarmN: require('@/assets/images/header/alarmN.png'),
             messageList: [],
             token: '',
-            alarmDialog: false,
+
             messageDialog: false,
         };
     },
-    // watch: {
-    //     messageList: 'getSubscribeMessage',
-    // },
     created() {
+        this.getInfo();
         this.getMessage();
     },
     methods: {
@@ -81,7 +64,6 @@ export default {
             console.log('알람창 오픈');
         },
         openAlarmList() {
-            this.alarmDialog = true;
             this.messageDialog = true;
             var alarm = document.querySelector('.alarm');
             alarm.classList.toggle('alarmOpen');
@@ -89,13 +71,20 @@ export default {
         getMessage() {
             let token = localStorage.getItem('X-AUTH-TOKEN');
             if (token) {
-                setInterval(this.getInfo(), 1000);
+                setInterval(this.getInfo, 10000);
             }
         },
         getInfo() {
             getSubscribeMessage()
                 .then((response) => {
+                    let before = this.messageList.length;
                     this.messageList = response.data.messageList;
+                    let after = this.messageList.length;
+
+                    console.log(`before : ${before}, after: ${after}`);
+                    if (before < after) {
+                        this.messageDialog = false;
+                    }
                 })
                 .catch((error) => {
                     console.log(error);

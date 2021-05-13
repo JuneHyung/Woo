@@ -10,9 +10,7 @@ import SignUp from "../views/member/SignUp.vue";
 import Login from "../views/member/Login.vue";
 import MyPage from "../views/member/MyPage.vue";
 
-import ShareRecipe from "../views/ShareRecipe.vue";
 import Subscribe from "../views/Subscribe/Subscribe.vue";
-import FoodDetail from "../views/FoodDetail.vue";
 import UserRecipeDetail from "../views/Subscribe/UserRecipeDetail.vue"; 
 
 
@@ -60,11 +58,6 @@ const routes = [
     components: { default: Login, header: SubHeader },
   },
   {
-    path: "/sharerecipe",
-    name: "ShareRecipe",
-    components: { default: ShareRecipe, header: MainHeader },
-  },
-  {
     path: "/subscribe",
     name: "Subscribe",
     components: { default: Subscribe, header: MainHeader },
@@ -99,11 +92,7 @@ const routes = [
     name: "RecipeCreate",
     components: { default: RecipeCreate, header: MainHeader },
   },
-  {
-    path: "/FoodDetail",
-    name: "FoodDetail",
-    components: { default: FoodDetail, header: MainHeader },
-  },
+  
   
 ];
 

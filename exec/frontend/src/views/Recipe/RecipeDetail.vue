@@ -8,10 +8,6 @@
                 height="300"
                 :src="videoUrl"
                 title="YouTube video player"
-                frameborder="0"
-                marginheight="0"
-                marginwidth="0"
-                align="center"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
             ></iframe>

@@ -8,7 +8,7 @@ function login(userinput, success, fail) {
     }
     http.post('user/login', JSON.stringify(user)).then(success).catch(fail);
     
-    };
+    }
 
     async function findById( success, fail) { 
         http.defaults.headers['X-AUTH-TOKEN'] = window.localStorage.getItem('X-AUTH-TOKEN');
