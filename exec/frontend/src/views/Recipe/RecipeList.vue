@@ -55,6 +55,7 @@
                             >
                         </v-row>
                         <p>Sub : {{ list.subcategory }}</p>
+                        <p></p>
                     </div>
                 </div>
             </div>
