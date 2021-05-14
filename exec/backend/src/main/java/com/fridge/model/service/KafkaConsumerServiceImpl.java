@@ -41,7 +41,6 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 		kafkaConsumer.seek(partitions.get(0), 0);
 
 		ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(1000));
-		System.out.println(userId.getName());
 		Set<Integer> subscribeIdSet = subscribeRepository.findSubscribeIdByUserId(Integer.parseInt(userId.getName()));
 
 		for (ConsumerRecord<String, String> record : records) {

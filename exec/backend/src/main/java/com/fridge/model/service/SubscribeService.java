@@ -8,11 +8,10 @@ import com.fridge.model.dto.UserDto;
 
 public interface SubscribeService {
 
-	void insertScribe(Principal userId, int subscribeId) throws WrongFormException;
+	void insertSubscribe(Principal userId, int subscribeId) throws WrongFormException;
 
-	List<UserDto> getScribe(Principal userId);
+	List<UserDto> getSubscribe(Principal userId);
 
-	void deleteScribe(Principal userId, int subscribeId) throws WrongFormException;
-
+	void deleteSubscribe(Principal userId, int subscribeId) throws WrongFormException;
 
 }

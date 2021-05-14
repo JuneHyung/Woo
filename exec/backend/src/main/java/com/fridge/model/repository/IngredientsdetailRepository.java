@@ -12,5 +12,5 @@ public interface IngredientsdetailRepository extends JpaRepository<Ingredientsde
 	Ingredientsdetail [] findByCategory(String category);
 	
 	@Query("SELECT name From Ingredientsdetail where id = :ingredientsdetailId")
-	String findIngredientsdetail_nameByIngredientsdetail_id(Integer ingredientsdetailId);
+	String findIngredientsdetailNameByIngredientsdetailId(Integer ingredientsdetailId);
 }

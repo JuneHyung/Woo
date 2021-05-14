@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fridge.common.error.WrongFormException;
 import com.fridge.model.Post;
 import com.fridge.model.User;
 import com.fridge.model.UserInterest;
@@ -86,16 +87,15 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void upload(String title, List<MultipartFile> images, Principal id) throws IOException, SQLException {
-		Optional<User> user = userRepository.findById(Integer.parseInt(id.getName()));
-		user.orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
+		User user = userRepository.findById(Integer.parseInt(id.getName()))
+				.orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
 
-		Optional<Post> now = Optional
-				.ofNullable(postRepository.save(new Post(title, images.size(), user.get().getNick(), user.get())));
-		now.orElseThrow(() -> new SQLException("DB insert Error!!!!"));
+		Post now = Optional.ofNullable(postRepository.save(new Post(title, images.size(), user.getNick(), user)))
+				.orElseThrow(() -> new SQLException("DB insert Error!!!!"));
 
-		kafkaProducerServiceImpl.sendMessage(
-				new MessageDto(now.get().getUser().getId(), now.get().getId(), now.get().getUser().getNick()));
-		createFile(now.get().getId(), now.get().getImagecnt(), images);
+		kafkaProducerServiceImpl
+				.sendMessage(new MessageDto(now.getUser().getId(), now.getId(), now.getUser().getNick()));
+		createFile(now.getId(), now.getImagecnt(), images);
 	}
 
 	@Override
@@ -158,22 +158,19 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostDto getPostDetail(int postId) throws SQLException, IOException {
-		Optional<Post> post = postRepository.findById(postId);
-
-		if (!post.isPresent())
-			throw new SQLException("찾으시는 레시피가 없습니다.");
+		Post post = postRepository.findById(postId).orElseThrow(() -> new SQLException("찾으시는 레시피가 없습니다."));
 
 		PostDto postDto = null;
 		postDto = new PostDto();
 		postDto.setId(postId);
-		postDto.setTitle(post.get().getTitle());
-		postDto.setDate(post.get().getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT)));
-		postDto.setImageCnt(post.get().getImagecnt());
-		postDto.setVisit(post.get().getVisit() + 1);
-		postDto.setGood(post.get().getGood());
-		postDto.setHate(post.get().getHate());
-		postDto.setUserId(post.get().getUser().getId());
-		postDto.setWriter(post.get().getWriter());
+		postDto.setTitle(post.getTitle());
+		postDto.setDate(post.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT)));
+		postDto.setImageCnt(post.getImagecnt());
+		postDto.setVisit(post.getVisit() + 1);
+		postDto.setGood(post.getGood());
+		postDto.setHate(post.getHate());
+		postDto.setUserId(post.getUser().getId());
+		postDto.setWriter(post.getWriter());
 
 		String[] imageStrArr = new String[postDto.getImageCnt()];
 
@@ -184,16 +181,15 @@ public class PostServiceImpl implements PostService {
 		}
 		postDto.setImageStrArr(imageStrArr);
 
-		postRepository.save(new Post(post.get(), post.get().getVisit() + 1));
+		postRepository.save(new Post(post, post.getVisit() + 1));
 
 		return postDto;
 	}
 
 	@Override
 	public void deletePost(Principal userId, int postId) throws IOException, SQLException {
-		Post deletePost = postRepository.findByIdAndUserId(postId, Integer.parseInt(userId.getName()));
-
-		Optional.ofNullable(deletePost).orElseThrow(() -> new SQLException("삭제하려는 글이 없습니다"));
+		Post deletePost = postRepository.findByIdAndUserId(postId, Integer.parseInt(userId.getName()))
+				.orElseThrow(() -> new SQLException("삭제하려는 글이 없습니다"));
 
 		int id = deletePost.getId();
 		int imgCnt = deletePost.getImagecnt();
@@ -203,8 +199,10 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images) throws IOException {
-		Post post = postRepository.findByIdAndUserId(postId, Integer.parseInt(userId.getName()));
+	public void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images)
+			throws IOException, WrongFormException {
+		Post post = postRepository.findByIdAndUserId(postId, Integer.parseInt(userId.getName()))
+				.orElseThrow(() -> new WrongFormException("없는 게시글입니다"));
 		int deleteCnt = post.getImagecnt();
 
 		Post modifyPost = new Post(postId, title, images.size(), post.getWriter(), post.getUser());
@@ -215,11 +213,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void setLike(Principal userId, int postId, String good) {
-		UserInterest userInterest = userInterestRepository.findByUserIdAndPostId(Integer.parseInt(userId.getName()),
-				postId);
+	public void setLike(Principal userId, int postId, String good) throws WrongFormException {
+		// 존재 여부에 따라 로직을 다르게 처리해야 하므로 orElseThrow 하지 않음
+		Optional<UserInterest> optUserInterest = userInterestRepository
+				.findByUserIdAndPostId(Integer.parseInt(userId.getName()), postId);
 
-		Post post = postRepository.findById(postId).get();
+		Post post = postRepository.findById(postId).orElseThrow(() -> new WrongFormException("선택하신 글을 찾을 수 없습니다"));
 		int goodCnt = post.getGood();
 		int hateCnt = post.getHate();
 
@@ -228,37 +227,35 @@ public class PostServiceImpl implements PostService {
 			interest = true;
 
 		// 좋아요나 싫어요를 표시한 적 없는 경우
-		if (userInterest == null) {
+		if (!optUserInterest.isPresent()) {
 			userInterestRepository.save(new UserInterest(Integer.parseInt(userId.getName()), postId, interest));
 			if (interest)
 				post = new Post(post, goodCnt + 1, hateCnt);
 			else
 				post = new Post(post, goodCnt, hateCnt + 1);
 			postRepository.save(post);
-		} else {
-			UserInterest updateInterest = new UserInterest(userInterest.getId(), Integer.parseInt(userId.getName()),
-					postId, interest);
 
-			if (userInterest.isInterest()) { // 좋아요를 눌러 둔 경우
-				if (interest) { // 좋아요를 한번 더 누른 경우 컬럼 삭제
-					userInterestRepository.delete(userInterest);
-					post = new Post(post, goodCnt - 1, hateCnt);
-				} else { // 싫어요를 누른 경우 update
-					userInterestRepository.save(updateInterest);
-					post = new Post(post, goodCnt - 1, hateCnt + 1);
-				}
-			} else {
-				if (!interest) { // 싫어요를 두번째 누른 경우
-					userInterestRepository.delete(userInterest);
-					post = new Post(post, goodCnt, hateCnt - 1);
-				} else {
-					userInterestRepository.save(updateInterest);
-					post = new Post(post, goodCnt + 1, hateCnt - 1);
-				}
-			}
-
-			postRepository.save(post);
+			return;
 		}
+		UserInterest legacy = optUserInterest.get();
+		UserInterest updateInterest = new UserInterest(legacy.getId(), Integer.parseInt(userId.getName()), postId,
+				interest);
+
+		if (!(interest ^ legacy.isInterest())) { // 좋아요 or 싫어요를 두번 누른 경우
+			userInterestRepository.delete(legacy);
+			if (interest) // 종아요를 누른 경우
+				post = new Post(post, goodCnt - 1, hateCnt);
+			else // 싫어요를 누른 경우
+				post = new Post(post, goodCnt, hateCnt - 1);
+		} else {
+			userInterestRepository.save(updateInterest);
+			if (interest) // 종아요를 누른 경우
+				post = new Post(post, goodCnt + 1, hateCnt - 1);
+			else // 싫어요를 누른 경우
+				post = new Post(post, goodCnt - 1, hateCnt + 1);
+		}
+
+		postRepository.save(post);
 	}
 
 	@Override

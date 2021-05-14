@@ -48,7 +48,7 @@ public class SubscribeController {
 		HttpStatus status = null;
 
 		try {
-			subscribeservice.insertScribe(userId, subscribeId);
+			subscribeservice.insertSubscribe(userId, subscribeId);
 
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
@@ -69,7 +69,7 @@ public class SubscribeController {
 		HttpStatus status = null;
 
 		try {
-			List<UserDto> userlist = subscribeservice.getScribe(userId);
+			List<UserDto> userlist = subscribeservice.getSubscribe(userId);
 
 			resultMap.put("userlist", userlist);
 			resultMap.put(MESSAGE, SUCCESS);
@@ -91,7 +91,7 @@ public class SubscribeController {
 		HttpStatus status = null;
 
 		try {
-			subscribeservice.deleteScribe(userId, subscribeId);
+			subscribeservice.deleteSubscribe(userId, subscribeId);
 
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
