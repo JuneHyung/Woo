@@ -17,6 +17,7 @@ import com.fridge.common.error.WrongPasswordException;
 import com.fridge.model.CustomUserDetail;
 import com.fridge.model.User;
 import com.fridge.model.dto.UserDto;
+import com.fridge.model.dto.UserInfoDto;
 import com.fridge.model.repository.UserRepository;
 
 @Service
@@ -26,11 +27,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Integer login(User user) throws LoginErrorException {
-		if (user.getEmail() == null || user.getPwd() == null)
+	public Integer login(UserInfoDto loginUserInfoDto) throws LoginErrorException {
+		if (loginUserInfoDto.getEmail() == null || loginUserInfoDto.getPwd() == null)
 			throw new LoginErrorException("ID 또는 비밀번호를 입력해주세요");
 
-		Optional<User> login = userRepository.findByEmailAndPwd(user.getEmail(), user.getPwd());
+		Optional<User> login = userRepository.findByEmailAndPwd(loginUserInfoDto.getEmail(), loginUserInfoDto.getPwd());
 
 		login.orElseThrow(() -> new LoginErrorException());
 
@@ -38,21 +39,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public void join(User user) throws WrongFormException {
-		if (user.getEmail() == null || user.getPwd() == null || user.getNick() == null)
+	public void join(UserInfoDto signUpUserInfoDto) throws WrongFormException {
+		if (signUpUserInfoDto.getEmail() == null || signUpUserInfoDto.getPwd() == null || signUpUserInfoDto.getNick() == null)
 			throw new WrongFormException();
-
-		userRepository.save(user);
+	
+		userRepository.save(new User(signUpUserInfoDto.getEmail(), signUpUserInfoDto.getPwd(), signUpUserInfoDto.getNick()));
 	}
 
 	@Override
-	public void modify(Principal loginId, User modifyUser) throws WrongPasswordException {
-		Optional<User> user = userRepository.findByIdAndPwd(Integer.parseInt(loginId.getName()), modifyUser.getPwd());
-
+	public void modify(Principal loginId, UserInfoDto modifyUserInfoDto) throws WrongPasswordException {
+		Optional<User> user = userRepository.findByIdAndPwd(Integer.parseInt(loginId.getName()), modifyUserInfoDto.getPwd());
+		
 		user.orElseThrow(() -> new WrongPasswordException());
 
-		userRepository.save(new User(Integer.parseInt(loginId.getName()), modifyUser.getEmail(), modifyUser.getPwd(),
-				modifyUser.getNick()));
+		userRepository.save(new User(Integer.parseInt(loginId.getName()), modifyUserInfoDto.getEmail(), modifyUserInfoDto.getPwd(),
+				modifyUserInfoDto.getNick()));
 	}
 
 	@Override

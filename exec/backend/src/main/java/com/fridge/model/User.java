@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fridge.model.dto.UserInfoDto;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Table(name = "user")

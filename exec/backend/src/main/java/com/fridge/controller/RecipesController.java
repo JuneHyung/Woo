@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fridge.model.Recipe;
+import com.fridge.model.dto.RecipeDto;
 import com.fridge.model.service.RecipesService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,11 +37,11 @@ public class RecipesController {
 
 	@Operation(summary = "레시피 정보 입력", description = "레시피를 입력한다")
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> recipeInsert(@RequestBody Recipe recipe) {
+	public ResponseEntity<Map<String, Object>> recipeinsert(@RequestBody RecipeDto recipeDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			recipesService.recipeInsert(recipe);
+			recipesService.recipeInsert(recipeDto);
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {

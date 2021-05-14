@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.fridge.common.error.WrongFormException;
 import com.fridge.model.Main;
 import com.fridge.model.Recipe;
+import com.fridge.model.dto.RecipeDto;
 import com.fridge.model.repository.IngredientsdetailRepository;
 import com.fridge.model.repository.MainRepository;
 import com.fridge.model.repository.RecipesRepository;
@@ -31,14 +32,15 @@ public class RecipesServiceImpl implements RecipesService {
 	private SubRepository subRepository;
 
 	@Override
-	public void recipeInsert(Recipe recipe) throws WrongFormException {
-		Optional<Recipe> optRecipe = Optional.ofNullable(recipe);
-		optRecipe.map(Recipe::getName).orElseThrow(() -> new WrongFormException("레시피 이름을 입력하세요"));
-		optRecipe.map(Recipe::getCategory).orElseThrow(() -> new WrongFormException("레시피 카테고리를 선택하세요"));
-		optRecipe.map(Recipe::getSubcategory).orElseThrow(() -> new WrongFormException("레시피 서브 카테고리를 선택하세요"));
-		optRecipe.map(Recipe::getUrl).orElseThrow(() -> new WrongFormException("레시피 URL을 입력하세요"));
+	public void recipeInsert(RecipeDto recipeDto) throws WrongFormException {
+		Optional<RecipeDto> optRecipe = Optional.ofNullable(recipeDto);
+		optRecipe.map(RecipeDto::getName).orElseThrow(() -> new WrongFormException("레시피 이름을 입력하세요"));
+		optRecipe.map(RecipeDto::getCategory).orElseThrow(() -> new WrongFormException("레시피 카테고리를 선택하세요"));
+		optRecipe.map(RecipeDto::getSubcategory).orElseThrow(() -> new WrongFormException("레시피 서브 카테고리를 선택하세요"));
+		optRecipe.map(RecipeDto::getUrl).orElseThrow(() -> new WrongFormException("레시피 URL을 입력하세요"));
 
-		recipesRepository.save(recipe);
+		recipesRepository.save(new Recipe(recipeDto.getId(), recipeDto.getName(), recipeDto.getCategory(),
+				recipeDto.getSubcategory(), recipeDto.getUrl(), recipeDto.getView()));
 	}
 
 	@Override
