@@ -53,8 +53,7 @@ public class Recipe {
 		this.views = views;
 	}
 
-	public Recipe() {
-		super();
+	protected Recipe() {
 	}
 
 	public int getId() {

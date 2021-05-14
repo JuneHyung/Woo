@@ -1,5 +1,7 @@
 package com.fridge.model.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,5 +14,5 @@ public interface IngredientsRepository extends JpaRepository<Ingredients, Intege
 	int findCntByIngredientsdetailId(int ingredientsDetailId, int fridgeId);
 
 	@Query(value = "SELECT id FROM Ingredients WHERE ingredientsdetail_id = :#{#ingredientsdetailId} and fridge_id = :#{#fridgeId}")
-	int findByIngredientsdetailIdandFridgeId(int ingredientsdetailId, int fridgeId);
+	Optional<Integer> findByIngredientsdetailIdandFridgeId(int ingredientsdetailId, int fridgeId);
 }

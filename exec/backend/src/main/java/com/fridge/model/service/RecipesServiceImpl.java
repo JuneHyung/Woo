@@ -33,11 +33,7 @@ public class RecipesServiceImpl implements RecipesService {
 
 	@Override
 	public void recipeInsert(RecipeDto recipeDto) throws WrongFormException {
-		Optional<RecipeDto> optRecipe = Optional.ofNullable(recipeDto);
-		optRecipe.map(RecipeDto::getName).orElseThrow(() -> new WrongFormException("레시피 이름을 입력하세요"));
-		optRecipe.map(RecipeDto::getCategory).orElseThrow(() -> new WrongFormException("레시피 카테고리를 선택하세요"));
-		optRecipe.map(RecipeDto::getSubcategory).orElseThrow(() -> new WrongFormException("레시피 서브 카테고리를 선택하세요"));
-		optRecipe.map(RecipeDto::getUrl).orElseThrow(() -> new WrongFormException("레시피 URL을 입력하세요"));
+		recipeDto = Optional.ofNullable(recipeDto).orElseThrow(() -> new WrongFormException("레시피 정보 입력은 필수 입니다"));
 
 		recipesRepository.save(new Recipe(recipeDto.getId(), recipeDto.getName(), recipeDto.getCategory(),
 				recipeDto.getSubcategory(), recipeDto.getUrl(), recipeDto.getView()));

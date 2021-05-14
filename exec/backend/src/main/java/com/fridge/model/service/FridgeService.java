@@ -15,7 +15,7 @@ public interface FridgeService {
 
 	void create(Principal user, FridgeDto fridgeDto) throws WrongFormException;
 
-	void addIngredients(IngredientsDto ingredientsDto);
+	void addIngredients(IngredientsDto ingredientsDto) throws WrongFormException;
 
 	Fridge[] fridgeList(int id);
 

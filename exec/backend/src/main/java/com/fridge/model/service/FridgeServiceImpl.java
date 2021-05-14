@@ -34,7 +34,7 @@ public class FridgeServiceImpl implements FridgeService {
 	}
 
 	@Override
-	public void addIngredients(IngredientsDto ingredientsDto) {
+	public void addIngredients(IngredientsDto ingredientsDto) throws WrongFormException {
 		int cnt = ingredientsRepository.findCntByIngredientsdetailId(ingredientsDto.getIngredientsDetailId(),
 				ingredientsDto.getFridgeId());
 
@@ -43,12 +43,12 @@ public class FridgeServiceImpl implements FridgeService {
 			ingredientsRepository.save(ingredients);
 		} else {
 			int id = ingredientsRepository.findByIngredientsdetailIdandFridgeId(ingredientsDto.getIngredientsDetailId(),
-					ingredientsDto.getFridgeId());
+					ingredientsDto.getFridgeId()).orElseThrow(() -> new WrongFormException("재료가 존재하지 않습니다"));
 
-			IngredientsDto ingredientsdto = new IngredientsDto(id, ingredientsDto.getExpired(),
+			Ingredients ingredientsSave = new Ingredients(new IngredientsDto(id, ingredientsDto.getExpired(),
 					ingredientsDto.getLocx(), ingredientsDto.getLocy(), ingredientsDto.getFridgeId(),
-					ingredientsDto.getIngredientsDetailId());
-			Ingredients ingredientsSave = new Ingredients(ingredientsdto);
+					ingredientsDto.getIngredientsDetailId()));
+
 			ingredientsRepository.save(ingredientsSave);
 		}
 	}
