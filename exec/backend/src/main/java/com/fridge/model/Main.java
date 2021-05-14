@@ -28,6 +28,9 @@ public class Main {
 	@Schema(title = "메인 재료 상세 정보 - FK")
 	@JoinColumn(nullable = false , name = "ingredientsdetail_id")
 	private Ingredientsdetail ingredientsdetail;
+	
+	protected Main() {
+	}
 
 	public int getId() {
 		return id;

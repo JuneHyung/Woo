@@ -47,7 +47,7 @@ public class KafkaController {
 			resultMap.put("messageList", messageList);
 			resultMap.put(MESSAGE, SUCCESS);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("Kafka Consumer Error", e);
 			status = HttpStatus.ACCEPTED;
 			resultMap.put(MESSAGE, FAIL);
 		}
