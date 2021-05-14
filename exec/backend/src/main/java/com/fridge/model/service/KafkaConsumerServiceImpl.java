@@ -49,9 +49,6 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
 			if (subscribeIdSet.contains(message.getUserId()))
 				messageList.add(message);
-			// 구독한 사람의 게시글 중 최신 10개만 제공
-			if (messageList.size() == 10)
-				break;
 		}
 		// 최근글이 위로 가기 위해 reverse
 		Collections.reverse(messageList);
