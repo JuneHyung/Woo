@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fridge.config.security.JwtTokenProvider;
-import com.fridge.model.User;
 import com.fridge.model.dto.UserDto;
+import com.fridge.model.dto.UserInfoDto;
 import com.fridge.model.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,12 +50,12 @@ public class UserController {
 	@Operation(summary = "로그인", description = "Access-token과 로그인 결과 메시지를 반환한다.")
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(
-			@RequestBody @Parameter(name = "로그인 시 필요한 회원정보(이메일, 비밀번호)", required = true) User user) {
+			@RequestBody @Parameter(name = "로그인 시 필요한 회원정보(이메일, 비밀번호)", required = true) UserInfoDto userInfoDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-			int loginId = userService.login(user);
+			int loginId = userService.login(userInfoDto);
 
 			resultMap.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(Integer.toString(loginId)));
 			resultMap.put(MESSAGE, SUCCESS);
@@ -72,12 +72,12 @@ public class UserController {
 	@Operation(summary = "회원 가입", description = "회원 가입 결과를 반환한다.")
 	@PostMapping("/join")
 	public ResponseEntity<Map<String, Object>> join(
-			@RequestBody @Parameter(name = "회원 가입에 필요한 회원 정보", required = true) User user) {
+			@RequestBody @Parameter(name = "회원 가입에 필요한 회원 정보", required = true) UserInfoDto userInfoDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-			userService.join(user);
+			userService.join(userInfoDto);
 
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
@@ -98,7 +98,6 @@ public class UserController {
 
 		try {
 			userService.checkEmail(email);
-
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -118,7 +117,6 @@ public class UserController {
 
 		try {
 			userService.checkNick(nick);
-
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -179,12 +177,12 @@ public class UserController {
 			@SecurityRequirement(name = "X-AUTH-TOKEN") })
 	@PutMapping("/modify")
 	public ResponseEntity<Map<String, Object>> modify(@Parameter(name = "로그인 회원 PK") Principal loginId,
-			@Parameter(name = "수정할 회원 정보", required = true) @RequestBody User user) {
+			@Parameter(name = "수정할 회원 정보", required = true) @RequestBody UserInfoDto userInfoDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-			userService.modify(loginId, user);
+			userService.modify(loginId, userInfoDto);
 
 			resultMap.put(MESSAGE, SUCCESS);
 			status = HttpStatus.OK;

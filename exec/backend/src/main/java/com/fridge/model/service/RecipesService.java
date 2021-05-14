@@ -5,10 +5,11 @@ import java.util.Optional;
 
 import com.fridge.common.error.WrongFormException;
 import com.fridge.model.Recipe;
+import com.fridge.model.dto.RecipeDto;
 
 public interface RecipesService {
 
-	public void recipeInsert(Recipe recipe) throws WrongFormException;
+	public void recipeInsert(RecipeDto recipeDto) throws WrongFormException;
 
 	public Optional<Recipe> recipeSelect(int recipeId) throws WrongFormException;
 

@@ -7,15 +7,15 @@ import org.springframework.dao.DuplicateKeyException;
 import com.fridge.common.error.LoginErrorException;
 import com.fridge.common.error.WrongFormException;
 import com.fridge.common.error.WrongPasswordException;
-import com.fridge.model.User;
 import com.fridge.model.dto.UserDto;
+import com.fridge.model.dto.UserInfoDto;
 
 public interface UserService {
-	public Integer login(User user) throws LoginErrorException;
+	public Integer login(UserInfoDto loginUserInfoDto) throws LoginErrorException;
 
-	public void join(User user) throws WrongFormException;
+	public void join(UserInfoDto signUpUserInfoDto) throws WrongFormException;
 
-	public void modify(Principal loginId, User user) throws WrongPasswordException;
+	public void modify(Principal loginId, UserInfoDto modifyUserInfoDto) throws WrongPasswordException;
 
 	public void delete(int id);
 
