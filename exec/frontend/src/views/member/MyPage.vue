@@ -88,6 +88,7 @@
 // import swal from 'sweetalert';
 // import http from '@/api/axios.js';
 import { getMyInfo, getMyList } from '@/api/user.js';
+import { moveUserRecipeDetail } from '@/api/move.js';
 import DeleteDialog from '../../components/MyPageDialog/DeleteDialog.vue';
 import EditDialog from '../../components/MyPageDialog/EditDialog.vue';
 
@@ -139,7 +140,7 @@ export default {
             this.dialogEdit = false;
         },
         moveRecipeDetail(post_id) {
-            this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
+            moveUserRecipeDetail(post_id);
         },
         getMyInformation() {
             getMyInfo()

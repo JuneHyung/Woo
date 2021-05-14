@@ -108,8 +108,7 @@ export default {
                     formData.append('images', this.images[i]);
 
                 createRecipe(formData)
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         swal('레시피 등록이 완료되었습니다', {
                             icon: 'success',
                         });

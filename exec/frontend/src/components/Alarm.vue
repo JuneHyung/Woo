@@ -30,19 +30,12 @@
                         {{ message.name }}님이 새 글을 등록하였습니다.
                     </p>
                 </div>
-
-                <div>
-                    <div style="margin: 0 auto; font-size: 18px; text-align: center">
-                        전부 읽음 표시
-                    </div>
-                </div>
             </v-card>
         </div>
     </div>
 </template>
 
 <script>
-// import { Kafka } from 'kafkajs';
 import { getSubscribeMessage } from '@/api/subscribe.js';
 export default {
     data() {
@@ -50,8 +43,8 @@ export default {
             alarmY: require('@/assets/images/header/alarmY.png'),
             alarmN: require('@/assets/images/header/alarmN.png'),
             messageList: [],
+            beforeSize: 0,
             token: '',
-
             messageDialog: false,
         };
     },
@@ -59,10 +52,13 @@ export default {
         this.getInfo();
         this.getMessage();
     },
-    methods: {
-        openAlertDialog() {
-            console.log('알람창 오픈');
+    watch: {
+        messageDialog() {
+            this.messageDialog;
+            console.log(this.messageDialog);
         },
+    },
+    methods: {
         openAlarmList() {
             this.messageDialog = true;
             var alarm = document.querySelector('.alarm');
@@ -71,23 +67,27 @@ export default {
         getMessage() {
             let token = localStorage.getItem('X-AUTH-TOKEN');
             if (token) {
-                setInterval(this.getInfo, 10000);
+                setInterval(this.getInfo, 3000);
             }
         },
         getInfo() {
             getSubscribeMessage()
                 .then((response) => {
-                    // let before = this.messageList.length;
-                    this.messageList = response.data;
-                    console.log(response);
-                    console.log('om');
+                    let before = this.messageList.length;
+                    let temp = response.data.messageList;
 
-                    // let after = this.messageList.length;
+                    if (before <= this.beforeSize) {
+                        let after = response.data.messageList.length;
 
-                    // console.log(`before : ${before}, after: ${after}`);
-                    // if (before < after) {
-                    //     this.messageDialog = false;
-                    // }
+                        if (this.beforeSize < after) {
+                            this.messageList.splice(0);
+                            for (var i = 0; i < 10; i++) {
+                                this.messageList.push(temp[i]);
+                            }
+                            this.beforeSize = after;
+                            this.messageDialog = false;
+                        }
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
@@ -115,6 +115,7 @@ export default {
     display: none;
     transition: all 0.4s;
     border: solid #ffecf2 3px;
+    z-index: 999;
 }
 
 .alarmImg img {

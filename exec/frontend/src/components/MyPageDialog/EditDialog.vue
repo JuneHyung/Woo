@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialogEdit" transition="dialog-top-transition" max-width="600">
+    <v-dialog v-model="dialogEdit" transition="dialog-top-transition" persistent max-width="600">
         <v-card>
             <v-toolbar style="color: white; background-color: #494949">
                 <p style="font-size: 18px">회원 정보 수정</p>
@@ -149,7 +149,7 @@ export default {
                 updateUser(
                     this.Modifyuser.id,
                     this.Modifyuser.email,
-                    this.Modifyuser.pwd,
+                    this.pwdCheck,
                     this.Modifyuser.nick
                 )
                     .then(() => {
@@ -167,7 +167,6 @@ export default {
             // http.get(`user/nickcheck/${this.Modifyuser.nick}`)
             checkNickName(this.Modifyuser.nick)
                 .then((response) => {
-                    console.log(response);
                     if (response.data.message == 'fail') {
                         swal('이미 존재하는 닉네임입니다!!', {
                             icon: 'warning',

@@ -30,11 +30,16 @@ function subscribe(subscribeId) {
     return http.post(`subscribe/${subscribeId}`);
 }
 
+/*구독취소*/
 function subscribeCancel(subscribeId) {
     return http.delete(`subscribe/${subscribeId}`);
 }
 
-/*구독취소*/
+/*좋아요, 싫어요 */
+function checkLike(postId, like) {
+    return http.post(`post/like?postId=${postId}&like=${like}`);
+}
+
 export {
     getPostList,
     getPostDetail,
@@ -42,5 +47,6 @@ export {
     getMySubscribe,
     getSubscribeMessage,
     subscribe,
-    subscribeCancel
+    subscribeCancel,
+    checkLike
 }

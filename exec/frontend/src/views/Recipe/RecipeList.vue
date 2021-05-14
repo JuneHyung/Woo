@@ -70,17 +70,7 @@ import { moveRecipeCreate, moveRecipeDetail } from '@/api/move.js';
 export default {
     data() {
         return {
-            listItem: [
-                {
-                    category: '',
-                    id: '',
-                    name: '',
-                    subcategory: '',
-                    url: '',
-                    views: '',
-                    thumbnail: '',
-                },
-            ],
+            listItem: [],
             ingredient_id: 0,
             page: 0,
             size: 6,
@@ -95,7 +85,6 @@ export default {
     },
     watch: {
         $route() {
-            console.log('확인!');
             this.ingredient_id = this.$route.params.ingredient_id;
             // this.isLoading = true;
             // this.getRecipeList();
@@ -120,9 +109,7 @@ export default {
         },
         upViews(recipe_id) {
             viewsUp(recipe_id)
-                .then(({ data }) => {
-                    console.log(data);
-                })
+                .then(() => {})
                 .catch((error) => console.log(error));
         },
         getRecipeList() {
