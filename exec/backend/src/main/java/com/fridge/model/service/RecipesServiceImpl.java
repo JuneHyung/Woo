@@ -57,7 +57,7 @@ public class RecipesServiceImpl implements RecipesService {
 	public List<Recipe> ingredientRecipes(int id, int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size);
 
-		List<Main> mainList = mainRepository.findByIngredientsdetail_id(id, pageRequest);
+		List<Main> mainList = mainRepository.findByIngredientsdetailId(id, pageRequest);
 
 		List<Recipe> recipeList = new ArrayList<>();
 

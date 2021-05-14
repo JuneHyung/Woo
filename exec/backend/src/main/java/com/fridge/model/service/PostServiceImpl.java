@@ -114,7 +114,7 @@ public class PostServiceImpl implements PostService {
 			postDto.setVisit(post.getVisit());
 			postDto.setGood(post.getGood());
 			postDto.setHate(post.getHate());
-			postDto.setUser_name(post.getUser_name());
+			postDto.setWriter(post.getWriter());
 
 			String filePath = makePath(post.getId(), 0);
 
@@ -130,7 +130,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<PostDto> getMyPosLlist(int page, int size, int userId) throws IOException {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
-		List<Post> posts = postRepository.findByUser_id(userId, pageRequest);
+		List<Post> posts = postRepository.findByUserId(userId, pageRequest);
 
 		List<PostDto> postList = new ArrayList<>();
 		for (Post post : posts) {
@@ -143,7 +143,7 @@ public class PostServiceImpl implements PostService {
 			postDto.setVisit(post.getVisit());
 			postDto.setGood(post.getGood());
 			postDto.setHate(post.getHate());
-			postDto.setUser_name(post.getUser_name());
+			postDto.setWriter(post.getWriter());
 
 			String filePath = makePath(post.getId(), 0);
 
@@ -172,8 +172,8 @@ public class PostServiceImpl implements PostService {
 		postDto.setVisit(post.get().getVisit() + 1);
 		postDto.setGood(post.get().getGood());
 		postDto.setHate(post.get().getHate());
-		postDto.setUser_id(post.get().getUser().getId());
-		postDto.setUser_name(post.get().getUser_name());
+		postDto.setUserId(post.get().getUser().getId());
+		postDto.setWriter(post.get().getWriter());
 
 		String[] imageStrArr = new String[postDto.getImageCnt()];
 
@@ -191,7 +191,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void deletePost(Principal userId, int postId) throws IOException, SQLException {
-		Post deletePost = postRepository.findByIdAndUser_id(postId, Integer.parseInt(userId.getName()));
+		Post deletePost = postRepository.findByIdAndUserId(postId, Integer.parseInt(userId.getName()));
 
 		Optional.ofNullable(deletePost).orElseThrow(() -> new SQLException("삭제하려는 글이 없습니다"));
 
@@ -204,10 +204,10 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images) throws IOException {
-		Post post = postRepository.findByIdAndUser_id(postId, Integer.parseInt(userId.getName()));
+		Post post = postRepository.findByIdAndUserId(postId, Integer.parseInt(userId.getName()));
 		int deleteCnt = post.getImagecnt();
 
-		Post modifyPost = new Post(postId, title, images.size(), post.getUser_name(), post.getUser());
+		Post modifyPost = new Post(postId, title, images.size(), post.getWriter(), post.getUser());
 		postRepository.save(modifyPost);
 
 		deleteFile(postId, deleteCnt);
@@ -216,10 +216,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void setLike(Principal userId, int postId, String good) {
-		UserInterest userInterest = userInterestRepository.findByUser_idAndPost_id(Integer.parseInt(userId.getName()),
+		UserInterest userInterest = userInterestRepository.findByUserIdAndPostId(Integer.parseInt(userId.getName()),
 				postId);
-
-		Optional.ofNullable(userInterest).orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다"));
 
 		Post post = postRepository.findById(postId).get();
 		int goodCnt = post.getGood();
@@ -266,7 +264,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<PostDto> subscriberContents(int page, int size, int userId) throws IOException {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
-		List<Post> posts = postRepository.findByUser_id(userId, pageRequest);
+		List<Post> posts = postRepository.findByUserId(userId, pageRequest);
 
 		List<PostDto> postList = new ArrayList<>();
 
@@ -280,7 +278,7 @@ public class PostServiceImpl implements PostService {
 			postDto.setVisit(post.getVisit());
 			postDto.setGood(post.getGood());
 			postDto.setHate(post.getHate());
-			postDto.setUser_name(post.getUser_name());
+			postDto.setWriter(post.getWriter());
 
 			String filePath = makePath(post.getId(), 0);
 

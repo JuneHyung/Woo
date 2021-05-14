@@ -21,26 +21,26 @@ public class Subscribe {
 	@Column(nullable = false)
 	int id;
 	@ManyToOne
-	@JoinColumn(name = "user_id" , nullable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	@Schema(title = "자기 자신 - FK")
 	private User user;
 	@ManyToOne
-	@JoinColumn(name = "subscribe_id", referencedColumnName = "id" , nullable = false)
+	@JoinColumn(name = "subscribe_id", referencedColumnName = "id", nullable = false)
 	@Schema(title = "구독한 사람 ID - FK")
-	private User subscribe_user;
+	private User subscribeUser;
 
 	protected Subscribe() {
 	}
 
 	public Subscribe(int userId, int subscribeId) {
 		this.user = new User(userId);
-		this.subscribe_user = new User(subscribeId);
+		this.subscribeUser = new User(subscribeId);
 	}
 
-	public Subscribe(User user, User subscribe_user) {
+	public Subscribe(User user, User subscribeUser) {
 		super();
 		this.user = user;
-		this.subscribe_user = subscribe_user;
+		this.subscribeUser = subscribeUser;
 	}
 
 	public int getId() {
@@ -51,13 +51,13 @@ public class Subscribe {
 		return user;
 	}
 
-	public User getSubscribe_user() {
-		return subscribe_user;
+	public User getSubscribeUser() {
+		return subscribeUser;
 	}
 
 	@Override
 	public String toString() {
-		return "Subscribe [id=" + id + ", user=" + user + ", subscribe_user=" + subscribe_user + "]";
+		return "Subscribe [id=" + id + ", user=" + user + ", subscribe_user=" + subscribeUser + "]";
 	}
 
 }

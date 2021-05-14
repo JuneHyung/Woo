@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.fridge.model.Main;
 
 public interface MainRepository extends JpaRepository<Main, Integer> {
-	List<Main> findByIngredientsdetail_id(int id, Pageable pagable);
+	List<Main> findByIngredientsdetailId(int id, Pageable pagable);
 
 	@Query(value = "select ingredientsdetail_id from main where recipe_id = :recipeId", nativeQuery = true)
 	int [] findIngredientsdetail_idByRecipe_id(int recipeId);

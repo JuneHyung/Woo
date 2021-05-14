@@ -33,14 +33,14 @@ public class SubscribeServiceImpl implements SubscribeService {
 
 	@Override
 	public List<UserDto> getScribe(Principal userId) {
-		List<Subscribe> list = subscribeRepository.findByUser_id(Integer.parseInt(userId.getName()));
+		List<Subscribe> list = subscribeRepository.findByUserId(Integer.parseInt(userId.getName()));
 
 		List<UserDto> subList = new LinkedList<>();
 		for (Subscribe sub : list) {
 			UserDto userDto = new UserDto();
-			userDto.setId(sub.getSubscribe_user().getId());
-			userDto.setEmail(sub.getSubscribe_user().getEmail());
-			userDto.setNick(sub.getSubscribe_user().getNick());
+			userDto.setId(sub.getSubscribeUser().getId());
+			userDto.setEmail(sub.getSubscribeUser().getEmail());
+			userDto.setNick(sub.getSubscribeUser().getNick());
 
 			subList.add(userDto);
 		}

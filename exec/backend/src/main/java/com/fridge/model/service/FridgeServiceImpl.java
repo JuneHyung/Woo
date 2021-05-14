@@ -59,7 +59,7 @@ public class FridgeServiceImpl implements FridgeService {
 
 	@Override
 	public Fridge[] fridgeList(int id) {
-		return fridgeRepository.findByUser_Id(id);
+		return fridgeRepository.findByUserId(id);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class FridgeServiceImpl implements FridgeService {
 
 	@Override
 	public Ingredients[] ingrediantsList(int fridgeId) {
-		return ingredientsRepository.findByFridge_Id(fridgeId);
+		return ingredientsRepository.findByFridgeId(fridgeId);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class FridgeServiceImpl implements FridgeService {
 
 	@Override
 	public void fridgeDel(Principal user, int fridgeId) throws WrongFormException {
-		Optional<Fridge> fridge = fridgeRepository.findByIdAndUser_Id(fridgeId, Integer.parseInt(user.getName()));
+		Optional<Fridge> fridge = fridgeRepository.findByIdAndUserId(fridgeId, Integer.parseInt(user.getName()));
 		fridge.orElseThrow(() -> new WrongFormException("존재하지 않는 냉장고 입니다"));
 
 		fridgeRepository.delete(fridge.get());
