@@ -43,10 +43,12 @@
                 </v-row>
             </div>
         </v-row>
+        <alarm></alarm>
     </header>
 </template>
 <script>
 import { moveStart, moveMain, moveRecipeList, moveSubscribe, moveMyPage } from '@/api/move.js';
+import Alarm from '@/components/Alarm.vue';
 export default {
     name: 'MainHeader',
     data() {
@@ -60,6 +62,7 @@ export default {
             alarmDialog: false,
         };
     },
+    components: { Alarm },
     methods: {
         goMain() {
             moveMain();

@@ -17,6 +17,7 @@
                 </p>
             </div>
             <v-slide-group
+                v-if="fridgeList.length != 0"
                 center-active
                 show-arrows
                 style="
@@ -76,7 +77,32 @@
                     </div>
                 </v-slide-item>
             </v-slide-group>
-
+            <div
+                v-else
+                style="
+                    text-align: center;
+                    border-radius: 30px;
+                    margin: 15px auto;
+                    padding: 10px;
+                    box-shadow: inset 0px 0px 5px 5px #ffecf2;
+                "
+            >
+                <div style="width: 60px; height: 60px; margin: 20px auto 10px">
+                    <img
+                        :src="logoIcon"
+                        alt="냉장고아이콘"
+                        style="width: 100%; height: 100%; opacity: 0.5"
+                    />
+                </div>
+                <div style="margin-bottom: 20px">
+                    <p style="font-size: 24px">
+                        여기에 내 냉장고가 표시됩니다.<br />
+                        <span style="font-size: 20px"
+                            >냉장고 관리를 위해 냉장고를 추가해 주세요.</span
+                        >
+                    </p>
+                </div>
+            </div>
             <v-row style="border-top: 1px solid black; border-bottom: 1px solid black">
                 <p style="font-family: 'twayair', sans-serif; font-size: 14px">
                     클릭시 냉장고 관리가 가능합니다
@@ -160,7 +186,7 @@
                                         font-family: 'twayair', sans-serif;
                                     "
                                 >
-                                    작성자 : {{ sub.user_name }}
+                                    작성자 : {{ sub.writer }}
                                 </p>
 
                                 <p
@@ -179,8 +205,31 @@
                         </div>
                     </v-slide-item>
                 </v-slide-group>
-                <div v-else style="margin-top: 50px; text-align: center">
-                    <p style="font-size: 24px">구독 중인 사람이 없습니다.</p>
+                <div
+                    v-else
+                    style="
+                        text-align: center;
+                        border-radius: 30px;
+                        margin: 15px auto;
+                        padding: 10px;
+                        box-shadow: inset 0px 0px 5px 5px #ffecf2;
+                    "
+                >
+                    <div style="width: 60px; height: 60px; margin: 20px auto 10px">
+                        <img
+                            :src="recipeIcon"
+                            alt="레시피아이콘"
+                            style="width: 100%; height: 100%; opacity: 0.5"
+                        />
+                    </div>
+                    <div style="margin-bottom: 20px">
+                        <p style="font-size: 24px">
+                            여기에 구독자 컨텐츠가 표시됩니다.<br />
+                            <span style="font-size: 20px"
+                                >즐겨찾는 분을 구독하여 최신 레시피를 받아 보세요.</span
+                            >
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -209,6 +258,8 @@ export default {
             userList: [],
             page: 0,
             size: 6,
+            recipeIcon: require('@/assets/images/header/sharing.png'),
+            logoIcon: require('@/assets/images/header/logo.png'),
         };
     },
     created() {

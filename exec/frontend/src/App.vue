@@ -1,21 +1,24 @@
 <template>
     <v-app style="width: 360px; margin: 0 auto">
         <router-view name="header"></router-view>
+
         <transition name="component-fade" mode="out-in">
             <router-view></router-view>
         </transition>
-        <alarm></alarm>
+        <!-- <alarm></alarm> -->
     </v-app>
 </template>
 
 <script>
-import Alarm from './components/Alarm';
+// import Alarm from './components/Alarm';
 
 export default {
     name: 'App',
-    components: { Alarm },
+    // components: { Alarm },
     data() {
         return {
+            loadingIcon: require('@/assets/images/loading.gif'),
+            loadingDialog: false,
             token: '',
         };
     },

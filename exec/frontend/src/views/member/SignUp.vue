@@ -73,7 +73,6 @@ export default {
             this.$refs.imageInput.click();
         },
         onChangeImages(e) {
-            console.log(e.target.files);
             const file = e.target.files[0];
             // this.imageFile = file;
             this.imageUrl = URL.createObjectURL(file);
@@ -96,9 +95,7 @@ export default {
             return checkEmailValid(email);
         },
         signUp() {
-            console.log('회원가입');
             if (this.user.email == '') {
-                console.log(this.user.email);
                 swal('아이디를 입력해주세요!', {
                     icon: 'error',
                 });
@@ -107,7 +104,6 @@ export default {
                     icon: 'error',
                 });
             } else if (!this.validPassword(this.user.pwd)) {
-                console.log(this.user.pwd);
                 swal('비밀번호를 숫자와 문자, 특수문자 포함 형태의 8자리로 입력해주세요!', {
                     icon: 'error',
                 });
@@ -132,7 +128,6 @@ export default {
                     icon: 'error',
                 });
             } else {
-                console.log(this.user);
                 joinUser(this.user)
                     .then(() => {
                         swal('회원가입이 완료되었습니다', {
@@ -161,7 +156,6 @@ export default {
                 // 중복체크시 id를 가지고 체크.
                 checkId(this.user.email)
                     .then((response) => {
-                        console.log(response);
                         if (response.data.message == 'fail') {
                             // fail이 오면 이미 존재하는 아이디.
                             swal('이미 존재하는 아이디입니다!!', {
@@ -187,7 +181,6 @@ export default {
             } else {
                 checkNickName(this.user.nick)
                     .then((response) => {
-                        console.log(response);
                         if (response.data.message == 'fail') {
                             swal('이미 존재하는 닉네임입니다!!', {
                                 icon: 'warning',

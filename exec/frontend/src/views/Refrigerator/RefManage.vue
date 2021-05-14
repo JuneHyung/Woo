@@ -388,8 +388,8 @@ export default {
                     this.category = response.data.category;
                     this.category.unshift('All');
                 })
-                .catch(() => {
-                    console.log('실패');
+                .catch((error) => {
+                    console.log(error);
                 });
         },
         getIngredientsName() {
@@ -432,7 +432,6 @@ export default {
             getIngredients(this.ref_id)
                 .then((response) => {
                     this.ingredients = response.data.ingredients;
-                    console.log(`ref_type : ${this.ref_type}`);
 
                     this.ingredients.forEach((el) => {
                         let x = el.locx;
@@ -454,21 +453,17 @@ export default {
                                 },
                             };
                             this.addList.push(temp);
-
-                            // console.log('끝?');
                         } else {
                             this.lists[y][x].push(el);
                         }
                     });
                     setTimeout(this.checkShelfLife, 100);
-                    console.log('정보받기 성공');
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
         setRefType() {
-            console.log(`ref_type : ${this.ref_type}`);
             switch (this.ref_type) {
                 case 44:
                     this.lists = [
@@ -527,14 +522,11 @@ export default {
 
                 if (ingre.getTime() <= today7O.getTime()) {
                     this.garbages.push(this.ingredients[i]);
-                    console.log(1);
                 }
             }
-            console.log('끝?');
             setTimeout(this.checkDeadItem, 100);
         },
         checkDeadItem() {
-            console.log('다시시작');
             let current = new Date();
 
             let year = current.getFullYear();
@@ -550,7 +542,6 @@ export default {
 
             for (var i = 0; i < this.ingredients.length; i++) {
                 let life = new Date(this.ingredients[i].expired);
-                console.log(`life = ${life.getTime()}, todayO = ${todayO.getTime()}`);
                 if (life.getTime() <= todayO.getTime()) {
                     itemBox.forEach((el) => {
                         let text = el.innerText;
@@ -618,9 +609,6 @@ export default {
             moveRecipeList(id);
         },
         handleDrop(toList, data, event, x, y) {
-            // console.log(`event : ${event}`);
-            // console.log(`x: ${x}`);
-            // console.log(`y: ${y}`);
             this.temp = data.item;
 
             data.item.locx = x;
@@ -644,7 +632,6 @@ export default {
             // }
             moveIngredients(this.moveItem)
                 .then(() => {
-                    console.log('clear');
                     window.location.href = `/refmanage/${this.ref_id}`;
                 })
                 .catch((error) => alert(error));

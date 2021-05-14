@@ -64,7 +64,7 @@
                         요리이름 : {{ post.title }}
                     </p>
                     <p style="font-size: 20px; padding-left: 8px !important">
-                        작성자 : {{ post.user_name }}
+                        작성자 : {{ post.writer }}
                     </p>
                 </div>
             </div>
@@ -149,31 +149,28 @@ export default {
         getMySubscribeList() {
             getCheckSubscribe()
                 .then((response) => {
-                    this.userList.splice(0);
                     this.userList = response.data.userlist;
-                    // console.log('옴?');
-                    if (this.userList < this.size) {
-                        this.userList.forEach((el) => {
-                            getMySubscribe(this.page, this.size, el.id)
-                                .then((response) => {
-                                    this.postList = response.data.post;
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
-                        });
-                    } else {
-                        this.userList.forEach((el) => {
-                            getMySubscribe(this.page, this.size, el.id)
-                                .then((response) => {
+                    this.userList.forEach((el) => {
+                        getMySubscribe(this.page, this.size, el.id)
+                            .then((response) => {
+                                let tempList = response.data.post;
+                                if (tempList.length < this.size) {
+                                    this.isLoading = false;
+                                    tempList.forEach((el) => {
+                                        this.postList.push(el);
+                                    });
+                                } else {
+                                    this.isLoading = true;
+                                    tempList.forEach((el) => {
+                                        this.postList.push(el);
+                                    });
                                     this.page++;
-                                    this.postList = response.data.post;
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
-                        });
-                    } // else
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    });
                 })
                 .catch((error) => console.log(error));
         },
