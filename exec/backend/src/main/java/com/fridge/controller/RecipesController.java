@@ -36,7 +36,7 @@ public class RecipesController {
 
 	@Operation(summary = "레시피 정보 입력", description = "레시피를 입력한다")
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> recipeinsert(@RequestBody Recipe recipe) {
+	public ResponseEntity<Map<String, Object>> recipeInsert(@RequestBody Recipe recipe) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -53,7 +53,7 @@ public class RecipesController {
 
 	@Operation(summary = "레시비 목록 조회", description = "레시피 목록을 조회한다")
 	@GetMapping("/{page}/{size}")
-	public ResponseEntity<Map<String, Object>> recipelist(@PathVariable("page") int page,
+	public ResponseEntity<Map<String, Object>> recipeList(@PathVariable("page") int page,
 			@PathVariable("size") int size) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -73,7 +73,7 @@ public class RecipesController {
 
 	@Operation(summary = "레시피 정보 조회", description = "레시피를 조회한다")
 	@GetMapping("/detail/{recipeId}")
-	public ResponseEntity<Map<String, Object>> recipedetail(@PathVariable("recipeId") int recipeId) {
+	public ResponseEntity<Map<String, Object>> recipeDetail(@PathVariable("recipeId") int recipeId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -91,7 +91,7 @@ public class RecipesController {
 
 	@Operation(summary = "특정재료를 메인으로 하는 레시피 조회", description = "특정 재료를 메인으로 하는 레시피를 조회한다")
 	@GetMapping("/ingredients/{id}/{page}/{size}")
-	public ResponseEntity<Map<String, Object>> ingredientrecipe(@PathVariable("id") int id, @PathVariable("page") int page,
+	public ResponseEntity<Map<String, Object>> ingredientRecipe(@PathVariable("id") int id, @PathVariable("page") int page,
 			@PathVariable("size") int size) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;

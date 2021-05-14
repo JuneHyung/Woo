@@ -3,7 +3,6 @@ package com.fridge.model.service;
 import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,17 +21,15 @@ public class SubscribeServiceImpl implements SubscribeService {
 	UserRepository userRepository;
 
 	@Override
-	public void insertScribe(Principal userId, int subscribeId) throws WrongFormException {
-		Optional<Integer> optSubscribe = subscribeRepository
-				.findByUserIdAndSubscribeId(Integer.parseInt(userId.getName()), subscribeId);
-		if (optSubscribe.isPresent())
+	public void insertSubscribe(Principal userId, int subscribeId) throws WrongFormException {
+		if (subscribeRepository.findByUserIdAndSubscribeId(Integer.parseInt(userId.getName()), subscribeId).isPresent())
 			throw new WrongFormException("이미 구독한 사람입니다");
 
 		subscribeRepository.save(new Subscribe(Integer.parseInt(userId.getName()), subscribeId));
 	}
 
 	@Override
-	public List<UserDto> getScribe(Principal userId) {
+	public List<UserDto> getSubscribe(Principal userId) {
 		List<Subscribe> list = subscribeRepository.findByUserId(Integer.parseInt(userId.getName()));
 
 		List<UserDto> subList = new LinkedList<>();
@@ -49,13 +46,11 @@ public class SubscribeServiceImpl implements SubscribeService {
 	}
 
 	@Override
-	public void deleteScribe(Principal userId, int subscribeId) throws WrongFormException {
-		Optional<Integer> optSubscribe = subscribeRepository
-				.findByUserIdAndSubscribeId(Integer.parseInt(userId.getName()), subscribeId);
-		if (!optSubscribe.isPresent())
-			throw new WrongFormException("구독하지 않은 사용자를 삭제 시도하였습니다");
+	public void deleteSubscribe(Principal userId, int subscribeId) throws WrongFormException {
+		int subscribe = subscribeRepository.findByUserIdAndSubscribeId(Integer.parseInt(userId.getName()), subscribeId)
+				.orElseThrow(() -> new WrongFormException("구독하지 않은 사용자를 삭제 시도하였습니다"));
 
-		subscribeRepository.deleteById(optSubscribe.get());
+		subscribeRepository.deleteById(subscribe);
 	}
 
 }

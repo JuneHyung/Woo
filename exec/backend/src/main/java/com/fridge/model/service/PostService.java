@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fridge.common.error.WrongFormException;
 import com.fridge.model.dto.PostDto;
 
 public interface PostService {
@@ -20,9 +21,10 @@ public interface PostService {
 
 	void deletePost(Principal userId, int postId) throws IOException, SQLException;
 
-	void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images) throws IOException;
+	void modifyPost(Principal userId, int postId, String title, List<MultipartFile> images)
+			throws IOException, WrongFormException;
 
-	void setLike(Principal userId, int postId, String good);
+	void setLike(Principal userId, int postId, String good) throws WrongFormException;
 
-	List <PostDto> subscriberContents(int page, int size, int userId) throws IOException;
+	List<PostDto> subscriberContents(int page, int size, int userId) throws IOException;
 }

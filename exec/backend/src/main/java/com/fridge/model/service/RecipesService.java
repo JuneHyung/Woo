@@ -16,9 +16,9 @@ public interface RecipesService {
 
 	public List<Recipe> ingredientRecipes(int id, int page, int size);
 
-	public void upViews(int recipeId);
+	public void upViews(int recipeId) throws WrongFormException;
 
-	public String [] recipeMain(int recipeId);
+	public String[] recipeMain(int recipeId);
 
 	public String[] recipeSub(int recipeId);
 
