@@ -24,10 +24,10 @@ public class RecipesServiceImpl implements RecipesService {
 
 	@Autowired
 	private MainRepository mainRepository;
-	
+
 	@Autowired
 	private IngredientsdetailRepository ingredientsdetailRepository;
-	
+
 	@Autowired
 	private SubRepository subRepository;
 
@@ -70,31 +70,33 @@ public class RecipesServiceImpl implements RecipesService {
 	}
 
 	@Override
-	public void upViews(int recipeId) {
-		Recipe r = recipesRepository.getOne(recipeId);
+	public void upViews(int recipeId) throws WrongFormException {
+		Recipe r = Optional.ofNullable(recipesRepository.getOne(recipeId))
+				.orElseThrow(() -> new WrongFormException("존재하지 않는 냉장고 아이디 입니다"));
 		Recipe updateRecipe = new Recipe(r, r.getViews() + 1);
 
 		recipesRepository.save(updateRecipe);
 	}
 
 	@Override
-	public String [] recipeMain(int recipeId) {
-		int [] ingredientsId = mainRepository.findIngredientsdetail_idByRecipe_id(recipeId);
-		String [] mainName = new String[ingredientsId.length];
-		for(int i = 0; i < ingredientsId.length; i++) {
-			mainName[i] = ingredientsdetailRepository.findIngredientsdetail_nameByIngredientsdetail_id(ingredientsId[i]);
-			
+	public String[] recipeMain(int recipeId) {
+		int[] ingredientsId = mainRepository.findIngredientsdetailIdByRecipeId(recipeId);
+		String[] mainName = new String[ingredientsId.length];
+
+		for (int i = 0; i < ingredientsId.length; i++) {
+			mainName[i] = ingredientsdetailRepository.findIngredientsdetailNameByIngredientsdetailId(ingredientsId[i]);
+
 		}
 		return mainName;
 	}
 
 	@Override
 	public String[] recipeSub(int recipeId) {
-		int [] ingredientsId = subRepository.findIngredientsdetail_idByRecipe_id(recipeId);
-		String [] subName = new String[ingredientsId.length];
-		for(int i = 0; i < ingredientsId.length; i++) {
-			subName[i] = ingredientsdetailRepository.findIngredientsdetail_nameByIngredientsdetail_id(ingredientsId[i]);
-			
+		int[] ingredientsId = subRepository.findIngredientsdetailIdByRecipeId(recipeId);
+		String[] subName = new String[ingredientsId.length];
+		for (int i = 0; i < ingredientsId.length; i++) {
+			subName[i] = ingredientsdetailRepository.findIngredientsdetailNameByIngredientsdetailId(ingredientsId[i]);
+
 		}
 		return subName;
 	}
