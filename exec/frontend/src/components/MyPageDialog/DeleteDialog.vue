@@ -39,7 +39,11 @@ export default {
                         .then(() => {
                             moveStart();
                         })
-                        .catch((error) => alert(error));
+                        .catch((error) => {
+                            swal(error, {
+                                icon: 'error',
+                            });
+                        });
                     this.closeDialogDelete();
                 })
                 .catch(() => {

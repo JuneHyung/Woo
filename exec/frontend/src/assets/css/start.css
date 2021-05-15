@@ -1,0 +1,25 @@
+@charset "utf-8";
+.startImage {
+    margin: 0 auto;
+    width: 300px;
+    height: 280px;
+}
+
+.mainText {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.startText {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.btnBox {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    padding: 10px;
+    margin: 10px auto;
+}
+.startIcon {
+    width: 50px;
+    height: 50px;
+}

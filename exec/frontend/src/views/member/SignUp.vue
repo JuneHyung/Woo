@@ -1,18 +1,19 @@
 <template>
     <v-container>
-        <div class="signFormBox" style="color: black">
+        <div class="signFormBox">
             <h1 class="signTitle">회 원 가 입</h1>
-
-            <v-text-field
-                label="ID (Email)"
-                placeholder="ex)ssafy@naver.com"
-                type="string"
-                v-model="user.email"
-            ></v-text-field>
-            <div style="margin-left: 160px">
-                <v-btn @click="checkId()">ID 중복확인</v-btn>
-            </div>
-
+            <v-row>
+                <v-text-field
+                    label="ID (Email)"
+                    placeholder="ex)ssafy@naver.com"
+                    type="string"
+                    v-model="user.email"
+                ></v-text-field>
+                <v-spacer></v-spacer>
+                <div class="duplicateCheckBox">
+                    <v-btn @click="checkId()">ID 중복확인</v-btn>
+                </div>
+            </v-row>
             <v-text-field
                 label="PW (대소문자 특수문자 조합 8자 이상)"
                 placeholder="ssafy123!"
@@ -28,21 +29,24 @@
             >
             </v-text-field>
 
-            <v-text-field
-                label="닉네임"
-                placeholder="살림왕"
-                type="string"
-                v-model="user.nick"
-            ></v-text-field>
-            <div style="margin-left: 160px">
-                <v-btn @click="checkNick">닉네임 중복확인</v-btn>
-            </div>
+            <v-row>
+                <v-text-field
+                    label="닉네임"
+                    placeholder="살림왕"
+                    type="string"
+                    v-model="user.nick"
+                ></v-text-field>
+                <v-spacer></v-spacer>
+                <div class="duplicateCheckBox">
+                    <v-btn @click="checkNick">닉네임 중복확인</v-btn>
+                </div>
+            </v-row>
 
             <v-row>
                 <v-spacer></v-spacer>
                 <button class="resetBtn" @click="reset">초기화</button>
 
-                <button class="registBtn" @click="signUp">등록</button>
+                <button class="signupBtn" @click="signUp">등록</button>
             </v-row>
         </div>
     </v-container>
@@ -206,31 +210,5 @@ export default {
 };
 </script>
 <style scoped>
-.profileImg {
-    width: 100%;
-    height: 100%;
-}
-.profileName {
-    line-height: 36px;
-    border-bottom: 1px solid black;
-    margin-right: 20px !important;
-}
-.signTitle {
-    font-size: 24px;
-    text-align: center;
-}
-.signFormBox {
-    width: calc(100% - 100px);
-    margin: 0 auto;
-}
-.resetBtn {
-    width: 60px;
-    height: 60px;
-    text-align: center;
-}
-.registBtn {
-    width: 60px;
-    height: 60px;
-    text-align: center;
-}
+@import './../../assets/css/signup.css';
 </style>

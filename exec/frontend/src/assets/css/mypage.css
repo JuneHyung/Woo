@@ -1,0 +1,45 @@
+@charset "utf-8";
+.myPageImg {
+    width: 30px;
+    height: 100%;
+    margin: auto 1px;
+}
+.myPageTitle {
+    line-height: 28px;
+    height: 28px;
+    margin-left: 10px !important;
+}
+.modifyBtn {
+    text-align: center;
+
+    margin-right: 20px;
+    font-size: 18px;
+    border: 1px solid #d9418d;
+    border-radius: 10px;
+    padding: 5px;
+    color: #d9418d;
+}
+
+.deleteUserBtn {
+    width: 85px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #d9418d;
+    border-radius: 10px;
+    padding: 5px;
+    color: #d9418d;
+}
+
+.myRecipeTitle {
+    font-size: 20px !important;
+    margin-bottom: 20px !important;
+}
+.myRecipeImg {
+    width: 100%;
+    height: 160px;
+}
+.myRecipeText {
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+}

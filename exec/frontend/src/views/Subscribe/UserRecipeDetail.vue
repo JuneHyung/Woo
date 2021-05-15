@@ -5,10 +5,10 @@
         </div>
         <div v-else>
             <v-row>
-                <div style="width: 24px; height: 40px">
+                <div class="userIconBox">
                     <img :src="meal" alt="요리이미지" class="mealImg" />
                 </div>
-                <p style="font-size: 24px; line-height: 24px; margin-left: 15px !important">
+                <p class="font-24 ml-4">
                     {{ post.title }}
                 </p>
             </v-row>
@@ -22,12 +22,7 @@
                         :src="subscribeY"
                         alt="구독하기"
                         v-if="!subscribeFlag"
-                        style="
-                            width: 100px;
-                            height: 60px;
-                            margin-left: 20px !important;
-                            display: block;
-                        "
+                        class="subscribeUserBtn"
                         @click="startSubscribe()"
                     />
                     <img
@@ -35,53 +30,28 @@
                         alt="구독취소"
                         v-else
                         @click="endSubscribe()"
-                        style="
-                            width: 100px;
-                            height: 60px;
-                            margin-left: 20px !important;
-                            display: block;
-                        "
+                        class="subscribeUserBtn"
                     />
                 </v-row>
                 <v-row>
                     <v-spacer></v-spacer>
-                    <p style="margin-right: 10px !important" @click="checkGood()">
+                    <p class="mr-2" @click="checkGood()">
                         <v-icon>mdi-thumb-up</v-icon>
-                        <span
-                            style="
-                                height: 24px;
-                                line-height: 40px;
-                                margin-left: 5px;
-                                font-size: 18px;
-                            "
-                            >{{ post.good }}</span
-                        >
+                        <span class="likeNum">{{ post.good }}</span>
                     </p>
-                    <p style="height: 40px" @click="checkHate()">
+                    <p @click="checkHate()">
                         <v-icon>mdi-thumb-down</v-icon>
-                        <span
-                            style="
-                                height: 24px;
-                                line-height: 40px;
-                                margin-left: 5px;
-                                font-size: 18px;
-                            "
-                            >{{ post.hate }}</span
-                        >
+                        <span class="hateNum">{{ post.hate }}</span>
                     </p>
                 </v-row>
             </div>
-            <p class="font-24" style="margin-top: 20px !important">ㅇ요리 방법</p>
+            <p class="font-24 mt-5">ㅇ요리 방법</p>
 
-            <div style="width: calc(100% - 20px); height: 230px; margin: 0 auto">
-                <img
-                    :src="`data:image/jpg;base64,${imageUrl}`"
-                    alt="시작이미지"
-                    style="width: 100%; height: 100%"
-                />
+            <div class="recipeThumbnailBox">
+                <img :src="`data:image/jpg;base64,${imageUrl}`" alt="시작이미지" />
             </div>
             <template>
-                <v-sheet class="mx-auto" style="width: calc(100% - 20px); margin: 0 auto">
+                <v-sheet class="mx-auto recipeSlideBox">
                     <v-slide-group center-active show-arrows>
                         <v-slide-item v-for="(img, index) in post.imageStrArr" :key="index">
                             <v-row>
@@ -91,11 +61,7 @@
                                     width="120"
                                     @click="changeImage(img)"
                                 >
-                                    <img
-                                        :src="`data:image/jpg;base64,${img}`"
-                                        alt="시작이미지"
-                                        style="width: 100%; height: 100%"
-                                    />
+                                    <img :src="`data:image/jpg;base64,${img}`" alt="시작이미지" />
                                 </v-card>
                             </v-row>
                         </v-slide-item>
@@ -116,6 +82,7 @@ import {
     checkLike,
 } from '@/api/subscribe.js';
 import { moveUserRecipeDetail } from '@/api/move.js';
+import swal from 'sweetalert';
 
 export default {
     name: 'UserRecipeDetail',
@@ -152,7 +119,9 @@ export default {
                         this.post_user_id = response.data.post.userId;
                         this.checkSubscribe();
                     } else {
-                        alert('정보 조회 실패');
+                        swal('정보 조회 실패!', {
+                            icon: 'error',
+                        });
                     }
                 })
                 .catch(() => {});
@@ -176,7 +145,6 @@ export default {
             subscribe(this.post_user_id)
                 .then(() => {
                     this.subscribeFlag = true;
-                    alert('확인');
                 })
                 .catch((error) => console.log(error));
         },
@@ -184,7 +152,6 @@ export default {
             subscribeCancel(this.post_user_id)
                 .then(() => {
                     this.subscribeFlag = false;
-                    alert('확인');
                 })
                 .catch((error) => console.log(error));
         },
@@ -214,6 +181,7 @@ export default {
 </script>
 
 <style scoped>
+@import './../../assets/css/userRecipeDetail.css';
 .mealImg {
     width: 100%;
     height: 70%;

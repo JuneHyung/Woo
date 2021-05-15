@@ -1,71 +1,38 @@
 <template>
     <v-container>
         <v-row>
-            <div style="width: 24px; height: 40px">
-                <img :src="subscribe" alt="구독 이미지" class="subscribeImg" />
+            <div class="subscribeIconBox">
+                <img :src="subscribe" alt="구독 이미지" />
             </div>
-            <p
-                style="
-                    font-size: 28px;
-                    line-height: 22px;
-                    text-decoration: underline;
-                    text-decoration-style: wavy;
-                    text-underline-position: under;
-                    margin-left: 10px !important;
-                "
-            >
+            <p class="titleText subscribeTitle">
                 {{ title }}
             </p>
         </v-row>
-        <v-row style="margin-bottom: 20px !important">
+        <v-row class="my-4">
             <v-spacer></v-spacer>
-            <button
-                style="
-                    font-size: 18px;
-                    border: 1px solid #d9418d;
-                    border-radius: 10px;
-                    padding: 5px;
-                    color: #d9418d;
-                    margin: 0 10px;
-                "
-                @click="changeSubscribePage()"
-            >
+            <button class="toggleBtn" @click="changeSubscribePage()">
                 {{ btnTitle }}
             </button>
 
-            <button
-                style="
-                    font-size: 18px;
-                    border: 1px solid #d9418d;
-                    border-radius: 10px;
-                    padding: 5px;
-                    color: #d9418d;
-                    margin: 0;
-                "
-                @click="goRecipeCreate()"
-            >
-                레시피 등록
-            </button>
+            <button class="recipeCreateBtn" @click="goRecipeCreate()">레시피 등록</button>
         </v-row>
         <v-row>
             <div
                 v-for="(post, index) in postList"
                 :key="index"
-                style="width: 155px; margin: 10px auto"
+                class="my-2 mx-auto"
+                style="width: 155px; border: 1px solid black"
             >
-                <img
-                    @click="moveRecipeDetail(post.id)"
-                    :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
-                    alt="Customer_image"
-                    style="width: 100%; height: 160px; margin: 0 auto; border: 1px solid black"
-                />
-                <div style="border: 1px solid black">
-                    <p class="shorthand" style="font-size: 20px; padding-left: 8px !important">
-                        요리이름 : {{ post.title }}
-                    </p>
-                    <p style="font-size: 20px; padding-left: 8px !important">
-                        작성자 : {{ post.writer }}
-                    </p>
+                <div class="postImgBox">
+                    <img
+                        @click="moveRecipeDetail(post.id)"
+                        :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
+                        alt="Customer_image"
+                    />
+                </div>
+                <div>
+                    <p class="shorthand font-20 pl-2">요리이름 : {{ post.title }}</p>
+                    <p class="font-20 pl-2">작성자 : {{ post.writer }}</p>
                 </div>
             </div>
         </v-row>
@@ -75,6 +42,7 @@
 // import http from '@/api/axios.js';
 import { getPostList, getCheckSubscribe, getMySubscribe } from '@/api/subscribe.js';
 import { moveUserRecipeDetail, moveRecipeCreate } from '@/api/move.js';
+import swal from 'sweetalert';
 export default {
     name: 'Subscribe',
     data() {
@@ -120,7 +88,11 @@ export default {
                         this.page++;
                     }
                 })
-                .catch((error) => alert(error));
+                .catch((error) => {
+                    swal(error, {
+                        icon: 'error',
+                    });
+                });
         },
         moveRecipeDetail(post_id) {
             // this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
@@ -179,12 +151,5 @@ export default {
 </script>
 
 <style scoped>
-.subscribeImg {
-    width: 100%;
-    height: 70%;
-}
-.foodImg {
-    width: 100%;
-    height: 100px;
-}
+@import './../../assets/css/subscribe.css';
 </style>

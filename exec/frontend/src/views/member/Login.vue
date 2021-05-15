@@ -27,6 +27,7 @@
 import { login } from '@/api/user.js';
 import http from '../../api/axios.js';
 import { moveMain } from '@/api/move.js';
+import swal from 'sweetalert';
 export default {
     data() {
         return {
@@ -55,11 +56,17 @@ export default {
                     } else {
                         this.isLoginError = true;
                         if (this.user.id == '') {
-                            alert('아이디 입력 해라!');
+                            swal('아이디를 입력해 주세요!', {
+                                icon: 'error',
+                            });
                         } else if (this.user.pw == '') {
-                            alert('비번 입력 해라!');
+                            swal('비밀번호를 입력해 주세요!', {
+                                icon: 'error',
+                            });
                         } else {
-                            alert('아이디 또는 비번이 일치하지않아유~');
+                            swal('아이디 또는 비밀번호가 일치하지 않습니다.', {
+                                icon: 'error',
+                            });
                         }
                     }
                 },
@@ -72,22 +79,5 @@ export default {
 };
 </script>
 <style scoped>
-.loginFormBox {
-    width: calc(100% - 100px);
-    margin: 20px auto;
-}
-.loginTitle {
-    font-size: 24px;
-    text-align: center;
-}
-.resetBtn {
-    width: 60px;
-    height: 60px;
-    text-align: center;
-}
-.loginBtn {
-    width: 60px;
-    height: 60px;
-    text-align: center;
-}
+@import './../../assets/css/login.css';
 </style>

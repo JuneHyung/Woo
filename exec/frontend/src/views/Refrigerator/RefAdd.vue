@@ -1,9 +1,9 @@
 <template>
     <v-container class="addBox">
-        <p>냉장고 추가</p>
+        <p class="titleText mb-3">냉장고 추가</p>
         <v-text-field label="냉장고이름" type="text" v-model="fridge.name"></v-text-field>
         <div>
-            <p>단문형(인기순)</p>
+            <p class="font-18">단문형(인기순)</p>
             <v-slide-group center-active show-arrows>
                 <v-slide-item v-for="(dan, index) in danItem" :key="index">
                     <v-card
@@ -12,13 +12,13 @@
                         width="100"
                         @click="setDanFridgeType(index)"
                     >
-                        <img :src="dan" alt="냉장고이미지" style="width: 100%; height: 100%" />
+                        <img :src="dan" alt="냉장고이미지" />
                     </v-card>
                 </v-slide-item>
             </v-slide-group>
         </div>
         <div class="centerContent">
-            <p>양문형 (인기순)</p>
+            <p class="font-18">양문형 (인기순)</p>
             <v-slide-group center-active show-arrows>
                 <v-slide-item v-for="(yang, index) in yangItem" :key="index">
                     <v-card
@@ -28,16 +28,14 @@
                         v-model="fridge.index"
                         @click="setYangFridgeType(index)"
                     >
-                        <img :src="yang" alt="냉장고이미지" style="width: 100%; height: 100%" />
+                        <img :src="yang" alt="냉장고이미지" />
                     </v-card>
                 </v-slide-item>
             </v-slide-group>
         </div>
         <v-row>
             <v-spacer></v-spacer>
-            <div class="registBtn" @click="RegisterFridge()" style="margin: 10px 60px 0 0">
-                등록
-            </div>
+            <div class="registBtn" @click="RegisterFridge()">등록</div>
         </v-row>
     </v-container>
 </template>
@@ -46,6 +44,7 @@ import { addMyFridge } from '../../api/refrigerator';
 import { moveMain } from '@/api/move.js';
 // import http from '../../api/axios.js';
 import jwt_decode from 'jwt-decode';
+import swal from 'sweetalert';
 export default {
     data() {
         return {
@@ -76,11 +75,15 @@ export default {
             this.fridge.user.id = decode.sub;
             addMyFridge(this.fridge)
                 .then(() => {
-                    alert('추가성공');
+                    swal('추가 성공!', {
+                        icon: 'success',
+                    });
                     moveMain();
                 })
                 .catch(() => {
-                    alert('통신실패');
+                    swal('추가 실패!', {
+                        icon: 'error',
+                    });
                 });
         },
         setDanFridgeType(index) {
@@ -124,23 +127,5 @@ export default {
 };
 </script>
 <style scoped>
-.addBox img {
-    cursor: pointer;
-}
-.selectBox {
-    height: 30px;
-}
-.checked {
-    border: 2px solid red;
-}
-.registBtn {
-    width: 60px;
-    height: 40px;
-    text-align: center;
-    font-size: 18px;
-    border: 1px solid #d9418d;
-    border-radius: 10px;
-    padding: 5px;
-    color: #d9418d;
-}
+@import './../../assets/css/refAdd.css';
 </style>

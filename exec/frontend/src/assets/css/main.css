@@ -1,0 +1,104 @@
+@charset "utf-8";
+
+.refListBox,
+.recipeListBox {
+    border-radius: 30px;
+    margin: 15px auto;
+    box-shadow: inset 0px 0px 5px 5px #ffecf2;
+}
+.refListCard {
+    margin: 20px auto;
+}
+.recipeListCard {
+    margin: 30px auto 20px;
+}
+.refListCard p {
+    width: calc(100% - 2px);
+    text-align: center;
+    font-size: 22px;
+    margin: 0 auto !important;
+}
+.refList,
+.recipeList {
+    width: 102px;
+    height: 130px;
+    border: 1px solid black !important;
+}
+
+.recipeList p {
+    width: calc(100% - 2px);
+    text-align: center;
+    line-height: 24px;
+    font-size: 14px;
+    margin: 0 auto !important;
+    font-family: 'twayair', sans-serif;
+}
+
+.refImg {
+    width: calc(100% - 12px);
+    height: calc(100% - 20px);
+    padding-top: 14px;
+    margin: 0 auto;
+}
+.deleteBtnBox {
+    margin-top: 10px;
+    border: none !important;
+}
+.deleteBtnInnerBox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin: 0 auto;
+}
+.deleteBtn {
+    width: 100%;
+    height: 100%;
+    color: #000;
+}
+
+.noList {
+    padding: 10px;
+    text-align: center;
+}
+.logoIconBox {
+    width: 60px;
+    height: 60px;
+    margin: 20px auto 10px;
+}
+.logoIconBox img {
+    opacity: 0.5;
+}
+
+.explainBox {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.explainBox p {
+    line-height: 50px;
+    font-family: 'twayair', sans-serif;
+    font-size: 14px;
+}
+.refAddBtn {
+    width: 40px;
+    height: 40px;
+    margin: 0px 10px 10px 10px;
+}
+
+.recipeInfoBox {
+    width: calc(100% - 20px);
+    margin: 5px auto 0px;
+}
+
+.writerBox {
+    font-size: 14px;
+    height: 16x;
+    line-height: 16px;
+    font-family: 'twayair', sans-serif;
+}
+.viewBox {
+    text-align: right;
+    font-size: 14px;
+    height: 16x;
+    line-height: 16px;
+    font-family: 'twayair', sans-serif;
+}

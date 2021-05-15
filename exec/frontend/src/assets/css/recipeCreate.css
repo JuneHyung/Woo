@@ -1,0 +1,20 @@
+@charset "utf-8";
+.recipeIconBox {
+    width: 24px;
+    height: 24px;
+    margin-top: 10px;
+}
+.recipeCreateTitle {
+    font-size: 24px;
+    margin-left: 10px !important;
+}
+.resetBtn,
+.createtBtn {
+    font-size: 18px;
+    border: 1px solid #d9418d;
+    border-radius: 10px;
+    padding: 5px;
+    color: #d9418d !important;
+    background-color: #fff !important;
+    margin-right: 10px;
+}

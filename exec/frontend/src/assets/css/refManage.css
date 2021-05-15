@@ -1,0 +1,129 @@
+@charset "utf-8";
+.outBox {
+    overflow-x: scroll;
+}
+.listBox::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+.box {
+    width: 100%;
+    padding-left: 15px;
+    text-align: center;
+    font-size: 24px;
+    box-shadow: inset 0px 0px 5px 5px #ffecf2;
+    margin-top: 10px !important;
+}
+.drop.over {
+    border-color: #aaa;
+    background: #ccc;
+}
+
+.drop {
+    display: inline-block;
+    vertical-align: top;
+    padding: 8px;
+    margin-bottom: 10px;
+    width: auto;
+    height: auto;
+}
+
+.list {
+    width: 100px;
+    margin-right: 10px;
+    margin-top: 25px;
+}
+
+.ingredList {
+    width: 70px;
+    height: 200px;
+    border: 2px solid black;
+    overflow: scroll;
+}
+
+.ingrePlusBtn,
+.ingreMinusBtn {
+    width: 24px;
+    height: 24px;
+}
+
+.fridgeTitleBox {
+    border: 2px solid black;
+    background-color: #f00;
+    color: #fff;
+    font-size: 20px;
+    margin-top: 10px !important;
+}
+.ingredientsBox {
+    border: 1px solid black;
+    width: 100px;
+    height: 50px;
+}
+.dropBox {
+    width: 100%;
+    height: 50px;
+    overflow: scroll;
+}
+.dropBox::-webkit-scrollbar {
+    display: none;
+}
+
+.ingredientsList {
+    width: 100px;
+    margin: 5px auto !important;
+}
+.ingredImg {
+    width: 34px;
+    height: 34px;
+}
+.ingredName {
+    line-height: 34px;
+    font-size: 18px;
+    padding-left: 5px !important;
+}
+.refBtnBox {
+    width: calc(100% - 20px);
+    margin: 0 auto !important;
+}
+
+.explainIngredBox {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.explainIngredBox p,
+.explainIngredBox span {
+    font-family: 'twayair', sans-serif;
+    font-size: 14px;
+}
+.explainIngredBox span {
+    color: #f00;
+}
+.expainIngredIcon {
+    color: #f00 !important;
+    font-size: 48px !important;
+    margin-top: -3px !important;
+}
+.garbageBox {
+    margin-top: 20px;
+    box-shadow: inset 0px 0px 5px 5px #ffecf2;
+    padding: 15px 0;
+    box-sizing: border-box;
+}
+
+.itemImg {
+    height: 85%;
+    padding: 10px;
+}
+.itemText {
+    text-align: center;
+    height: 15%;
+    line-height: 10px;
+    font-size: 1.05rem;
+}
+
+.fourBox {
+    width: 580px;
+}
+
+.deadItem {
+    border: 2px solid red !important;
+}

@@ -1,0 +1,25 @@
+@charset "utf-8";
+.loginFormBox {
+    width: calc(100% - 100px);
+    margin: 20px auto;
+}
+.loginTitle {
+    font-size: 24px;
+    text-align: center;
+}
+.resetBtn {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+}
+.loginBtn {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #d9418d;
+    border-radius: 10px;
+    padding: 5px;
+    color: #d9418d;
+    margin-left: 10px;
+}

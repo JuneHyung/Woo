@@ -1,0 +1,82 @@
+@charset "utf-8";
+/*Start*/
+header {
+    height: 80px;
+    box-sizing: content-box;
+}
+.headerBox {
+    position: relative;
+}
+.logo {
+    width: 70px;
+    height: 70px;
+    margin: 0px auto;
+    margin-left: 10px;
+}
+.logo img {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.menuBox {
+    width: calc(100% - 160px);
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 40px 0px 0px 40px;
+    background-color: #ffecf2;
+}
+.menu {
+    transition: all 0.7s !important;
+    background-color: #fff;
+    width: 100%;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    right: -144px;
+    padding: 0 !important;
+    overflow: hidden;
+}
+.menu .openImg {
+    transition: all 0.7s;
+    width: 60px;
+    line-height: 80px;
+    text-align: center;
+    background-color: #ffecf2;
+}
+.menuList {
+    width: 60px;
+    height: 80px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.menuList p {
+    font-size: 0.5rem;
+    line-height: 20px;
+    text-align: center;
+    height: 20px;
+}
+
+.menuImg {
+    width: 36px;
+    height: 36px;
+    margin: 12px auto;
+}
+
+.openMenu {
+    right: 0px !important;
+    border-radius: 40px 0 0 40px;
+}
+.openMenu .openImg {
+    transition: all 0.7s;
+    transform: rotate(180deg);
+    background-color: #fff;
+    height: 100%;
+    margin: 0 !important;
+}
+
+/*Main*/
