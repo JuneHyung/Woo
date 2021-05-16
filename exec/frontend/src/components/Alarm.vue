@@ -64,9 +64,16 @@ export default {
                     if (before <= this.beforeSize) {
                         let after = response.data.messageList.length;
 
-                        if (this.beforeSize < after) {
+                        if (after < 10 && this.beforeSize < after) {
                             this.messageList.splice(0);
-                            for (var i = 0; i < 5; i++) {
+                            for (var i = 0; i < after; i++) {
+                                this.messageList.push(temp[i]);
+                            }
+                            this.beforeSize = after;
+                            this.messageDialog = false;
+                        } else if (after >= 10 && this.beforeSize < after) {
+                            this.messageList.splice(0);
+                            for (i = 0; i < 10; i++) {
                                 this.messageList.push(temp[i]);
                             }
                             this.beforeSize = after;

@@ -133,7 +133,7 @@ export default {
             getCheckSubscribe().then((response) => {
                 this.userList = response.data.userlist;
                 this.userList.forEach((el) => {
-                    if (el.id == this.post.user_id) {
+                    if (el.id == this.post_user_id) {
                         this.subscribeFlag = true;
                     } else {
                         this.subscribeFlag = false;

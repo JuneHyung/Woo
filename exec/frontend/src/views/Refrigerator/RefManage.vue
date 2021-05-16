@@ -524,10 +524,6 @@ export default {
             this.moveItem.locy = y;
             this.moveItem.fridgeId = this.temp.fridge.id;
             this.moveItem.ingredientsDetailId = this.temp.ingredientsdetail.id;
-
-            // if(data.addList){
-            //     data.addList.splice(data.)
-            // }
             moveIngredients(this.moveItem)
                 .then(() => {
                     window.location.href = `/refmanage/${this.ref_id}`;
