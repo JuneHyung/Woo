@@ -1,34 +1,19 @@
 <template>
-    <div class="alramMenu" @click="openAlarmList">
+    <div @click="openAlarmList">
         <div class="alarmImg">
             <img :src="alarmN" alt="알림 이미지" v-if="messageDialog" />
             <img :src="alarmY" alt="알림 이미지" v-else />
         </div>
         <div class="alarm">
             <v-card>
-                <div
-                    style="
-                        height: 80%;
-                        width: 100%;
-                        font-size: 22px;
-                        text-align: center;
-                        border-bottom: 2px solid #ffecf2;
-                    "
-                    dark
-                >
+                <div class="alarmText">
                     <v-spacer></v-spacer>
                     알림
                     <v-spacer></v-spacer>
                 </div>
 
-                <div
-                    v-for="(message, index) in messageList"
-                    :key="index"
-                    style="border-bottom: 2px solid #ffecf2; box-sizing: border-box"
-                >
-                    <p style="font-size: 14px; padding-left: 15px !important">
-                        {{ message.name }}님이 새 글을 등록하였습니다.
-                    </p>
+                <div v-for="(message, index) in messageList" :key="index" class="alarmInfo">
+                    <p class="font-16 pl-2">{{ message.name }}님이 새 글을 등록하였습니다.</p>
                 </div>
             </v-card>
         </div>
@@ -81,7 +66,7 @@ export default {
 
                         if (this.beforeSize < after) {
                             this.messageList.splice(0);
-                            for (var i = 0; i < 10; i++) {
+                            for (var i = 0; i < 5; i++) {
                                 this.messageList.push(temp[i]);
                             }
                             this.beforeSize = after;
@@ -98,37 +83,5 @@ export default {
 </script>
 
 <style scoped>
-.alarmImg {
-    position: fixed;
-    right: 5px;
-    bottom: 5px;
-    width: 36px;
-    height: 36px;
-    margin: 22px;
-}
-.alarm {
-    position: fixed;
-    bottom: 70px;
-    opacity: 0.95 !important;
-    right: 25px;
-    width: 180px;
-    display: none;
-    transition: all 0.4s;
-    border: solid #ffecf2 3px;
-    z-index: 999;
-}
-
-.alarmImg img {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-.menuImg {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-.alarmOpen {
-    display: block;
-}
+@import './../assets/css/alarm.css';
 </style>

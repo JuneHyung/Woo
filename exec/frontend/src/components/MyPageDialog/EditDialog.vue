@@ -2,7 +2,7 @@
     <v-dialog v-model="dialogEdit" transition="dialog-top-transition" persistent max-width="600">
         <v-card>
             <v-toolbar style="color: white; background-color: #494949">
-                <p style="font-size: 18px">회원 정보 수정</p>
+                <p class="font-18">회원 정보 수정</p>
             </v-toolbar>
             <v-card-text>
                 <v-row>

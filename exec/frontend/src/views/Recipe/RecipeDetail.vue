@@ -4,8 +4,8 @@
             <img :src="loadingIcon" alt="로딩 ui" />
         </div>
         <div v-else>
-            <h1 style="font-size: 32px">ㅇ{{ item.name }}</h1>
-            <div style="width: 100%; height: 300px; margin: 20px auto">
+            <h1 class="font-32">ㅇ{{ item.name }}</h1>
+            <div class="videoBox">
                 <iframe
                     id="mainVideo"
                     width="100%"
@@ -14,35 +14,26 @@
                     title="YouTube video player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
-                    style="border-radius: 20px; border: 1px solid black"
                 ></iframe>
             </div>
             <div>
-                <v-row style="margin: 0 20px !important; border-bottom: 3px solid #ffecf2">
+                <v-row class="videoInfoTopBox">
                     <p class="font-20">이름 : {{ item.name }}</p>
                     <v-spacer></v-spacer>
                     <p class="font-20">조회수 : {{ item.views }}</p>
                 </v-row>
-                <v-row style="margin: 0 20px !important">
+                <v-row class="mx-5">
                     <p class="font-20">분류 : {{ item.category }} | {{ item.subcategory }}</p>
                 </v-row>
-                <v-row style="margin: 0 20px !important">
-                    <span style="font-size: 20px; margin-right: 10px">주 재료 : </span>
-                    <p
-                        v-for="(main, index) in mainList"
-                        :key="index"
-                        style="margin-right: 10px !important; font-size: 20px"
-                    >
+                <v-row class="mx-5">
+                    <span class="font-20 mr-2">주 재료 : </span>
+                    <p v-for="(main, index) in mainList" :key="index" class="font-20 mr-2">
                         {{ main }}
                     </p>
                 </v-row>
-                <v-row style="margin: 0 20px !important">
-                    <span style="font-size: 20px; margin-right: 10px">부 재료 : </span>
-                    <p
-                        v-for="(sub, index) in subList"
-                        :key="index"
-                        style="margin-right: 10px !important; font-size: 20px"
-                    >
+                <v-row class="mx-5">
+                    <span class="font-20 mr-2">부 재료 : </span>
+                    <p v-for="(sub, index) in subList" :key="index" class="font-20 mr-2">
                         {{ sub }}
                     </p>
                 </v-row>
@@ -112,3 +103,6 @@ export default {
     },
 };
 </script>
+<style scoped>
+@import './../../assets/css/recipeDetail.css';
+</style>

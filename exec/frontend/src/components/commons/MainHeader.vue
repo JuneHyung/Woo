@@ -5,26 +5,14 @@
                 <img :src="logo" alt="로고" />
             </div>
             <v-spacer></v-spacer>
-            <div class="menuBox" style="background-color: #ffecf2">
+            <div class="menuBox">
                 <v-row class="menu">
-                    <div class="menuList" @click="toggleMenu" style="background-color: #ffecf2">
-                        <v-icon
-                            style="
-                                width: 60px;
-                                line-height: 60px;
-                                text-align: center;
-                                margin: 10px auto;
-                                border-radius: 0px 40px 40px 0px;
-                            "
-                            class="openImg"
-                            >mdi-menu</v-icon
-                        >
+                    <div class="menuList" @click="toggleMenu">
+                        <v-icon class="openImg">mdi-menu</v-icon>
                     </div>
 
                     <div @click="goMyPage" class="menuList">
-                        <div class="menuBtn">
-                            <img :src="MyPage" alt="마이페이지" class="menuImg" />
-                        </div>
+                        <img :src="MyPage" alt="마이페이지" class="menuImg" />
                         <p>내 정보</p>
                     </div>
 
@@ -36,7 +24,7 @@
                         <img :src="subscribe" alt="구독 이미지" class="menuImg" />
                         <p>공유 레시피</p>
                     </div>
-                    <div class="menuList" @click="clickLogout()">
+                    <div @click="clickLogout" class="menuList">
                         <img :src="logout" alt="로그아웃 이미지" class="menuImg" />
                         <p>로그아웃</p>
                     </div>
@@ -49,6 +37,7 @@
 <script>
 import { moveStart, moveMain, moveRecipeList, moveSubscribe, moveMyPage } from '@/api/move.js';
 import Alarm from '@/components/Alarm.vue';
+import swal from 'sweetalert';
 export default {
     name: 'MainHeader',
     data() {
@@ -88,90 +77,26 @@ export default {
                 .then(() => {
                     moveStart();
                 })
-                .catch((error) => alert(error));
+                .catch((error) => {
+                    swal(error, {
+                        icon: 'error',
+                    });
+                });
         },
     },
 };
 </script>
 <style scoped>
-header {
-    height: 80px;
+@import './../../assets/css/header.css';
 
-    box-sizing: content-box;
-}
-.logo {
-    width: 70px;
-    height: 70px;
-    margin: 0px auto;
-    margin-left: 10px;
-}
-.logo img {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-}
-
-.openMenu {
-    transition: width 2s;
-    right: 0 !important;
-}
-.openMenu .openImg {
-    transition: all 0.7s;
-    transform: rotate(180deg);
-    background-color: #fff;
-    height: 100%;
-    margin: 0 !important;
-}
-.menu .openImg {
-    transition: all 0.7s;
-}
-.headerBox {
-    position: relative;
-}
 .menu {
-    transition: all 0.7s;
-    background-color: #fff;
-    width: 100%;
-    height: 80px;
-    position: absolute;
-    top: 0;
     right: -224px;
-    padding: 0 !important;
-    overflow: hidden;
 }
 .menuBox {
     width: calc(100% - 80px);
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 80px;
-    overflow: hidden;
-    border-radius: 40px 0px 0px 40px;
 }
 .menuList {
     width: 20%;
-    height: 80px;
     text-align: center;
-}
-
-.menuList p {
-    font-size: 0.5rem;
-    line-height: 20px;
-    text-align: center;
-    height: 20px;
-}
-
-.menuImg {
-    width: 36px;
-    height: 36px;
-    margin: 12px auto;
-}
-.openBtn {
-    width: 80px;
-    height: 80px;
-    margin: 0 !important;
-}
-.closeBtn {
-    margin: 25px;
 }
 </style>

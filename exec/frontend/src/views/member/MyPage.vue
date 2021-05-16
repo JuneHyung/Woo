@@ -1,50 +1,17 @@
 <template>
     <v-container>
-        <v-row style="margin: auto 0">
-            <img :src="myPage" alt="마이페이지" class="myPageImg" />
-            <p
-                class="myPageTitle"
-                style="
-                    margin-left: 10px !important;
-                    font-size: 28px;
-                    text-decoration: underline;
-                    text-decoration-style: wavy;
-                    text-underline-position: under;
-                "
-            >
-                {{ user.nick }}님의 정보
-            </p>
+        <v-row>
+            <div class="myPageImg">
+                <img :src="myPage" alt="마이페이지" />
+            </div>
+            <p class="titleText myPageTitle">{{ user.nick }}님의 정보</p>
             <v-spacer></v-spacer>
         </v-row>
-        <div style="margin-top: 20px">
+        <div class="mt-5">
             <v-row>
                 <v-spacer></v-spacer>
-                <button
-                    style="
-                        margin-right: 20px;
-                        font-size: 18px;
-                        border: 1px solid #d9418d;
-                        border-radius: 10px;
-                        padding: 5px;
-                        color: #d9418d;
-                    "
-                    @click="ModifyUser"
-                >
-                    회원정보 수정
-                </button>
-
-                <button
-                    @click="deleteUser"
-                    style="
-                        font-size: 18px;
-                        border: 1px solid #d9418d;
-                        border-radius: 10px;
-                        padding: 5px;
-                        color: #d9418d;
-                    "
-                >
-                    탈퇴하기
-                </button>
+                <button class="modifyBtn" @click="ModifyUser">회원정보 수정</button>
+                <button class="deleteUserBtn" @click="deleteUser">탈퇴하기</button>
                 <v-spacer></v-spacer>
             </v-row>
         </div>
@@ -55,28 +22,24 @@
             @closeDelete="closeDelete"
         ></DeleteDialog>
 
-        <div style="padding-top: 5px; margin-top: 20px">
-            <p
-                style="
-                    font-size: 28px;
-                    text-decoration: underline;
-                    text-decoration-style: wavy;
-                    text-underline-position: under;
-                    margin-bottom: 20px !important;
-                "
-            >
-                ㅇ내가 올린 레시피
-            </p>
+        <div class="mt-5 pt-1">
+            <p class="font-20">ㅇ<span class="titleText myRecipeTitle"> 내가 올린 레시피</span></p>
         </div>
         <v-row>
-            <div v-for="(post, index) in myPostList" :key="index" style="margin: 5px auto">
-                <img
-                    @click="moveRecipeDetail(post.id)"
-                    :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
-                    alt="Recipeimage"
-                    style="width: 150px; height: 160px"
-                />
-                <p class="shorthand" style="width: 150px; text-align: center; font-size: 18px">
+            <div
+                v-for="(post, index) in myPostList"
+                :key="index"
+                class="mx-1 my-1"
+                style="width: 150px"
+            >
+                <div class="myRecipeImg">
+                    <img
+                        @click="moveRecipeDetail(post.id)"
+                        :src="`data:image/jpg;base64,${post.imageStrArr[0]}`"
+                        alt="Recipeimage"
+                    />
+                </div>
+                <p class="shorthand myRecipeText">
                     {{ post.title }}
                 </p>
             </div>
@@ -85,7 +48,7 @@
 </template>
 
 <script>
-// import swal from 'sweetalert';
+import swal from 'sweetalert';
 // import http from '@/api/axios.js';
 import { getMyInfo, getMyList } from '@/api/user.js';
 import { moveUserRecipeDetail } from '@/api/move.js';
@@ -149,7 +112,9 @@ export default {
                         this.user = response.data.user;
                         this.id = this.user.id;
                     } else {
-                        alert('조회실패');
+                        swal('조회 실패!', {
+                            icon: 'error',
+                        });
                     }
                 })
                 .catch((error) => {
@@ -182,28 +147,5 @@ export default {
 </script>
 
 <style scoped>
-.myPageTitle {
-    font-size: 24px;
-    line-height: 24px;
-    height: 32px;
-}
-.myPageImg {
-    width: 30px;
-    height: 100%;
-    margin: auto 1px;
-    padding-bottom: 10px;
-}
-.modifyBtn {
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    padding-right: 15px;
-}
-
-.deleteBtn {
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    padding-top: 20px;
-}
+@import './../../assets/css/mypage.css';
 </style>

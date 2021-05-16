@@ -2,230 +2,106 @@
     <v-container>
         <div>
             <div>
-                <p class="mainText">
+                <p class="font-28">
                     ㅇ
-                    <span
-                        class="mainText"
-                        style="
-                            display: inline-block;
-                            text-decoration: underline;
-                            text-decoration-style: wavy;
-                            text-underline-position: under;
-                        "
-                        >내 냉장고</span
-                    >
+                    <span class="titleText">내 냉장고</span>
                 </p>
             </div>
             <v-slide-group
                 v-if="fridgeList.length != 0"
                 center-active
                 show-arrows
-                style="
-                    border-radius: 30px;
-                    margin: 15px auto;
-                    box-shadow: inset 0px 0px 5px 5px #ffecf2;
-                "
+                class="refListBox"
             >
                 <v-slide-item v-for="(fridge, index) in fridgeList" :key="index">
-                    <div style="margin: 20px auto">
-                        <p
-                            class="shorthand"
-                            style="
-                                width: 100px;
-                                text-align: center;
-                                font-size: 22px;
-                                margin: 0 auto !important;
-                            "
-                        >
+                    <div class="refListCard">
+                        <p class="shorthand">
                             {{ fridge.name }}
                         </p>
-                        <v-card
-                            class="mx-2"
-                            height="130"
-                            width="102"
-                            style="border: 1px solid black"
-                        >
+                        <v-card class="mx-2 refList">
                             <img
                                 :src="fridgeImg[fridge.type]"
                                 alt="냉장고"
-                                style="
-                                    width: 90px;
-                                    height: 110px;
-                                    padding-top: 14px;
-                                    margin: 0 auto;
-                                "
+                                class="refImg"
                                 @click="goRefManage(fridge.id, fridge.type)"
                             />
                         </v-card>
-                        <div style="margin-top: 10px">
-                            <v-icon
-                                style="
-                                    width: 20px;
-                                    height: 20px;
-                                    color: #000;
-                                    margin: 0 auto;
-                                    cursor: pointer;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                "
-                                @click="deleteRefrigerator(fridge.id)"
-                            >
-                                mdi-delete-outline
-                            </v-icon>
+                        <div class="deleteBtnBox">
+                            <div class="deleteBtnInnerBox">
+                                <v-icon class="deleteBtn" @click="deleteRefrigerator(fridge.id)">
+                                    mdi-delete-outline
+                                </v-icon>
+                            </div>
                         </div>
                     </div>
                 </v-slide-item>
             </v-slide-group>
-            <div
-                v-else
-                style="
-                    text-align: center;
-                    border-radius: 30px;
-                    margin: 15px auto;
-                    padding: 10px;
-                    box-shadow: inset 0px 0px 5px 5px #ffecf2;
-                "
-            >
-                <div style="width: 60px; height: 60px; margin: 20px auto 10px">
-                    <img
-                        :src="logoIcon"
-                        alt="냉장고아이콘"
-                        style="width: 100%; height: 100%; opacity: 0.5"
-                    />
+
+            <div v-else class="refListBox noList">
+                <div class="logoIconBox">
+                    <img :src="logoIcon" alt="냉장고아이콘" />
                 </div>
-                <div style="margin-bottom: 20px">
-                    <p style="font-size: 24px">
+                <div class="mb-5">
+                    <p class="font-24">
                         여기에 내 냉장고가 표시됩니다.<br />
-                        <span style="font-size: 20px"
-                            >냉장고 관리를 위해 냉장고를 추가해 주세요.</span
-                        >
+                        <span class="font-20">냉장고 관리를 위해 냉장고를 추가해 주세요.</span>
                     </p>
                 </div>
             </div>
-            <v-row style="border-top: 1px solid black; border-bottom: 1px solid black">
-                <p style="font-family: 'twayair', sans-serif; font-size: 14px">
-                    클릭시 냉장고 관리가 가능합니다
-                </p>
+
+            <v-row class="explainBox">
+                <p>클릭시 냉장고 관리가 가능합니다</p>
                 <v-spacer></v-spacer>
-                <p
-                    @click="goRefAdd()"
-                    style="width: 40px; height: 40px; margin: 0px 10px 10px 10px !important"
-                >
-                    <img
-                        :src="require('@/assets/images/refadd.png')"
-                        style="width: 100%; height: 100%"
-                        alt="냉장고추가버튼"
-                    />
-                </p>
+                <div @click="goRefAdd()" class="refAddBtn">
+                    <img :src="require('@/assets/images/refadd.png')" alt="냉장고추가버튼" />
+                </div>
             </v-row>
         </div>
-        <div style="margin-top: 10px">
+        <div class="mt-3">
             <div>
-                <p class="mainText">
+                <p class="font-28">
                     ㅇ
-                    <span
-                        class="mainText"
-                        style="
-                            display: inline-block;
-                            text-decoration: underline;
-                            text-decoration-style: wavy;
-                            text-underline-position: under;
-                        "
-                        >구독</span
-                    >
+                    <span class="titleText">구독</span>
                 </p>
             </div>
-            <div style="width: 100%; height: 200px; margin-bottom: 20px">
+            <div>
                 <v-slide-group
                     center-active
                     show-arrows
-                    style="
-                        border-radius: 30px;
-                        margin: 15px auto;
-                        box-shadow: inset 0px 0px 5px 5px #ffecf2;
-                    "
+                    class="recipeListBox"
                     v-if="subscribeList.length != 0"
                 >
                     <v-slide-item v-for="(sub, index) in subscribeList" :key="index">
-                        <div style="margin: 30px auto 20px">
-                            <v-card
-                                class="mx-2"
-                                height="130"
-                                width="101"
-                                style="border: 1px solid black"
-                                @click="goSubscribe()"
-                            >
+                        <div class="recipeListCard">
+                            <v-card class="mx-2 recipeList" @click="goSubscribe()">
                                 <img
                                     :src="`data:image/jpg;base64,${sub.imageStrArr[0]}`"
                                     alt="대표이미지"
                                     style="width: 100%; height: 80%"
                                 />
-
-                                <p
-                                    class="shorthand"
-                                    style="
-                                        width: 100px;
-                                        height: 20%;
-                                        line-height: 24px;
-                                        text-align: center;
-                                        font-size: 14px;
-                                        margin: 0 auto !important;
-                                        font-family: 'twayair', sans-serif;
-                                    "
-                                >
+                                <p class="shorthand">
                                     {{ sub.title }}
                                 </p>
                             </v-card>
-                            <div style="width: calc(100% - 20px); margin: 5px auto 0px">
-                                <p
-                                    style="
-                                        font-size: 14px;
-                                        height: 16x;
-                                        line-height: 16px;
-                                        font-family: 'twayair', sans-serif;
-                                    "
-                                >
-                                    작성자 : {{ sub.writer }}
-                                </p>
+                            <div class="recipeInfoBox">
+                                <p class="writerBox shorthand">작성자 : {{ sub.writer }}</p>
 
-                                <p
-                                    style="
-                                        text-align: right;
-                                        font-size: 14px;
-                                        height: 16x;
-                                        line-height: 16px;
-                                        font-family: 'twayair', sans-serif;
-                                    "
-                                >
-                                    <v-icon style="font-size: 14px">mdi-eye</v-icon> :
+                                <p class="viewBox">
+                                    <v-icon class="font-14">mdi-eye</v-icon> :
                                     {{ sub.visit }}
                                 </p>
                             </div>
                         </div>
                     </v-slide-item>
                 </v-slide-group>
-                <div
-                    v-else
-                    style="
-                        text-align: center;
-                        border-radius: 30px;
-                        margin: 15px auto;
-                        padding: 10px;
-                        box-shadow: inset 0px 0px 5px 5px #ffecf2;
-                    "
-                >
-                    <div style="width: 60px; height: 60px; margin: 20px auto 10px">
-                        <img
-                            :src="recipeIcon"
-                            alt="레시피아이콘"
-                            style="width: 100%; height: 100%; opacity: 0.5"
-                        />
+                <div v-else class="recipeListBox noList">
+                    <div class="logoIconBox">
+                        <img :src="recipeIcon" alt="레시피아이콘" />
                     </div>
-                    <div style="margin-bottom: 20px">
-                        <p style="font-size: 24px">
+                    <div class="mb-5">
+                        <p class="font-24">
                             여기에 구독자 컨텐츠가 표시됩니다.<br />
-                            <span style="font-size: 20px"
+                            <span class="font-20"
                                 >즐겨찾는 분을 구독하여 최신 레시피를 받아 보세요.</span
                             >
                         </p>
@@ -241,6 +117,8 @@ import { getMyFridge, deleteMyFridge } from '../api/refrigerator.js';
 import { moveRefAdd, moveRefManage, moveSubscribe } from '@/api/move.js';
 import { getCheckSubscribe, getMySubscribe } from '@/api/subscribe.js';
 import jwt_decode from 'jwt-decode';
+import swal from 'sweetalert';
+
 export default {
     name: 'Main',
     data() {
@@ -285,17 +163,23 @@ export default {
                     this.fridgeList = response.data.fridgeList;
                 })
                 .catch(() => {
-                    alert('받기실패');
+                    swal('받기 실패!', {
+                        icon: 'error',
+                    });
                 });
         },
         deleteRefrigerator(fridgeid) {
             deleteMyFridge(fridgeid)
                 .then(() => {
-                    alert('삭제 성공');
+                    swal('삭제 성공!', {
+                        icon: 'success',
+                    });
                     location.href = '/main';
                 })
                 .catch(() => {
-                    alert('삭제 실패');
+                    swal('삭제 실패!', {
+                        icon: 'error',
+                    });
                 });
         },
         getSubscribeInfo() {
@@ -321,23 +205,5 @@ export default {
 </script>
 
 <style scoped>
-.myRef {
-    height: 250px;
-    margin-bottom: 20px;
-}
-.mainText {
-    font-size: 28px;
-}
-.wavedivider {
-    width: 100px;
-    height: 3px;
-}
-@font-face {
-    font-family: 'twayair';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twayair.woff')
-        format('woff');
-    font-weight: normal;
-    font-style: normal;
-    color: black;
-}
+@import './../assets/css/main.css';
 </style>
