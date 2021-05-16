@@ -9,11 +9,15 @@
         </v-row>
         <v-spacer></v-spacer>
         <v-row>
+            <div v-if="listItem.length == 0">
+                <p>해당 재료로 된 레시피 정보가 없습니다.</p>
+            </div>
             <div
                 v-for="(list, index) in listItem"
                 :key="index"
                 @click="goRecipeDetail(list.id)"
                 class="videoThumbnailBox mx-1 my-1"
+                v-else
             >
                 <v-spacer></v-spacer>
                 <img :src="list.thumbnail" alt="이미지" />
