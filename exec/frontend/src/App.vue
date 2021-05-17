@@ -5,16 +5,12 @@
         <transition name="component-fade" mode="out-in">
             <router-view></router-view>
         </transition>
-        <!-- <alarm></alarm> -->
     </v-app>
 </template>
 
 <script>
-// import Alarm from './components/Alarm';
-
 export default {
     name: 'App',
-    // components: { Alarm },
     data() {
         return {
             loadingIcon: require('@/assets/images/loading.gif'),
