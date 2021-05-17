@@ -34,6 +34,7 @@ export default {
             user: {
                 id: '',
                 password: '',
+                isLoginError: false,
             },
         };
     },
@@ -53,24 +54,22 @@ export default {
                         );
 
                         moveMain();
-                    } else {
-                        this.isLoginError = true;
-                        if (this.user.id == '') {
-                            swal('아이디를 입력해 주세요!', {
-                                icon: 'error',
-                            });
-                        } else if (this.user.pw == '') {
-                            swal('비밀번호를 입력해 주세요!', {
-                                icon: 'error',
-                            });
-                        } else {
-                            swal('아이디 또는 비밀번호가 일치하지 않습니다.', {
-                                icon: 'error',
-                            });
-                        }
                     }
                 },
                 (error) => {
+                    if (this.user.id == '') {
+                        swal('아이디를 입력해 주세요!', {
+                            icon: 'error',
+                        });
+                    } else if (this.user.pw == '') {
+                        swal('비밀번호를 입력해 주세요!', {
+                            icon: 'error',
+                        });
+                    } else {
+                        swal('아이디 또는 비밀번호가 일치하지 않습니다.', {
+                            icon: 'error',
+                        });
+                    }
                     console.log(error);
                 }
             );

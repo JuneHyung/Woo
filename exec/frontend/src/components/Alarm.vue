@@ -12,7 +12,12 @@
                     <v-spacer></v-spacer>
                 </div>
 
-                <div v-for="(message, index) in messageList" :key="index" class="alarmInfo">
+                <div
+                    v-for="(message, index) in messageList"
+                    :key="index"
+                    class="alarmInfo"
+                    @click="goSubscribe()"
+                >
                     <p class="font-16 pl-2">{{ message.name }}님이 새 글을 등록하였습니다.</p>
                 </div>
             </v-card>
@@ -22,6 +27,7 @@
 
 <script>
 import { getSubscribeMessage } from '@/api/subscribe.js';
+import { moveSubscribe } from '@/api/move.js';
 export default {
     data() {
         return {
@@ -40,7 +46,6 @@ export default {
     watch: {
         messageDialog() {
             this.messageDialog;
-            console.log(this.messageDialog);
         },
     },
     methods: {
@@ -84,6 +89,9 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+        goSubscribe() {
+            moveSubscribe();
         },
     },
 };
