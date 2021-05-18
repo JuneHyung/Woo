@@ -13,5 +13,7 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: k4d109.p.ssafy.io
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: 'exam:1:1'
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
     volumes:
-	- /var/run/docker-kafka.sock:/var/run/docker-kafka.sock
+	    - /var/run/docker-kafka.sock:/var/run/docker-kafka.sock
