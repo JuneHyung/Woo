@@ -11,7 +11,7 @@ new Vue({
   store,
   vuetify,
   async beforeCreate() {
-    let token = localStorage.getItem('X-AUTH-TOKEN');
+    let token = sessionStorage.getItem('X-AUTH-TOKEN');
     if (store.state.isLogin == false && token) {
       await store.dispatch('GET_USER_INFO', token);
     }

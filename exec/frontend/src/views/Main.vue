@@ -141,7 +141,7 @@ export default {
         };
     },
     created() {
-        let token = localStorage.getItem('X-AUTH-TOKEN');
+        let token = sessionStorage.getItem('X-AUTH-TOKEN');
         let decode = jwt_decode(token); // 가져온 token을 decode함.
         this.id = decode.sub;
         this.getMyRefrigerator();

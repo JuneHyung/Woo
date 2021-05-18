@@ -55,7 +55,7 @@ export default {
             alarm.classList.toggle('alarmOpen');
         },
         getMessage() {
-            let token = localStorage.getItem('X-AUTH-TOKEN');
+            let token = sessionStorage.getItem('X-AUTH-TOKEN');
             if (token) {
                 setInterval(this.getInfo, 3000);
             }

@@ -43,7 +43,7 @@ export default new Vuex.Store({
         },
     LOGOUT({ commit }) {
         commit('logout');
-        localStorage.removeItem('X-AUTH-TOKEN');
+        sessionStorage.removeItem('X-AUTH-TOKEN');
     }
 },
 modules: {},

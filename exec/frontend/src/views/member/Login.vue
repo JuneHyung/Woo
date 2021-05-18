@@ -40,16 +40,16 @@ export default {
     },
     methods: {
         confirm() {
-            localStorage.setItem('X-AUTH-TOKEN', '');
+            sessionStorage.setItem('X-AUTH-TOKEN', '');
             login(
                 this.user,
                 (response) => {
                     if (response.data.message === 'success') {
                         let token = response.data['X-AUTH-TOKEN'];
                         this.$store.commit('setIsLogined', true);
-                        localStorage.setItem('X-AUTH-TOKEN', token);
+                        sessionStorage.setItem('X-AUTH-TOKEN', token);
 
-                        http.defaults.headers['X-AUTH-TOKEN'] = window.localStorage.getItem(
+                        http.defaults.headers['X-AUTH-TOKEN'] = window.sessionStorage.getItem(
                             'X-AUTH-TOKEN'
                         );
 
