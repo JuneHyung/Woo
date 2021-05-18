@@ -213,6 +213,22 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 
 
+# 기능
+
+#### 냉장고추가 
+
+- 로그인 후 자신의 집과 동일한 냉장고를 등록할 수 있다.
+
+- 하나이상의 냉장고가 등록이 가능하며, 원하는 이름으로 저장한뒤 관리할 수 있다.
+
+  
+
+  ![ap](images/gif/00-냉장고추가.gif)	![qw](images/gif/01-재료추가.gif)
+
+#### 재료추가
+
+-
+
 # Application Architecture
 
 ![Application Architecture](images/application_architecture.jpg)
