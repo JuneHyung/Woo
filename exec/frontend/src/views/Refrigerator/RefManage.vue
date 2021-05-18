@@ -62,7 +62,7 @@
                                 <v-card-title>재료를 빼주세요!</v-card-title>
                                 <v-card-text>
                                     <v-select
-                                        :items="myCategory"
+                                        :items="category"
                                         v-model="removeCate"
                                         label="Solo field"
                                         solo
@@ -272,7 +272,6 @@ export default {
             plusBtn: require('@/assets/images/plusBtn.png'),
             minusBtn: require('@/assets/images/minusBtn.png'),
             tempList: [],
-            myCategory: [],
             myName: [],
             removeCate: '',
             removeName: '',
@@ -293,7 +292,6 @@ export default {
                 .then((response) => {
                     this.category = response.data.category;
                     this.category.unshift('All');
-                    this.myCategory.unshift('All');
                 })
                 .catch((error) => {
                     console.log(error);
@@ -381,7 +379,6 @@ export default {
                                 },
                             };
                             this.addList.push(temp);
-                            this.myCategory.push(temp.ingredientsdetail.category);
                         } else {
                             this.lists[y][x].push(el);
                         }

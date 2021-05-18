@@ -58,10 +58,16 @@ export default {
             size: 6,
             imgUrl: '',
             isLoading: true,
+            snum: 0,
         };
     },
     created() {
-        this.append_list();
+        this.snum = this.$route.params.snum;
+        if (this.snum == 1) {
+            this.changeSubscribePage();
+        } else {
+            this.append_list();
+        }
         window.addEventListener('scroll', this.scroll);
     },
     methods: {

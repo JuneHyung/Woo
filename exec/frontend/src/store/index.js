@@ -9,7 +9,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isLogin: false,
-        
+        messageDialog: false,
     },
     getters: {
         getIsLogin(state) {
@@ -22,7 +22,9 @@ export default new Vuex.Store({
     setIsLogined(state, isLogin) {
         state.isLogin = isLogin;
     },
-    
+    setMessageDialog(state, messageDialog) {
+        state.messageDialog = messageDialog;
+    },
     logout(state) {
         state.isLogin = false;
     }
