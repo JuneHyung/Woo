@@ -58,43 +58,88 @@
 
 
 
-# Installation (예정)
+# Installation with Docker
 
-### Frontend
+### Kafka와 zookeeper 사용을 위하여 Docker에서 가동하는 방법만 제공
 
-```shell
-cd frontend
-npm install
-npm run serve**
-```
+##### windows 10 Docker 설치
 
-- http://localhost:8080/ 에서 확인 가능
+https://goddaehee.tistory.com/251
 
-### Backend
+##### Linux(Ubuntu) Docker 및 docker-compose 설치
 
 ```shell
-cd backend
-#window에서 실행 시
-.\\mvnw spring-boot:run
+# 다음 패키지들을 설치
+sudo apt install apt-transport-https ca-certificates
+sudo apt install curl gnupg-agent software-properties-common
+
+# Docker의 공식 GPG 키를 추가
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+# stable respository 를 세팅하기 위한 명령어를 실행
+sudo add-apt-repository \
+	"deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
+# 가장 최신 버전의 Docker 엔진을 설치한 후, 버전을 확인
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io
+docker -v # Docker 버전 확인
+# docker-compose 설치
+sudo curl -L https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-- http://localhost:8000/swagger-ui.html을 통해 swagger 확인 가능
+### Installation
 
-------
+- git clone 및 디렉토리 이동 (windows의 경우 powershell 이용 권장)
+
+  ```shell
+  git clone https://lab.ssafy.com/s04-final/s04p31d109.git
+  cd s04p31d109
+  cd exec
+  ```
+
+- 프론트엔드 axios baseURL이 서버(k4d109.p.ssafy.io)로 설정되어 있으므로 localhost로 변경 필요
+
+- exec/frontend/src/api/axios.js 파일 open
+
+- baseURL 주석 변경
+
+  ![changeBaseURL](images/installation/frontend_baseURL.png)
+
+- docker-compose를 통한 실행
+
+  ```shell
+  docker-compose up -d
+  ```
+
+---
 
 
 
-# 배포
-
-### Docker & Jenkins
-
-- Docker에 Jenkins image를 만들고 Jenkinxs와 git commit 시 자동으로 업데이트 반영 되도록 배포
-- Frontend와 Backend에 각각 Dockerfile을 생성해 배포 설정을 저장
+# EC2 배포
 
 ### Nginx & SSL
 
 - HA와 Load Balancing을 위하여 Nginx 적용
 - SSL 키를 적용하여 https 준수
+
+### MySQL & Kafka & zookeeper & Jenkins
+
+- docker compose를 통하여 직접 실행하여 jenkins가 자동 실행에도 영향 받지 않도록 실행
+
+- docker 폴더 안에 있는 docker-compose 파일들을 차례로 실행
+
+  ```shell
+  docker-compose -f docker-compose-jenkins.yml up -d
+  docker-compose -f docker-compose-mysql.yml up -d
+  docker-compose -f docker-compose-kafka.yml up -d
+  ```
+
+### Docker & Jenkins
+
+- Docker에 Jenkins image를 만들고 Jenkins와 git commit 시 자동으로 업데이트 반영 되도록 배포
+- Frontend와 Backend에 각각 Dockerfile을 생성해 배포 설정을 저장
 
 ------
 
