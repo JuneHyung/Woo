@@ -228,7 +228,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 재료를 추가한 이후에는 자신의 냉장고에 무슨 재료가 있는 이미지로 한눈에 파악이 가능하다.
 
-  ##### 						 냉장고추가 시연 이미지													 재료추가 시연 이미지
+  ​                       **냉장고 추가 시연 이미지								 					 재료추가 시연 이미지**
 
   ![ap](images/gif/00-냉장고추가.gif)	![qw](images/gif/01-재료추가.gif)
 
@@ -245,7 +245,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 1주일 이내의 유통기한을 가지는 재료들은 붉은색으로 표기된다.
 
-  ##### 						 						  재료빼기 시연 이미지												유통기한 임박 재료 시연 이미지
+   					   ​                         **재료빼기 시연 이미지**                                                 **유통기한 임박 재료 시연 이미지**
 
   ![](images/gif/03-재료빼기.gif)	![](images/gif/04-유통기한.gif)
 
@@ -262,7 +262,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 레시피 상세 내용은 제조 과정 영상을 볼 수 있으며, 영상하단에 필요한 재료와 음식의 정보가 표시된다.
 
-  ##### 			  재료 관련레시피 확인 시연 이미지										 레시피 내용 확인 시연 이미지
+  ​               **재료 관련레시피 확인 시연 이미지**				   				   **레시피 내용 확인 시연 이미지**
 
   ![](images/gif/05-재료관련레시피확인.gif)	![](images/gif/06-레시피내용확인.gif)
 
@@ -277,7 +277,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 해당 게시글의 작성자가 게시한 레시피를 확인할 수 있으며, 구독하기 버튼을 통해 작성자가 게시한 글의 목록을 확인하거나, 신규 글을 작성할시 알람을 받을 수 있다.
 
-  ##### 						 					   포스트 확인 시연 이미지												포스트 내용 확인 시연 이미지
+  ​                      **포스트 확인 시연 이미지							  				   포스트 내용 확인 시연 이미지**
 
   ![](images/gif/07-포스트확인.gif)	![](images/gif/08-포스트내용확인.gif)
 
@@ -287,9 +287,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 이후 자신이 좋아요를 표시한 글을 모아서 볼 수 있다.
 
-  ##### 																							  좋아요 시연 이미지
+  ​                                                                                             **좋아요 시연 이미지**
 
-![](images/gif/09-좋아요.gif)
+<img src= "images/gif/09-좋아요.gif">
 
 #### 구독
 
@@ -297,7 +297,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 특정한 사용자를 구독하면 구독한 사용자가 글을 작성할때마다 알림을 통해 작성한 게시글을 확인할 수 있다.
 
-  ##### 																							  구독 시연 이미지
+  ​                                                                                                **구독 시연 이미지**
 
 ![](images/gif/10-구독.gif)
 
@@ -307,7 +307,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 이미지를 이용해 조리과정을 담은 레시피를 등록한다.
 
-  ##### 																							레시피 등록 시연 이미지
+  ​                                                                                           **레시피 등록 시연 이미지**
 
   ![](images/gif/11-레시피등록.gif)
 
@@ -319,7 +319,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 우측 하단의 종모양 이미지를 클릭하면 알림의 목록을 확인할 수 있으며, 해당 알림들을 터치할시 해당글의 상세정보를 확인할수 있다.
 
-  ##### 																							  알림확인 시연 이미지
+  <center><strong>알림확인 시연 이미지</strong></center>
 
   ![](images/gif/12-알림확인.gif)
 
@@ -329,7 +329,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 하단의 이미지 스크롤을 통해 작성자가 업로드한 레시피 이미지를 확인할수 있다.
 
-  ##### 																								글확인 시연 이미지
+  ​                                                                                            **글확인 시연 이미지**
 
   ![](images/gif/13-글확인.gif)
 
