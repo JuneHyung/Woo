@@ -1,7 +1,7 @@
 <template>
     <div @click="openAlarmList">
         <div class="alarmImg">
-            <img :src="alarmN" alt="알림 이미지" v-if="messageDialog" />
+            <img :src="alarmN" alt="알림 이미지" v-if="mdialog" />
             <img :src="alarmY" alt="알림 이미지" v-else />
         </div>
         <div class="alarm">
@@ -37,18 +37,29 @@ export default {
             messageList: [],
             beforeSize: 0,
             token: '',
+            mdialog: false,
         };
     },
     computed: {
         ...mapState(['messageDialog']),
     },
     created() {
+        this.getDialog();
         this.getInfo();
         this.getMessage();
     },
-
+    mounted() {},
     methods: {
+        getDialog() {
+            if (this.mdialog == true) {
+                this.mdialog = true;
+                this.$store.commit('setMessageDialog', true);
+            }
+            this.mdialog = sessionStorage.getItem('messageDialog');
+            this.$store.commit('setMessageDialog', true);
+        },
         openAlarmList() {
+            this.mdialog = true;
             this.$store.commit('setMessageDialog', true);
             var alarm = document.querySelector('.alarm');
             alarm.classList.toggle('alarmOpen');
@@ -67,7 +78,6 @@ export default {
 
                     if (before <= this.beforeSize) {
                         let after = response.data.messageList.length;
-
                         if (after < 10 && this.beforeSize < after) {
                             this.messageList.splice(0);
                             for (var i = 0; i < after; i++) {

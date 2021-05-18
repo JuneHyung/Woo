@@ -23,6 +23,7 @@ export default new Vuex.Store({
         state.isLogin = isLogin;
     },
     setMessageDialog(state, messageDialog) {
+        sessionStorage.setItem('messageDialog', messageDialog);
         state.messageDialog = messageDialog;
     },
     logout(state) {
@@ -46,6 +47,7 @@ export default new Vuex.Store({
     LOGOUT({ commit }) {
         commit('logout');
         sessionStorage.removeItem('X-AUTH-TOKEN');
+        sessionStorage.removeItem('messageDialog');
     }
 },
 modules: {},
