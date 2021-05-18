@@ -85,7 +85,7 @@ export default {
                         swal('레시피 등록이 완료되었습니다', {
                             icon: 'success',
                         });
-                        moveSubscribe();
+                        moveSubscribe(0);
                     })
                     .catch(() => {
                         swal('등록실패!', {
