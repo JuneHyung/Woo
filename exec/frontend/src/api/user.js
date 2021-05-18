@@ -11,7 +11,7 @@ function login(userinput, success, fail) {
     }
 
     async function findById( success, fail) { 
-        http.defaults.headers['X-AUTH-TOKEN'] = window.localStorage.getItem('X-AUTH-TOKEN');
+        http.defaults.headers['X-AUTH-TOKEN'] = window.sessionStorage.getItem('X-AUTH-TOKEN');
         await http
             .get(`/user/info`)
             .then(success)
