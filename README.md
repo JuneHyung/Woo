@@ -50,7 +50,9 @@
 
 # ⚙️Tech Stacks
 
-![Tech Stacks](images/Tech Stacks.png)
+![Tech Stacks](images/Back Tech Stacks.png)
+
+![Tech Stacks](images/Front Tech Stacks.png)
 
 # DB_ERD
 
@@ -155,9 +157,49 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 
 
-# 파일 구조 
+# Project Structure
 
-![file_back](images/file_back.png)
+```bash
+📦PJT
+ ┣ 📂docker				#Docker 설정파일
+ ┣ 📂exec
+ ┃ ┣ 📂Backend			#Backend
+ ┃ 	 ┣ 📂src/main/java	#Backend 코드
+ ┃     ┣ 📂com
+ ┃       ┣ 📂fridge
+ ┃         ┣ 📂common
+ ┃           ┣ 📂error
+ ┃         ┣ 📂cofig
+ ┃           ┣ 📂security
+ ┃         ┣ 📂controller
+ ┃         ┣ 📂model
+ ┃           ┣ 📂dto
+ ┃           ┣ 📂repository
+ ┃           ┣ 📂service
+ ┃ ┣ 📂Frontend			# FrontEnd
+ ┃   ┣ 📂vue-front 
+ ┃ 	   ┣ 📂src			# Front 코드
+ ┃ 	     ┣ 📂api		# 통신관련 Method
+ ┃ 	     ┣ 📂assets	
+ ┃ 	       ┣ 📂css
+ ┃ 	       ┣ 📂images
+ ┃ 	     ┣ 📂components
+ ┃ 	       ┣ 📂commons
+ ┃ 	       ┣ 📂MyPageDialog
+ ┃ 	     ┣ 📂plugins
+ ┃ 	     ┣ 📂router
+ ┃ 	     ┣ 📂store
+ ┃ 	     ┣ 📂views
+ ┃ 	       ┣ 📂member
+ ┃ 	       ┣ 📂Recipe
+ ┃ 	       ┣ 📂Refrigerator
+ ┃ 	       ┣ 📂Subscribe
+ ┣ 📂images				# 프로젝트 스크린샷
+ ┃ ┣ 📂wireframe
+ ┃ ┣ 📂화면계획
+ ┣ 📂outputs			# 산출물
+ ┗ 📜README.md			# 프로젝트 README
+```
 
 ------
 
