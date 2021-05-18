@@ -40,6 +40,7 @@
                                         solo
                                         @change="selectId(addIngredients.ingredientsdetail.name)"
                                     ></v-select>
+                                    <p>유통기한</p>
                                     <input type="date" v-model="addIngredients.expired" />
                                 </v-card-text>
                                 <v-card-actions>
@@ -60,15 +61,24 @@
                             <v-card>
                                 <v-card-title>재료를 빼주세요!</v-card-title>
                                 <v-card-text>
-                                    <v-row v-for="(ingredient, index) in ingredients" :key="index">
-                                        <p>{{ ingredient.ingredientsdetail.name }}</p>
-                                        <v-spacer></v-spacer>
-                                        <div @click="removeIngred(ingredient.id)">X</div>
-                                    </v-row>
+                                    <v-select
+                                        :items="myCategory"
+                                        v-model="removeCate"
+                                        label="Solo field"
+                                        solo
+                                        @change="getRemoveIngredientsName()"
+                                    ></v-select>
+                                    <v-select
+                                        :items="myName"
+                                        v-model="removeName"
+                                        label="Solo field"
+                                        solo
+                                        @change="selectRemoveId(removeName)"
+                                    ></v-select>
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn color="primary" text @click="removeIngred()">
+                                    <v-btn color="primary" text @click="removeIngred(removeId)">
                                         빼기완료
                                     </v-btn>
                                 </v-card-actions>
@@ -228,7 +238,6 @@ export default {
                 fridgeId: 0,
                 ingredientsDetailId: 0,
             },
-
             ingredientsName: [],
             ingredientsId: [],
             lists: [],
@@ -245,6 +254,7 @@ export default {
                     ingredientsdetail: {
                         id: '',
                         name: '',
+                        category: '',
                     },
                     ingredientsDetailId: 0,
                 },
@@ -262,6 +272,12 @@ export default {
             plusBtn: require('@/assets/images/plusBtn.png'),
             minusBtn: require('@/assets/images/minusBtn.png'),
             tempList: [],
+            myCategory: [],
+            myName: [],
+            removeCate: '',
+            removeName: '',
+            removeId: 0,
+            removeItem: [],
         };
     },
 
@@ -277,10 +293,29 @@ export default {
                 .then((response) => {
                     this.category = response.data.category;
                     this.category.unshift('All');
+                    this.myCategory.unshift('All');
                 })
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+        getRemoveIngredientsName() {
+            this.myName.splice(0);
+            this.ingredientsId.splice(0);
+
+            if (this.removeCate == 'All') {
+                this.ingredients.forEach((el) => {
+                    this.myName.push(el.ingredientsdetail.name);
+                    this.removeItem.push(el);
+                });
+            } else {
+                this.ingredients.forEach((el) => {
+                    if (el.ingredientsdetail.category == this.removeCate) {
+                        this.myName.push(el.ingredientsdetail.name);
+                        this.removeItem.push(el);
+                    }
+                });
+            }
         },
         getIngredientsName() {
             this.ingredientsName.splice(0);
@@ -342,9 +377,11 @@ export default {
                                 ingredientsdetail: {
                                     id: el.ingredientsdetail.id,
                                     name: el.ingredientsdetail.name,
+                                    category: el.ingredientsdetail.category,
                                 },
                             };
                             this.addList.push(temp);
+                            this.myCategory.push(temp.ingredientsdetail.category);
                         } else {
                             this.lists[y][x].push(el);
                         }
@@ -448,6 +485,13 @@ export default {
         selectId(name) {
             let idx = this.ingredientsName.indexOf(name);
             this.addIngredients.ingredientsdetail.id = this.ingredientsId[idx];
+        },
+        selectRemoveId(name) {
+            this.removeItem.forEach((el) => {
+                if (el.ingredientsdetail.name == name) {
+                    this.removeId = el.id;
+                }
+            });
         },
         addIngred() {
             this.addItem.expired = this.addIngredients.expired;
