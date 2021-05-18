@@ -60,7 +60,7 @@ export default {
             moveRecipeList(0);
         },
         goSubscribe() {
-            moveSubscribe(1);
+            moveSubscribe(0);
         },
 
         goMyPage() {

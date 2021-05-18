@@ -155,7 +155,7 @@ export default {
             moveRefAdd();
         },
         goSubscribe() {
-            moveSubscribe();
+            moveSubscribe(0);
         },
         getMyRefrigerator() {
             getMyFridge()
