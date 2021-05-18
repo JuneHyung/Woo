@@ -281,33 +281,33 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   ![](images/gif/07-포스트확인.gif)	![](images/gif/08-포스트내용확인.gif)
 
-#### 좋아요
+#### 좋아요 기능
 
 - 게시글 상세 확인에서 좋아요와 싫어요를 할수있다.
 
 - 이후 자신이 좋아요를 표시한 글을 모아서 볼 수 있다.
 
-  ​                                                                                             **좋아요 시연 이미지**
+  <center><strong>좋아요 기능 시연 이미지</strong></center>
 
 <img src= "images/gif/09-좋아요.gif">
 
-#### 구독
+#### 구독 기능 시연 이미지
 
 - 특정한 유저를 구독할수있다.
 
 - 특정한 사용자를 구독하면 구독한 사용자가 글을 작성할때마다 알림을 통해 작성한 게시글을 확인할 수 있다.
 
-  ​                                                                                                **구독 시연 이미지**
+  <center><strong>구독 기능 시연 이미지</strong></center>
 
 ![](images/gif/10-구독.gif)
 
-#### 레시피등록
+#### 레시피 등록
 
 - 자신이 등록하고 싶은 레시피를 등록할 수 있다.
 
 - 이미지를 이용해 조리과정을 담은 레시피를 등록한다.
 
-  ​                                                                                           **레시피 등록 시연 이미지**
+  <center><strong>레시피 등록 시연 이미지</strong></center>
 
   ![](images/gif/11-레시피등록.gif)
 
@@ -323,13 +323,13 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   ![](images/gif/12-알림확인.gif)
 
-#### 글확인
+#### 글 확인 기능
 
 - 게시글의 내용을 상세 확인 할 수 있다.
 
 - 하단의 이미지 스크롤을 통해 작성자가 업로드한 레시피 이미지를 확인할수 있다.
 
-  ​                                                                                            **글확인 시연 이미지**
+  <center><strong>글 확인 기능 시연 이미지</strong></center>
 
   ![](images/gif/13-글확인.gif)
 
