@@ -28,6 +28,7 @@
 <script>
 import { getSubscribeMessage } from '@/api/subscribe.js';
 import { moveSubscribe } from '@/api/move.js';
+import { mapState } from 'vuex';
 export default {
     data() {
         return {
@@ -36,21 +37,19 @@ export default {
             messageList: [],
             beforeSize: 0,
             token: '',
-            messageDialog: false,
         };
+    },
+    computed: {
+        ...mapState(['messageDialog']),
     },
     created() {
         this.getInfo();
         this.getMessage();
     },
-    watch: {
-        messageDialog() {
-            this.messageDialog;
-        },
-    },
+
     methods: {
         openAlarmList() {
-            this.messageDialog = true;
+            this.$store.commit('setMessageDialog', true);
             var alarm = document.querySelector('.alarm');
             alarm.classList.toggle('alarmOpen');
         },
@@ -75,14 +74,14 @@ export default {
                                 this.messageList.push(temp[i]);
                             }
                             this.beforeSize = after;
-                            this.messageDialog = false;
+                            this.$store.commit('setMessageDialog', false);
                         } else if (after >= 10 && this.beforeSize < after) {
                             this.messageList.splice(0);
                             for (i = 0; i < 10; i++) {
                                 this.messageList.push(temp[i]);
                             }
                             this.beforeSize = after;
-                            this.messageDialog = false;
+                            this.$store.commit('setMessageDialog', false);
                         }
                     }
                 })
@@ -91,7 +90,7 @@ export default {
                 });
         },
         goSubscribe() {
-            moveSubscribe();
+            moveSubscribe(1);
         },
     },
 };

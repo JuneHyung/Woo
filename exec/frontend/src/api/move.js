@@ -23,8 +23,8 @@ function moveRecipeList(num) {
     return ROUTER.push({ name: 'RecipeList', params: { ingredient_id: num } });
 }
 
-function moveSubscribe() {
-    return ROUTER.push({ name: 'Subscribe' });
+function moveSubscribe(num) {
+    return ROUTER.push({ name: 'Subscribe', params: {snum:num} });
 }
 
 function moveMyPage() {
