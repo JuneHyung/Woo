@@ -19,7 +19,14 @@
                 </div>
             </v-row>
 
-            <input @change="onChangeImages" multiple type="file" ref="images" />
+            <input
+                @change="onChangeImages"
+                multiple
+                required
+                type="file"
+                ref="images"
+                class="fileName"
+            />
         </div>
         <div class="mt-5">
             <v-btn class="resetBtn" @click="resetRecipeCreate">초기화</v-btn>
@@ -32,7 +39,6 @@
 import swal from 'sweetalert';
 import { createRecipe } from '@/api/recipe.js';
 import { moveSubscribe } from '@/api/move.js';
-// import http from '@/api/axios.js';
 
 export default {
     data() {
@@ -54,6 +60,8 @@ export default {
     },
     methods: {
         onChangeImages(e) {
+            this.items.splice(0);
+            this.images.splice(0);
             for (var i = 0; i < e.target.files.length; i++) {
                 this.items.push(URL.createObjectURL(e.target.files[i]));
                 this.images.push(e.target.files[i]);
@@ -62,7 +70,10 @@ export default {
         resetRecipeCreate() {
             this.title = '';
             this.recipe.name = '';
-            this.items = '';
+            let filename = document.querySelector('.fileName');
+            filename.value = '';
+            this.items.splice(0);
+            this.images.splice(0);
         },
         recipeCreate() {
             if (this.title == '') {
