@@ -107,7 +107,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - baseURL 주석 변경
 
-  ![changeBaseURL](images/installation/frontend_baseURL.png)
+  ![changeBaseURL](images/Installation/frontend_baseURL.png)
 
 - docker-compose를 통한 실행
 
