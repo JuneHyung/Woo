@@ -291,7 +291,7 @@ export default {
             getCategory()
                 .then((response) => {
                     this.category = response.data.category;
-                    this.category.unshift('All');
+                    this.category.unshift('All'); // 카테고리 가장 앞에 All 추가.
                 })
                 .catch((error) => {
                     console.log(error);
@@ -302,12 +302,14 @@ export default {
             this.ingredientsId.splice(0);
 
             if (this.removeCate == 'All') {
+                // All 일 때 가지고 있는 재료 데이터 추가
                 this.ingredients.forEach((el) => {
                     this.myName.push(el.ingredientsdetail.name);
                     this.removeItem.push(el);
                 });
             } else {
                 this.ingredients.forEach((el) => {
+                    // 해당 카테고리에 있는 재료 데이터 추가
                     if (el.ingredientsdetail.category == this.removeCate) {
                         this.myName.push(el.ingredientsdetail.name);
                         this.removeItem.push(el);
@@ -362,6 +364,7 @@ export default {
                         let x = el.locx;
                         let y = el.locy;
                         if (x == 10 || y == 10) {
+                            // 아직 위치가 정해지지 않은 경우
                             let temp = {
                                 id: el.id,
                                 expired: el.expired,
@@ -378,12 +381,13 @@ export default {
                                     category: el.ingredientsdetail.category,
                                 },
                             };
-                            this.addList.push(temp);
+                            this.addList.push(temp); // addList에 추가.
                         } else {
+                            // 아니면 list의 해당위치에 추가.
                             this.lists[y][x].push(el);
                         }
                     });
-                    setTimeout(this.checkShelfLife, 100);
+                    setTimeout(this.checkShelfLife, 100); // 유통기한 체크
                 })
                 .catch((error) => {
                     console.log(error);
@@ -391,6 +395,7 @@ export default {
         },
         setRefType() {
             switch (this.ref_type) {
+                // 냉장고 타입에 따라 생성할 냉장고 칸을 배열로 만듬.
                 case 44:
                     this.lists = [
                         [[], [], [], []],
@@ -428,13 +433,15 @@ export default {
             }
             if (this.ref_type) {
                 if (this.ref_type == 4444 || this.ref_type == 5555) {
+                    // 타입이 양문형이면
                     let box = document.querySelector('.box');
-                    box.classList.add('fourBox');
+                    box.classList.add('fourBox'); // 넓이를 증가시키는 class 추가.
                 }
                 this.getIngredients();
             }
         },
         checkShelfLife() {
+            // 유통기한 검사.
             let current = new Date();
 
             let year = current.getFullYear();
@@ -447,6 +454,7 @@ export default {
                 var ingre = new Date(this.ingredients[i].expired);
 
                 if (ingre.getTime() <= today7O.getTime()) {
+                    // 일주일 이하인 경우
                     this.garbages.push(this.ingredients[i]);
                 }
             }
@@ -469,9 +477,11 @@ export default {
             for (var i = 0; i < this.ingredients.length; i++) {
                 let life = new Date(this.ingredients[i].expired);
                 if (life.getTime() <= todayO.getTime()) {
+                    // 유통기한이 다 된경우
                     itemBox.forEach((el) => {
                         let text = el.innerText;
 
+                        // 이름을 찾아서 빨간 테두리 표시.
                         if (text == this.ingredients[i].ingredientsdetail.name) {
                             el.classList.add('deadItem');
                         }
@@ -559,12 +569,14 @@ export default {
                 data.list.splice(data.list.indexOf(data.item), 1);
             }
 
+            // 이동한 item의 정보를 moveItem에다 저장해두고,
             this.moveItem.id = this.temp.id;
             this.moveItem.expired = this.temp.expired;
             this.moveItem.locx = x;
             this.moveItem.locy = y;
             this.moveItem.fridgeId = this.temp.fridge.id;
             this.moveItem.ingredientsDetailId = this.temp.ingredientsdetail.id;
+            // 이동이 완료된 moveItem을 저장.
             moveIngredients(this.moveItem)
                 .then(() => {
                     window.location.href = `/refmanage/${this.ref_id}`;

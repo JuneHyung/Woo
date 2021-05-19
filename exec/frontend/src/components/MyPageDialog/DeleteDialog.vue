@@ -13,7 +13,6 @@
 
 <script>
 import swal from 'sweetalert';
-// import http from '@/api/axios.js';
 import { deleteUser } from '@/api/user.js';
 import { moveStart } from '@/api/move.js';
 
@@ -29,6 +28,7 @@ export default {
             this.$emit('closeDelete');
         },
         deleteUser() {
+            // 회원 탈퇴 메소드.
             deleteUser()
                 .then(() => {
                     swal('삭제 성공했습니다!', {
@@ -37,14 +37,14 @@ export default {
                     this.$store
                         .dispatch('LOGOUT')
                         .then(() => {
-                            moveStart();
+                            moveStart(); // 탈퇴 후 시작페이지로 이동
                         })
                         .catch((error) => {
                             swal(error, {
                                 icon: 'error',
                             });
                         });
-                    this.closeDialogDelete();
+                    this.closeDialogDelete(); // dialog를 닫음
                 })
                 .catch(() => {
                     swal('삭제에 실패했습니다', {

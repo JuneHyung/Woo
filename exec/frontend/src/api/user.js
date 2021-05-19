@@ -1,5 +1,6 @@
 import http from './axios.js';
 
+/* 로그인 */
 function login(userinput, success, fail) {
     
     const user = {

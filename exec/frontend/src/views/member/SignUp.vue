@@ -78,27 +78,19 @@ export default {
         },
         onChangeImages(e) {
             const file = e.target.files[0];
-            // this.imageFile = file;
             this.imageUrl = URL.createObjectURL(file);
             this.imageName = file.name;
         },
         validPassword(password) {
-            // const reg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*])([a-zA-Z0-9!@#$%^&+=*.\-_]){9,15}$/;
-            // if (!safe(reg)) {
-            //     throw new Error(`unsafe regex - ${reg}`);
-            // }
-
+            // 비밀번호 체크
             return checkPasswordValid(password);
-            // return reg.test(password);
         },
         validEmail(email) {
-            // const reg = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i;
-            // if (!safe(reg)) {
-            //     throw new Error(`unsafe regex - ${reg}`);
-            // }
+            // email체크
             return checkEmailValid(email);
         },
         signUp() {
+            // 빈 값 체크 후  회원가입.
             if (this.user.email == '') {
                 swal('아이디를 입력해주세요!', {
                     icon: 'error',

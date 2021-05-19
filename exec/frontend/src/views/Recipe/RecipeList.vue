@@ -44,7 +44,6 @@
     </v-container>
 </template>
 <script>
-// import http from '../../api/axios.js';
 import { getRecipeListByMenu, getRecipeListByIngredients, viewsUp } from '../../api/recipe.js';
 import { moveRecipeCreate, moveRecipeDetail } from '@/api/move.js';
 export default {
@@ -66,8 +65,6 @@ export default {
     watch: {
         $route() {
             this.ingredient_id = this.$route.params.ingredient_id;
-            // this.isLoading = true;
-            // this.getRecipeList();
         },
     },
     methods: {
@@ -82,7 +79,7 @@ export default {
             let scrolledToBottom =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight;
-
+            // 스크롤이 바닥에 닿으면 새로운 데이터 가져옴.
             if (scrolledToBottom && this.isLoading) {
                 setTimeout(this.getRecipeList, 500);
             }
@@ -94,6 +91,7 @@ export default {
         },
         getRecipeList() {
             if (this.ingredient_id == 0) {
+                // 메뉴 목록에서 클릭해 왔을 때
                 getRecipeListByMenu(this.page, this.size)
                     .then(({ data }) => {
                         this.ingredient_id = this.$route.params.ingredient_id;
@@ -105,7 +103,8 @@ export default {
                             });
                             for (var i = 0; i < this.listItem.length; i++) {
                                 let temp = this.listItem[i].url;
-                                let urlId = temp.substr(17);
+                                let urlId = temp.substr(17); // 유튜브 url에서 ID부분 추출.
+                                // 썸네일 출력을 위한 데이터 가공.
                                 let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
                                 this.listItem[i].thumbnail = thumbnail;
                             }
@@ -116,7 +115,8 @@ export default {
                             });
                             for (i = 0; i < this.listItem.length; i++) {
                                 let temp = this.listItem[i].url;
-                                let urlId = temp.substr(17);
+                                let urlId = temp.substr(17); // 유튜브 url에서 ID부분 추출.
+                                // 썸네일 출력을 위한 데이터 가공.
                                 let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
                                 this.listItem[i].thumbnail = thumbnail;
                             }
@@ -137,7 +137,8 @@ export default {
                             });
                             for (var i = 0; i < this.listItem.length; i++) {
                                 let temp = this.listItem[i].url;
-                                let urlId = temp.substr(17);
+                                let urlId = temp.substr(17); // 유튜브 url에서 ID부분 추출.
+                                // 썸네일 출력을 위한 데이터 가공.
                                 let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
                                 this.listItem[i].thumbnail = thumbnail;
                             }
@@ -148,7 +149,8 @@ export default {
                             });
                             for (i = 0; i < this.listItem.length; i++) {
                                 let temp = this.listItem[i].url;
-                                let urlId = temp.substr(17);
+                                let urlId = temp.substr(17); // 유튜브 url에서 ID부분 추출.
+                                // 썸네일 출력을 위한 데이터 가공.
                                 let thumbnail = `http://img.youtube.com/vi/${urlId}/maxresdefault.jpg`;
                                 this.listItem[i].thumbnail = thumbnail;
                             }

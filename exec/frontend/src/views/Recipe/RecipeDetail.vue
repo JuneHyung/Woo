@@ -43,7 +43,6 @@
 </template>
 
 <script>
-// import http from '../../api/axios.js';
 import { getRecipeDetail, getRecipeMain, getRecipeSub } from '../../api/recipe.js';
 export default {
     data() {
@@ -75,8 +74,9 @@ export default {
             getRecipeDetail(this.recipe_id)
                 .then(({ data }) => {
                     this.item = data.recipe;
+                    // 유튜브 url에서 아이디부분을 자름.
                     let temp = this.item.url.substr(17);
-
+                    // 아래 형식으로 url을 써야 video가 나와 데이터 가공.
                     this.videoUrl = 'https://www.youtube.com/embed/' + temp;
                 })
                 .catch((error) => console.log(error));

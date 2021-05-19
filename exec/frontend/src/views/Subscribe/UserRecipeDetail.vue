@@ -73,7 +73,6 @@
 </template>
 
 <script>
-// import http from '@/api/axios.js';
 import {
     getPostDetail,
     getCheckSubscribe,

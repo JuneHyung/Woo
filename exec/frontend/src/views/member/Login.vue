@@ -46,8 +46,8 @@ export default {
                 (response) => {
                     if (response.data.message === 'success') {
                         let token = response.data['X-AUTH-TOKEN'];
-                        this.$store.commit('setIsLogined', true);
-                        sessionStorage.setItem('X-AUTH-TOKEN', token);
+                        this.$store.commit('setIsLogined', true); // vuex의 로그인 상태를 true로 변경
+                        sessionStorage.setItem('X-AUTH-TOKEN', token); // session스토리지에 token을 저장.
 
                         http.defaults.headers['X-AUTH-TOKEN'] = window.sessionStorage.getItem(
                             'X-AUTH-TOKEN'
