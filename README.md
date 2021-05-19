@@ -245,7 +245,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 - 재료 제거 버튼을 누르면 자신의 냉장고의 재료들의 목록을 확인할 수 있으며, X를 클릭시 냉장고에서 해당재료가 제거된다.
 
    <p align="center" style="color:black;">
-    <img src="images/gif/02_ingredientMove.gif" style="padding: 0;margin:0;">
+   	 <img src="images/gif/02_ingredientMove.gif" style="padding: 0;margin:0;">
       <img src="images/gif/03_ingredientSub.gif" style="padding: 0;margin:0;">
   </p>
   
