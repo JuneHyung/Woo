@@ -311,8 +311,10 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   <p align="center" style="color:black; font-weight: bold;">
     <img src="images/gif/10_subscribe.gif" style="padding: 0;margin:0;">
+      <br>
   	구독 기능 시연 이미지
   </p>
+  
   
 
 #### 레시피 등록
@@ -335,6 +337,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   <p align="center" style="color:black; font-weight: bold;">
     <img src="images/gif/12_noticeConfirm.gif" style="padding: 0;margin:0;">
+      <br>
   	알림 확인 시연 이미지
   </p>
 
@@ -346,6 +349,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   <p align="center" style="color:black; font-weight: bold;">
     <img src="images/gif/13_postConfirm.gif" style="padding: 0;margin:0;">
+      <br>
   	글 확인 기능 시연 이미지
   </p>
   
