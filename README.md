@@ -228,7 +228,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 재료를 추가한 이후에는 자신의 냉장고에 무슨 재료가 있는 이미지로 한눈에 파악이 가능하다.
 
-  <p align="center" style="color:black; font-weight: bold;">
+  <p align="center" style="color:black;">
     <img src="images/gif/00_fridgeAdd.gif" style="padding: 0;margin:0;">
       <img src="images/gif/01_ingredientAdd.gif" style="padding: 0;margin:0;">
   </p>
@@ -244,10 +244,11 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 재료 제거 버튼을 누르면 자신의 냉장고의 재료들의 목록을 확인할 수 있으며, X를 클릭시 냉장고에서 해당재료가 제거된다.
 
-   <p align="center" style="color:black; font-weight: bold;">
+   <p align="center" style="color:black;">
     <img src="images/gif/02_ingredientMove.gif" style="padding: 0;margin:0;">
       <img src="images/gif/03_ingredientSub.gif" style="padding: 0;margin:0;">
   </p>
+  
   
 
 #### 유통기한 임박 재료 
@@ -262,7 +263,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 원하는 레시피를 터치하면 해당 레시피의 내용을 확인할 수 있다.
 
-  <p align="center" style="color:black; font-weight: bold;">
+  <p align="center" style="color:black;">
     <img src="images/gif/04_expirationDate.gif" style="padding: 0;margin:0;">
       <img src="images/gif/05_ingredientRecipe.gif" style="padding: 0;margin:0;">
   </p>
@@ -278,7 +279,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 게시글은 작성자가 업로드한 이미지가 섬네일로 표기되며, 게시글 제목과 작성자의 닉네임정보가 표시된다.
 
-   <p align="center" style="color:black; font-weight: bold;">
+   <p align="center" style="color:black;">
     <img src="images/gif/06_recipeInfo.gif" style="padding: 0;margin:0;">
       <img src="images/gif/07_postList.gif" style="padding: 0;margin:0;">
   </p>
@@ -295,13 +296,10 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 이후 자신이 좋아요를 표시한 글을 모아서 볼 수 있다.
 
-  <p align="center" style="color:black; font-weight: bold;">
+  <p align="center" style="color:black;">
     <img src="images/gif/08_postInfo.gif" style="padding: 0;margin:0;">
   	<img src="images/gif/09_interest.gif" style="padding: 0;margin:0;">
   </p>
-  
-  
-  
 
 #### 구독 기능
 
@@ -309,13 +307,11 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 특정한 사용자를 구독하면 구독한 사용자가 글을 작성할때마다 알림을 통해 작성한 게시글을 확인할 수 있다.
 
-  <p align="center" style="color:black; font-weight: bold;">
+  <p align="center" style="color:black;">
     <img src="images/gif/10_subscribe.gif" style="padding: 0;margin:0;">
       <br>
-  	구독 기능 시연 이미지
+  	<p align="center" style="font-weight: bold;">알림 확인 시연 이미지</p>
   </p>
-  
-  
 
 #### 레시피 등록
 
@@ -323,10 +319,10 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 이미지를 이용해 조리과정을 담은 레시피를 등록한다.
 
-  <p align="center" style="color:black; font-weight: bold;">
+  <p align="center" style="color:black;">
     <img src="images/gif/11_recipeAdd.gif" style="padding: 0;margin:0;">
       <br>
-  	레시피 등록 시연 이미지
+  	<p align="center" style="font-weight: bold;">알림 확인 시연 이미지</p>
   </p>
 
 #### 알림 확인
@@ -335,10 +331,10 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 우측 하단의 종모양 이미지를 클릭하면 알림의 목록을 확인할 수 있으며, 해당 알림들을 터치할시 해당글의 상세정보를 확인할수 있다.
 
-  <p align="center" style="color:black; font-weight: bold;">
+  <p align="center" style="color:black;">
     <img src="images/gif/12_noticeConfirm.gif" style="padding: 0;margin:0;">
       <br>
-  	알림 확인 시연 이미지
+  	<p align="center" style="font-weight: bold;">알림 확인 시연 이미지</p>
   </p>
 
 #### 글 확인 기능
@@ -347,11 +343,12 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 하단의 이미지 스크롤을 통해 작성자가 업로드한 레시피 이미지를 확인할수 있다.
 
-  <p align="center" style="color:black; font-weight: bold;">
+  <p align="center" style="color:black;">
     <img src="images/gif/13_postConfirm.gif" style="padding: 0;margin:0;">
       <br>
-  	글 확인 기능 시연 이미지
+  	<p align="center" style="font-weight: bold;">알림 확인 시연 이미지</p>
   </p>
+  
   
 
 # Application Architecture
