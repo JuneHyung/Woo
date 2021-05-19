@@ -230,14 +230,26 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   ​                       **냉장고 추가 시연 이미지								 					 재료추가 시연 이미지**
 
-  ![ap](images/gif/00-냉장고추가.gif)	![qw](images/gif/01-재료추가.gif)
+  ![](images/gif/00_fridgeAdd.gif)	![qw](images/gif/01_ingredientAdd.gif)
 
 
 
-#### 재료빼기
+#### 재료 옮기기
+
+- 자신의 냉장고에 등록한 재료들을 GUI 환경에서 옮길수있다.
+- 드래그 온 드랍을 이용하여 재료들의 위치를 변경할 수 있다.
+
+#### 재료 빼기
 
 - 자신의 냉장고에 등록한 재료들을 제거할수있다.
+
 - 재료 제거 버튼을 누르면 자신의 냉장고의 재료들의 목록을 확인할 수 있으며, X를 클릭시 냉장고에서 해당재료가 제거된다.
+
+   ​                      **재료 옮기기 시연 이미지** 							 	                   **재료 빼기 시연 이미지**                 
+
+  ![](images/gif/02_ingredientMove.gif)	![](images/gif/03_ingredientSub.gif)
+
+
 
 #### 유통기한 임박 재료 
 
@@ -245,16 +257,15 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 1주일 이내의 유통기한을 가지는 재료들은 붉은색으로 표기된다.
 
-   					   ​                         **재료빼기 시연 이미지**                                                 **유통기한 임박 재료 시연 이미지**
-
-  ![](images/gif/03-재료빼기.gif)	![](images/gif/04-유통기한.gif)
-
-
-
 #### 재료 관련레시피 확인
 
 - 원하는 재료를 클릭할시 해당 재료에 맞는 레시피를 출력한다.
+
 - 원하는 레시피를 터치하면 해당 레시피의 내용을 확인할 수 있다.
+
+  
+
+  ![](images/gif/04_expirationDate.gif)	![](images/gif/05_ingredientRecipe.gif)
 
 #### 레시피 내용 확인
 
@@ -262,24 +273,22 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 레시피 상세 내용은 제조 과정 영상을 볼 수 있으며, 영상하단에 필요한 재료와 음식의 정보가 표시된다.
 
-  ​               **재료 관련레시피 확인 시연 이미지**				   				   **레시피 내용 확인 시연 이미지**
-
-  ![](images/gif/05-재료관련레시피확인.gif)	![](images/gif/06-레시피내용확인.gif)
-
 #### 포스트 확인
 
 - 다른사람이 올린 게시글의 목록을 확인할수있다.
+
 - 게시글은 작성자가 업로드한 이미지가 섬네일로 표기되며, 게시글 제목과 작성자의 닉네임정보가 표시된다.
+
+   **포스트 확인 시연 이미지							  				   포스트 내용 확인 시연 이미지**
+
+  ![](images/gif/06_recipeInfo.gif)	![](images/gif/07_postList.gif)
 
 #### 포스트 내용 확인
 
 - 게시글을 터치할시 해당 게시글의 상세정보를 확인할수있다.
 
-- 해당 게시글의 작성자가 게시한 레시피를 확인할 수 있으며, 구독하기 버튼을 통해 작성자가 게시한 글의 목록을 확인하거나, 신규 글을 작성할시 알람을 받을 수 있다.
+- 해당 게시글의 작성자가 게시한 레시피를 확인할 수 있으며, 구독하기 버튼을 통해 작성자가 게시한 글의 목록을 확인하거나, 신규 글을 작성할시 알람을 받을 수 있다.              
 
-  ​                      **포스트 확인 시연 이미지							  				   포스트 내용 확인 시연 이미지**
-
-  ![](images/gif/07-포스트확인.gif)	![](images/gif/08-포스트내용확인.gif)
 
 #### 좋아요 기능
 
@@ -287,9 +296,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 이후 자신이 좋아요를 표시한 글을 모아서 볼 수 있다.
 
-  <center><strong>좋아요 기능 시연 이미지</strong></center>
-
-<img src= "images/gif/09-좋아요.gif">
+  
+  
+  ![](images/gif/08_postInfo.gif)	![](images/gif/09_interest.gif)
 
 #### 구독 기능 시연 이미지
 
@@ -299,7 +308,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   <center><strong>구독 기능 시연 이미지</strong></center>
 
-![](images/gif/10-구독.gif)
+![](images/gif/10_subscribe.gif)
 
 #### 레시피 등록
 
@@ -309,7 +318,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   <center><strong>레시피 등록 시연 이미지</strong></center>
 
-  ![](images/gif/11-레시피등록.gif)
+  ![](images/gif/11_recipeAdd.gif)
 
 
 
@@ -321,7 +330,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   <center><strong>알림확인 시연 이미지</strong></center>
 
-  ![](images/gif/12-알림확인.gif)
+  ![](images/gif/12_noticeConfirm.gif)
 
 #### 글 확인 기능
 
@@ -331,7 +340,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   <center><strong>글 확인 기능 시연 이미지</strong></center>
 
-  ![](images/gif/13-글확인.gif)
+  ![](images/gif/13_postConfirm.gif)
 
   
 
