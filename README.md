@@ -228,11 +228,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 재료를 추가한 이후에는 자신의 냉장고에 무슨 재료가 있는 이미지로 한눈에 파악이 가능하다.
 
-  ​                       **냉장고 추가 시연 이미지								 					 재료추가 시연 이미지**
+  ![냉장고 추가 시연 이미지](images/gif/00_fridgeAdd.gif "냉장고 추가 시연 이미지")	![재료추가 시연 이미지](images/gif/01_ingredientAdd.gif "재료추가 시연 이미지")
 
-  ![](images/gif/00_fridgeAdd.gif)	![qw](images/gif/01_ingredientAdd.gif)
-
-
+  
 
 #### 재료 옮기기
 
