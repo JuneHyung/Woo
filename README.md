@@ -310,7 +310,7 @@ sudo chmod +x /usr/local/bin/docker-compose
   <p align="center" style="color:black;">
     <img src="images/gif/10_subscribe.gif" style="padding: 0;margin:0;">
       <br>
-  	<p align="center" style="font-weight: bold;">알림 확인 시연 이미지</p>
+  	<p align="center" style="font-weight: bold; color:black;">구독 기능 시연 이미지</p>
   </p>
 
 #### 레시피 등록
@@ -322,7 +322,7 @@ sudo chmod +x /usr/local/bin/docker-compose
   <p align="center" style="color:black;">
     <img src="images/gif/11_recipeAdd.gif" style="padding: 0;margin:0;">
       <br>
-  	<p align="center" style="font-weight: bold;">알림 확인 시연 이미지</p>
+  	<p align="center" style="font-weight: bold;">레시피 등록 시연 이미지</p>
   </p>
 
 #### 알림 확인
@@ -346,7 +346,7 @@ sudo chmod +x /usr/local/bin/docker-compose
   <p align="center" style="color:black;">
     <img src="images/gif/13_postConfirm.gif" style="padding: 0;margin:0;">
       <br>
-  	<p align="center" style="font-weight: bold;">알림 확인 시연 이미지</p>
+  	<p align="center" style="font-weight: bold;">글 확인 시연 이미지</p>
   </p>
   
   
