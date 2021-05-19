@@ -249,7 +249,6 @@ sudo chmod +x /usr/local/bin/docker-compose
       <img src="images/gif/03_ingredientSub.gif" style="padding: 0;margin:0;">
   </p>
   
-  
 
 #### 유통기한 임박 재료 
 
@@ -315,7 +314,6 @@ sudo chmod +x /usr/local/bin/docker-compose
   	구독 기능 시연 이미지
   </p>
   
-  
 
 #### 레시피 등록
 
@@ -325,6 +323,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
   <p align="center" style="color:black; font-weight: bold;">
     <img src="images/gif/11_recipeAdd.gif" style="padding: 0;margin:0;">
+      <br>
   	레시피 등록 시연 이미지
   </p>
 
@@ -349,7 +348,6 @@ sudo chmod +x /usr/local/bin/docker-compose
     <img src="images/gif/13_postConfirm.gif" style="padding: 0;margin:0;">
   	글 확인 기능 시연 이미지
   </p>
-  
   
 
 # Application Architecture
