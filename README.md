@@ -228,9 +228,10 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 재료를 추가한 이후에는 자신의 냉장고에 무슨 재료가 있는 이미지로 한눈에 파악이 가능하다.
 
-  ![냉장고 추가 시연 이미지](images/gif/00_fridgeAdd.gif "냉장고 추가 시연 이미지")	![재료추가 시연 이미지](images/gif/01_ingredientAdd.gif "재료추가 시연 이미지")
-
-  
+  <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/00_fridgeAdd.gif" style="padding: 0;margin:0;">
+      <img src="images/gif/01_ingredientAdd.gif" style="padding: 0;margin:0;">
+  </p>
 
 #### 재료 옮기기
 
@@ -243,11 +244,12 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 재료 제거 버튼을 누르면 자신의 냉장고의 재료들의 목록을 확인할 수 있으며, X를 클릭시 냉장고에서 해당재료가 제거된다.
 
-   ​                      **재료 옮기기 시연 이미지** 							 	                   **재료 빼기 시연 이미지**                 
-
-  ![](images/gif/02_ingredientMove.gif)	![](images/gif/03_ingredientSub.gif)
-
-
+   <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/02_ingredientMove.gif" style="padding: 0;margin:0;">
+      <img src="images/gif/03_ingredientSub.gif" style="padding: 0;margin:0;">
+  </p>
+  
+  
 
 #### 유통기한 임박 재료 
 
@@ -261,14 +263,14 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 원하는 레시피를 터치하면 해당 레시피의 내용을 확인할 수 있다.
 
-  
-
-  ![](images/gif/04_expirationDate.gif)	![](images/gif/05_ingredientRecipe.gif)
+  <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/04_expirationDate.gif" style="padding: 0;margin:0;">
+      <img src="images/gif/05_ingredientRecipe.gif" style="padding: 0;margin:0;">
+  </p>
 
 #### 레시피 내용 확인
 
 - 레시피를 터치하면 레시피 글의 상세 페이지로 이동해 레시피 정보를 제공한다.
-
 - 레시피 상세 내용은 제조 과정 영상을 볼 수 있으며, 영상하단에 필요한 재료와 음식의 정보가 표시된다.
 
 #### 포스트 확인
@@ -277,14 +279,14 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 게시글은 작성자가 업로드한 이미지가 섬네일로 표기되며, 게시글 제목과 작성자의 닉네임정보가 표시된다.
 
-   **포스트 확인 시연 이미지							  				   포스트 내용 확인 시연 이미지**
-
-  ![](images/gif/06_recipeInfo.gif)	![](images/gif/07_postList.gif)
+   <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/06_recipeInfo.gif" style="padding: 0;margin:0;">
+      <img src="images/gif/07_postList.gif" style="padding: 0;margin:0;">
+  </p>
 
 #### 포스트 내용 확인
 
 - 게시글을 터치할시 해당 게시글의 상세정보를 확인할수있다.
-
 - 해당 게시글의 작성자가 게시한 레시피를 확인할 수 있으며, 구독하기 버튼을 통해 작성자가 게시한 글의 목록을 확인하거나, 신규 글을 작성할시 알람을 받을 수 있다.              
 
 
@@ -294,19 +296,26 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 이후 자신이 좋아요를 표시한 글을 모아서 볼 수 있다.
 
+  <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/08_postInfo.gif" style="padding: 0;margin:0;">
+  	<img src="images/gif/09_interest.gif" style="padding: 0;margin:0;">
+  </p>
   
   
-  ![](images/gif/08_postInfo.gif)	![](images/gif/09_interest.gif)
+  
 
-#### 구독 기능 시연 이미지
+#### 구독 기능
 
 - 특정한 유저를 구독할수있다.
 
 - 특정한 사용자를 구독하면 구독한 사용자가 글을 작성할때마다 알림을 통해 작성한 게시글을 확인할 수 있다.
 
-  <center><strong>구독 기능 시연 이미지</strong></center>
-
-![](images/gif/10_subscribe.gif)
+  <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/10_subscribe.gif" style="padding: 0;margin:0;">
+  	구독 기능 시연 이미지
+  </p>
+  
+  
 
 #### 레시피 등록
 
@@ -314,21 +323,21 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 이미지를 이용해 조리과정을 담은 레시피를 등록한다.
 
-  <center><strong>레시피 등록 시연 이미지</strong></center>
+  <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/11_recipeAdd.gif" style="padding: 0;margin:0;">
+  	레시피 등록 시연 이미지
+  </p>
 
-  ![](images/gif/11_recipeAdd.gif)
-
-
-
-#### 알림확인
+#### 알림 확인
 
 - 자신이 구독한 대상이 게시글을 작성할시 알림이 발생한다.
 
 - 우측 하단의 종모양 이미지를 클릭하면 알림의 목록을 확인할 수 있으며, 해당 알림들을 터치할시 해당글의 상세정보를 확인할수 있다.
 
-  <center><strong>알림확인 시연 이미지</strong></center>
-
-  ![](images/gif/12_noticeConfirm.gif)
+  <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/12_noticeConfirm.gif" style="padding: 0;margin:0;">
+  	알림 확인 시연 이미지
+  </p>
 
 #### 글 확인 기능
 
@@ -336,10 +345,11 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 - 하단의 이미지 스크롤을 통해 작성자가 업로드한 레시피 이미지를 확인할수 있다.
 
-  <center><strong>글 확인 기능 시연 이미지</strong></center>
-
-  ![](images/gif/13_postConfirm.gif)
-
+  <p align="center" style="color:black; font-weight: bold;">
+    <img src="images/gif/13_postConfirm.gif" style="padding: 0;margin:0;">
+  	글 확인 기능 시연 이미지
+  </p>
+  
   
 
 # Application Architecture
