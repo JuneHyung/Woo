@@ -133,6 +133,7 @@ export default {
             this.$emit('closeEdit');
         },
         finishModify() {
+            // 빈 값이 있는지 체크 후 수정
             if (this.Modifyuser.nick == '') {
                 swal('변경을 희망하는 닉네임을 입력해주세요!', {
                     icon: 'error',
@@ -164,7 +165,7 @@ export default {
             }
         },
         doubleCheck() {
-            // http.get(`user/nickcheck/${this.Modifyuser.nick}`)
+            // 닉네임 중복 체크
             checkNickName(this.Modifyuser.nick)
                 .then((response) => {
                     if (response.data.message == 'fail') {

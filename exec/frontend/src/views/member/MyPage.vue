@@ -85,7 +85,7 @@ export default {
             let scrolledToBottom =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight;
-
+            // 스크롤이 가장아래면 다음 정보를 가져옴.
             if (scrolledToBottom && this.isLoading) {
                 setTimeout(this.getMyList, 500);
             }
@@ -122,6 +122,7 @@ export default {
                 });
         },
         getMyList() {
+            // page와 size로 데이터를 가져옴.ex) 1~10까지있다면 0,5면 1~5 / 1,4인 경우 5~8을 가져온다.
             getMyList(this.page, this.size)
                 .then((response) => {
                     let postList = response.data.myPostList;

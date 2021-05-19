@@ -1,31 +1,23 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { findById } from '@/api/user.js';
-// import jwt_decode from 'jwt-decode';
-
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
         isLogin: false,
-        messageDialog: false,
     },
     getters: {
         getIsLogin(state) {
-            
             return state.isLogin;
         }
     },
     mutations: {
-        
     setIsLogined(state, isLogin) {
         state.isLogin = isLogin;
     },
-    setMessageDialog(state, messageDialog) {
-        sessionStorage.setItem('messageDialog', messageDialog);
-        state.messageDialog = messageDialog;
-    },
+
     logout(state) {
         state.isLogin = false;
     }
@@ -39,15 +31,11 @@ export default new Vuex.Store({
                         
                     } 
                 },
-                // (error) => {
-                //     console.log(error);
-                // }
             );
         },
     LOGOUT({ commit }) {
         commit('logout');
         sessionStorage.removeItem('X-AUTH-TOKEN');
-        sessionStorage.removeItem('messageDialog');
     }
 },
 modules: {},

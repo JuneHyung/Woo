@@ -39,7 +39,6 @@
     </v-container>
 </template>
 <script>
-// import http from '@/api/axios.js';
 import { getPostList, getCheckSubscribe, getMySubscribe } from '@/api/subscribe.js';
 import { moveUserRecipeDetail, moveRecipeCreate } from '@/api/move.js';
 import swal from 'sweetalert';
@@ -75,10 +74,11 @@ export default {
             let scrolledToBottom =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight;
-
+            // 전체 목록을 보고있는경우
             if (scrolledToBottom && this.isLoading && !this.subscribeflag) {
                 setTimeout(this.append_list, 500);
             }
+            // 구독 목록을 보고 있는 경우
             if (scrolledToBottom && this.isLoading && this.subscribeflag) {
                 setTimeout(this.getMySubscribeList, 500);
             }
@@ -101,11 +101,9 @@ export default {
                 });
         },
         moveRecipeDetail(post_id) {
-            // this.$router.push({ name: 'UserRecipeDetail', params: { id: post_id } });
             moveUserRecipeDetail(post_id);
         },
         goRecipeCreate() {
-            // this.$router.push({ name: 'RecipeCreate' });
             moveRecipeCreate();
         },
         changeSubscribePage() {

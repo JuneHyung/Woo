@@ -60,6 +60,7 @@ export default {
     },
     methods: {
         onChangeImages(e) {
+            // 먼저 초기화하고 다시 담음.
             this.items.splice(0);
             this.images.splice(0);
             for (var i = 0; i < e.target.files.length; i++) {

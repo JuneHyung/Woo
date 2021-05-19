@@ -54,28 +54,34 @@ export default {
     components: { Alarm },
     methods: {
         goMain() {
+            // 메인으로 이동
             moveMain();
         },
         goShareRecipt() {
+            // 레시피 목록으로 이동
             moveRecipeList(0);
         },
         goSubscribe() {
+            // 구독 페이지로 이동
             moveSubscribe(0);
         },
 
         goMyPage() {
+            // 마이 페이지로 이동
             moveMyPage();
         },
         toggleMenu() {
+            // 메뉴 열고 닫는 메소드
+            // openMenu라는 클래스를 toggle하면서 메뉴 열고 닫음.
             const menu = document.querySelector('.menu');
             menu.classList.toggle('openMenu');
         },
-
         clickLogout() {
+            // 로그아웃
             this.$store
                 .dispatch('LOGOUT')
                 .then(() => {
-                    moveStart();
+                    moveStart(); // 로그아웃 후 시작페이지로 이동
                 })
                 .catch((error) => {
                     swal(error, {

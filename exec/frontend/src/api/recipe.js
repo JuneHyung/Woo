@@ -22,7 +22,7 @@ function getRecipeDetail(id) {
     return http.get(`recipes/detail/${id}`);
 }
 
-/* */
+/* 레시피 생성 */
 function createRecipe(formData) {
     return http.post(`post/upload/`, formData);
 }

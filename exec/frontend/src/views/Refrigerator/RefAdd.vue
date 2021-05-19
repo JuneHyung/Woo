@@ -42,7 +42,6 @@
 <script>
 import { addMyFridge } from '../../api/refrigerator';
 import { moveMain } from '@/api/move.js';
-// import http from '../../api/axios.js';
 import jwt_decode from 'jwt-decode';
 import swal from 'sweetalert';
 export default {
@@ -55,7 +54,6 @@ export default {
                     id: 0,
                 },
             },
-            selectItem: ['전체', '단문형', '양문형'],
             danItem: [
                 require('@/assets/images/refrigerator/ref_44.png'),
                 require('@/assets/images/refrigerator/ref_55.png'),
@@ -106,11 +104,11 @@ export default {
             }
         },
         setYangFridgeType(index) {
-            let refDCard = document.querySelectorAll('.refDCard');
-            let refYCard = document.querySelectorAll('.refYCard');
-            refDCard.forEach((refDCard) => refDCard.classList.remove('checked'));
-            refYCard.forEach((refYCard) => refYCard.classList.remove('checked'));
-            refYCard[index].classList.toggle('checked');
+            let refDDCard = document.querySelectorAll('.refDCard');
+            let refYYCard = document.querySelectorAll('.refYCard');
+            refDDCard.forEach((refDDCard) => refDDCard.classList.remove('checked'));
+            refYYCard.forEach((refYYCard) => refYYCard.classList.remove('checked'));
+            refYYCard[index].classList.toggle('checked');
             switch (index) {
                 case 0:
                     this.fridge.type = 4444;
