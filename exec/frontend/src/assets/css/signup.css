@@ -1,0 +1,31 @@
+@charset "utf-8";
+.signFormBox {
+    width: calc(100% - 50px);
+    margin: 0 auto;
+}
+.signTitle {
+    font-size: 36px;
+    text-align: center;
+}
+
+.duplicateCheckBox {
+    padding: 5px;
+    margin-top: 10px;
+}
+
+.resetBtn {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+}
+.signupBtn {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #d9418d;
+    border-radius: 10px;
+    padding: 5px;
+    color: #d9418d;
+    margin: 0 10px;
+}

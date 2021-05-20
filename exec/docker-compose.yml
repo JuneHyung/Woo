@@ -1,0 +1,86 @@
+version: '3.7'
+
+services:
+    database:
+        image: mysql:8.0.22
+        container_name: mysql-fridge
+        ports:
+            - '3307:3306' # 접근 포트 설정
+        restart: unless-stopped
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+        environment:
+            MYSQL_ROOT_PASSWORD: fridge12
+            MYSQL_USER: fridge
+            MYSQL_PASSWORD: fridge12
+            MYSQL_DATABASE: 'unb'
+            TZ: Asia/Seoul
+        networks:
+            - fridge_db
+        healthcheck:
+            test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+            timeout: 20s
+            retries: 10
+        volumes:
+            - ./dump-unb.sql:/docker-entrypoint-initdb.d/dump.sql
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        image: fridge-back:tag
+        ports:
+            - '8000:8000'
+        container_name: fridge-back
+        networks:
+            - fridge_net
+            - fridge_db
+        depends_on:
+            database:
+                condition: service_healthy
+        environment:
+            SPRING_DATASOURCE_DRIVER-CLASS-NAME: com.mysql.cj.jdbc.Driver
+            SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/unb?characterEncoding=UTF-8&serverTimezone=UTC
+            SPRING_DATASOURCE_USERNAME: fridge
+            SPRING_DATASOURCE_PASSWORD: fridge12
+            SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile-local
+        image: fridge-front:tag
+        ports:
+            - '80:80'
+        container_name: fridge-front
+        networks:
+            - fridge_net
+    zookeeper:
+        image: wurstmeister/zookeeper
+        container_name: fridge-zookeeper
+        ports:
+            - "2181:21810"
+        networks:
+            - fridge_kafka_net
+    kafka:
+        image: wurstmeister/kafka:2.12-2.5.0
+        container_name: fridge-kafka
+        depends_on:
+            - zookeeper
+        ports:
+            - "9092:9092"
+        expose:
+            - "9093"
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: k4d109.p.ssafy.io
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_CREATE_TOPICS: 'exam:1:1'
+            KAFKA_DELETE_TOPIC_ENABLE: "true"
+        volumes:
+            - /var/run/docker-kafka.sock:/var/run/docker-kafka.sock
+        networks:
+            - fridge_net
+            - fridge_kafka_net
+networks:
+    fridge_net:
+    fridge_db:
+    fridge_kafka_net:

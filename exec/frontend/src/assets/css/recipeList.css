@@ -1,0 +1,36 @@
+@charset "utf-8";
+
+.videoThumbnailBox {
+    width: 160px;
+    height: 215px;
+}
+.videoThumbnailBox img {
+    height: 125px;
+}
+.cookInfoBox {
+    background-color: #000;
+    padding: 5px 15px;
+
+    font-family: 'MaruBuri-Regular', sans-serif;
+}
+.cookInfobox p {
+    color: #fff;
+    font-family: 'MaruBuri-Regular', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+}
+.cookInfoDivider {
+    border: 1px solid white;
+    height: 1px;
+}
+.cookInfoBottomBox p {
+    font-size: 12px;
+    font-weight: 900;
+}
+.cookInfoBottomBox span {
+    color: #fff;
+}
+.cookInfoBottomBox .viewIcon {
+    color: #fff;
+    font-size: 14px;
+}

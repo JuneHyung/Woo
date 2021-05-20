@@ -1,0 +1,35 @@
+@charset "utf-8";
+.alarmImg {
+    position: fixed;
+    right: 5px;
+    bottom: 5px;
+    width: 36px;
+    height: 36px;
+    margin: 22px;
+}
+.alarm {
+    position: fixed;
+    bottom: 70px;
+    opacity: 0.95 !important;
+    right: 25px;
+    width: 210px;
+    display: none;
+    transition: all 0.4s;
+    border: solid #ffecf2 3px;
+    z-index: 999;
+}
+.alarmText {
+    height: 80%;
+    width: 100%;
+    font-size: 22px;
+    text-align: center;
+    border-bottom: 2px solid #ffecf2;
+}
+.alarmInfo {
+    border-bottom: 2px solid #ffecf2;
+    box-sizing: border-box;
+}
+
+.alarmOpen {
+    display: block;
+}

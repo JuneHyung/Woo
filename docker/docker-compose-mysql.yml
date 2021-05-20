@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+        db:
+                image: mysql:8.0.22
+                container_name: mysql-fridge
+                ports:
+                        - '3306:3306' # 접근 포트 설정
+                environment:
+                        - MYSQL_ROOT_PASSWORD=fridge12
+                        - TZ=Asia/Seoul
+                restart: unless-stopped
+                command:
+                        - --character-set-server=utf8mb4
+                        - --collation-server=utf8mb4_unicode_ci
+                volumes:
+                        - /usr/shared/data/fridge-mysql:/var/lib/mysql
+                networks: 
+                        - fridge_net
+networks:
+        fridge_net:
+                external: true
