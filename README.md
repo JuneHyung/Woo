@@ -14,7 +14,11 @@
 
 궁극적으로 **냉장고의 효율적 관리**뿐만아니라 **자연 보호**를 목표로 하는 서비스입니다.
 
-------
+
+
+## 프로젝트 기간
+
+**2021.04.12 ~ 2021.05.28**
 
 
 
@@ -213,6 +217,12 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 
 
+# Application Architecture
+
+![Application Architecture](images/application_architecture.jpg)
+
+
+
 # 기능
 
 #### 냉장고추가 
@@ -248,7 +258,6 @@ sudo chmod +x /usr/local/bin/docker-compose
    	 <img src="images/gif/02_ingredientMove.gif" style="padding: 0;margin:0;">
       <img src="images/gif/03_ingredientSub.gif" style="padding: 0;margin:0;">
   </p>
-  
   
 
 #### 유통기한 임박 재료 
@@ -349,11 +358,12 @@ sudo chmod +x /usr/local/bin/docker-compose
   	<p align="center" style="font-weight: bold;">글 확인 시연 이미지</p>
   </p>
   
-  
 
-# Application Architecture
+## 팀원 소개
 
-![Application Architecture](images/application_architecture.jpg)
+<p align="center" style="color:black;">
+  <img src="images/team.png" style="padding: 0;margin:0;">
+</p>
 
 
 
