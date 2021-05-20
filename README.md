@@ -211,6 +211,115 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 ![gantt_chart](images/gantt_chart.png)
 
+---
+
+
+
+# Application Architecture
+
+![Application Architecture](images/application_architecture.jpg)
+
+---
+
+
+
+# TroubleShooting
+
+### CORS
+
+ 서버에 배포하였을 때, Swagger 및 frontend에서 API 요청 시 CORS 발생하는 문제가 생겼습니다. Spring Security에서 CORS를 disable 해도 문제가 여전히 해결되지 않았고, corsConfigurationSource Bean을 작성하여도 해결하지 못하였습니다.
+
+ preflight 요청 인증 처리 문제 같아서 CORSUtills::isPreFlightRequest를 requestMatchers에 추가하였지만 해결에 실패하였습니다. 다른 방법을 알아보던 중 WebMvcConfigurer 인터페이스를 implements한 WebConfiguration을 정의를 통하여 웹 페이지에서 보낼 때 발생하는 CORS 문제는 해결하였습니다.
+
+ 하지만 여전히 Swagger에서는 CORS가 발생하였고, allowedOrigins에 서버 측 URL을 추가하였지만 실패하습니다. 연구 결과 Swagger에서 테스트 진행 시 http로 서버측에 보내기 때문에 CORS가 발생한다는 것을 파악할 수 있었고, SwaggerConfig 설정에서 @OpenAPIDefinition의 @Server(url) 어노테이션을 이용하여 swagger에서 보내는 요청을 https로 바꿈으로서 해결하였습니다.
+
+### Kafka Consumer
+
+Kafka를 이용한 구독 알람을 제공하는 기능을 구현하기로 하였습니다. 사용자가 게시글을 등록하였을 때, Kafka Topic으로 메시지를 삽입하고 Client가 사이트에 로그인하였을 때, Kafka로 부터 메시지를 요청하여 자신이 구독한 사람이 새 글을 올렸는지 확인할 수 있도록 구현하고자 하였습니다.
+
+AWS에 Docker를 이용하여 Zookeeper와 Kafka를 구동하고 Spring boot를 이용한 producer 모델 구현까지는 무난하게 진행되었습니다. 하지만 Vue단에서 Kafkajs를 이용하여 메시지를 요청하고 가져오는 부분에서 문제가 발생하였습니다.
+
+Kafkajs를 이용하여 배포해둔 Kafka 서버에 연결을 시도하였지만 'Failed to connect: net.connect is not a function'라는 error가 발생하며 Kafka와 연결 자체가 이루어지지 않았습니다. 어떤 문제인지 찾아 보았지만 분명한 원인과 해결방법을 찾지 못하였습니다.
+
+결국 Vue단에서 Kafka에 요청하는 것을 포기하고 Spring에서 Kafka에 연결하여 메시지를 가져오고 Vue단에서 주기적으로 Spring에 요청하는 형식으로 변경하여 구현하기로 하였습니다.
+
+Spring에서 consumer를 구현하는 방법을 찾아보았을 때, Listener 형식을 이용한 consumer 구현 방법이 나왔습니다. 사용자가 요청하였을 때 메시지를 가져오는 방법이 필요하였기에 Listener가 아닌 방법이 필요하였고, 검색한 결과 poll() 메소드를 활용한다면 요청에 의해 메시지를 가져올 수 있을다는 것을 파악하였습니다.
+
+하지만 poll()의 경우 설정한 timeout 시간 안에 들어오는 메시지를 가져오도록 구현되어 있는 메소드였기에 poll 요청을 하기 전에 들어온 메시지의 경우 가져오지 못하는 문제가 있었습니다. poll 요청 시 offset을 지정하는 방법을 찾아 보았고 여러 방법을 시도하던 중, partitionsFor 메소드를 활용하여 topic안에 있는 partition을 추적하고 seek 메소드 이용하여 해당 partition의 offset을 지정하는 방법을 통하여 해결하였습니다.
+
+저희 시스템의 경우 글을 쓴 순서를 보장하기 위하여 partition을 하나만 두었기에 이 방법이 가능하였지만, 만약 partition을 여러개로 분할하여 사용하게 된다면 partition 하나만 추적하게 되기에 poll을 partition 수만큼 요청해야 되는 문제가 생길 것으로 예상 되기에 추후 다른 방법을 찾아보아야 할 것으로 예상됩니다.
+
+### REDOS 위험
+
+![redos](images/redos.png)
+
+소나큐브에서 REDOS위험이 있을 수 있다며, 정규표현식에서 문제가 잡혔습니다. 해결방안으로 Google re2를 사용하라고 적혀 있어, 구글 Re2를 사용하였습니다. 하지만 vue에서 모듈에서 re2를 찾지 못하여 다른 방법을 찾아보았습니다.
+
+먼저, ReDos(정규식 서비스 거부)란 평가하는 데 시간이 오래 걸리는 정규식을 제공하여 서비스 거부를 생성하는 알고리즘 복잡성 공격입니다. 처음엔 정규식이 안전하지 않다고 생각하여, npm에서 `safe-regex`라는 라이브러리를 사용하여 안전한지 먼저 검사하고, 안전하다면 정규식 검사를 하게 작성하였습니다. 그러나 소나큐브에서 여전히 문제가 잡혔습니다.
+
+두 번째 방법으로 아예 안전한 정규식을 사용해보자 하여, [`https://regex101.com/`](https://regex101.com/)에서 제공하는 정규식을 사용하고, 안전한지 검사 후 사용하였습니다. 그러나 이 방법 역시 소나큐브에서 문제가 있다고 잡아냈습니다.
+
+뭐가 문제인지 모르겠어서, 소나큐브에 대해서 검색해보고, 실습코치에게 물어본 결과, 소나큐브에서 `+, *, {` 이 3가지 문자가 2개 이상 사용하게 되면 정규표현식에서 문자열 판단에 시간이 상당히 소요되고 때문에 저런 문자를 2개 이상사용하게 되면 한개 문자열을 판단하는데 더욱 시간이 소요되어 redos 공격에 취약해집니다.
+
+소나큐브에 잡히지 않게 해결하지는 못하였지만, redos에 대해서 알게되었고, safe-regex나 regex101.com처럼 안전한 정규식을 찾는 방법에대해 알게되었습니다.
+
+### ROUTE
+
+ axios를 이용한 통신메소드를 api폴더에 분리하던 중, 화면을 이동하는 route.push도 move.js로 묶어 처리하고 싶었습니다.
+
+ 처음에는 vue-router를 임포트하여 vue파일에서 사용하던 것처럼 `this.$route.push()`를사용하였지만, 제대로 되지않았습니다.  그래서 다른 교육생에게 물어보고 같이 고민한 결과, this를 사용하지않고, 임포트 후 바로 ROUTE.push를 하였습니다.
+
+```jsx
+import ROUTER from "@/router"
+
+/* 시작 페이지로 이동 */
+function moveStart() {
+    return ROUTER.push({ name: 'Start' });
+}
+```
+
+ vue파일에서 사용하던 this.$route.push에서 this는 가장 밖에있는 App.vue와 main.js에서 설정이 되고, main.js에서 router를 등록 했기 때문에 this.$route가 가능합니다
+
+ 하지만 아예 다른 폴더로 빼서 move.js를 만들었기 때문에 this.$route가 아닌 ROUTER (지정한 변수)를 사용해야 접근이 가능해 집니다.
+
+### YouTube 가져오기
+
+**기존 url `https://www.youtube.com/watch?v=ilefeIUM68w`**
+
+ iframe태그에서 유튜브 url을 그대로 가져다 쓰면 `Refused to display '<https://www.youtube.com/>' in a frame because it set 'X-Frame-Options' to 'sameorigin'.` 라는 에러가 발생 합니다.
+
+ 에러에 대해 찾아보니, 기존 url에서 watch?v= 뒤에 있는 영상ID부분만 추출하여 `https://www.youtube.com/embed/` 수정 해야한다고 합니다. 그래서 **splice() 메소드**를 통해 id부분을 추출 하였습니다.
+
+ 그 다음 목록에서 썸네일 부분을 출력하는데, 썸네일 추출방법에 대해 검색 해 보았습니다. 썸네일의 경우도 id를 추출하여 `http://img.youtube.com/vi/영상ID/0.jpg` 형식으로 작성해야한다고 합니다. 하지만 원하는 비율이 되지 않아 좀더 찾아보았고, 그 결과 영상 ID뒤부분에 jpg의 이름에 따라 다른 유형의 썸네일을 얻을수 있었습니다.
+
+- deafult.jpg : 기본 썸네일 이미지
+- hqdefault.jpg : 고품질 버전의 미리보기 이미지
+- mqdefault.jpg : HQ와 유사한 URL을 사용하는 중간 품질 버전
+- sddefault.jpg : 미리보기 이미지의 표준 정의 버전
+- maxresdefault.jpg : 축소판의 최대 해상도 버전
+
+### Alarm Dialog(vuex-persistedstate)
+
+ 구독 알림 메세지를 받을 때 새 메세지가 오면 알람이미지를 바꾸고, 새 알림을 받는 알람버튼을 만들었습니다. 이 상태를 어떻게 변경시킬까 고민을 헀습니다. 먼저 vuex와 sessionStorage에 dialog를 저장시키는 방식으로 했습니다. 그 결과 페이지 이동시에는 유지가 되지만 새로고침이 되면 상태가 초기화 되어 새 알람이 없지만, 알람이 온 상태의 이미지로 변경되었습니다.
+
+ 그 후 고민을 하다가 생각해보니 제가 반대로 생각 하고있었던 점이 있었습니다. 로그인을 했을 때 새 알람이 온 상태이면 안되는데, 계속 새 알람이 온 상태로 두어 flag상태를 true로 두어 동작하니 원하는대로 동작하였습니다. 위 과정을 진행하면서 vuex의 상태가 계속 초기화되는걸 보게 되어서 찾아 봤었고, `vuex-persistedstate`라는 Vue 플러그인 입니다.
+
+ vuex-persistedstate는 새로고침시 vuex의 데이터가 초기화되어 버리는 상황이 발생 하는 불편함을 해소하기위해 localstorage를 이용하여 값들을 다시 살려내주는 기능을 하는 것입니다. 간단하게 원리를 설명하자면, vuex를 사용하는 프로젝트를 프로젝트 전체에서 사용되는 변수를 store의 state에 저장을 하고 사용하게 됩니다. 그러면 vuex-persistedstate는 이 state에 젖아된 변수와 값을 그대로 웹브라우저의 localstorage에 업데이트를 해줍니다. 즉**, state와 localstorage를 지속적으로 동기화를 해주는 역할**을 합니다.
+
+ localstorage는 새로고침을 해도 유지가 되기 때문에 새로 화면이 로딩을 하게 되면 localstorage에 있는 내용을 state에 다시 동기화 시켜줍니다. 이러한 원리로 새로고침에도 state의 값이 변경되지않고 유지됩니다. 
+
+이번 프로젝트에서 제가 잘못생각해서 발생한 문제라 적용하지 않아도 되어 적용하지 않았지만 다음번에 vuex를 통해 값을 초기화시키지 않는 경우가 있으면 적용해 봐야겠다고 생각했습니다.
+
+**[설치방법]**
+
+https://github.com/robinvdvleuten/vuex-persistedstate#readme
+
+```
+npm install --save vuex-persistedstate
+```
+
+---
+
 
 
 # 기능
@@ -350,10 +459,6 @@ sudo chmod +x /usr/local/bin/docker-compose
   </p>
   
   
-
-# Application Architecture
-
-![Application Architecture](images/application_architecture.jpg)
 
 
 
