@@ -54,9 +54,9 @@
 
 # ⚙️Tech Stacks
 
-![Tech Stacks](images/Back Tech Stacks.png)
+![Tech Stacks](images/Back_Tech_Stacks.png)
 
-![Tech Stacks](images/Front Tech Stacks.png)
+![Tech Stacks](images/Front_Tech_Stacks.png)
 
 # DB_ERD
 
